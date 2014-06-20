@@ -1,0 +1,69 @@
+@font-face {
+	font-family: agaramondpro-regular;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	src: url('../fonts/global/agaramondpro-regular.otf') format('opentype'),url('../fonts/global/agaramondpro-regular.woff') format('woff');
+}
+.c1 {
+	color: #000000;
+	font-family: "agaramondpro-regular";
+	font-size: 17.5999956px;
+}
+.c2 {
+	color: #000000;
+	font-family: "agaramondpro-regular";
+	font-size: 15.999996px;
+}
+@font-face {
+	font-family: agaramondpro-italic;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	src: url('../fonts/global/agaramondpro-italic.otf') format('opentype'),url('../fonts/global/agaramondpro-italic.woff') format('woff');
+}
+.c3 {
+	color: #000000;
+	font-family: "agaramondpro-italic";
+	font-size: 15.999996px;
+}
+.c4 {
+	color: #000000;
+	font-family: "agaramondpro-regular";
+	font-size: 11.1999972px;
+}
+.c5 {
+	color: #000000;
+	font-family: "agaramondpro-regular";
+	font-size: 7.999998px;
+}
+.c6 {
+	color: #000000;
+	font-family: "agaramondpro-regular";
+	font-size: 12.7999968px;
+}
+.c7 {
+	color: #000000;
+	font-family: "agaramondpro-italic";
+	font-size: 12.7999968px;
+}
+.c9 {
+	color: #000000;
+	font-family: "agaramondpro-italic";
+	font-size: 17.5999956px;
+}
+.pagebreak {
+	margin: 0px;
+}
+.-epub-media-overlay-active {
+	background-color: yellow;
+}
+p {
+	margin: 0px;
+}
+span {
+	white-space: pre-wrap;
+}
+.supercss {
+	vertical-align: super;
+}
