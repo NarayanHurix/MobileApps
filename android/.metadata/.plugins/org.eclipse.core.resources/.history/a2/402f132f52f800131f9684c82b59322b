@@ -1,0 +1,7 @@
+package com.hurix.epubRnD.Utils;
+
+public class GlobalSettings 
+{
+	public static int EPUB_TYPE = GlobalConstants.REFLOWABLE;
+	public static int FONT_SIZE = GlobalConstants.MIN_FONT_SIZE;
+}
