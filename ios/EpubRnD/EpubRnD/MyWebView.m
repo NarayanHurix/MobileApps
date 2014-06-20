@@ -57,6 +57,7 @@
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    [self includeJSObjCUtilsJS];
     [self addJSLibrariesToHTML];
     [self updateFontSize];
 }
@@ -158,6 +159,8 @@
     
     NSURL *jqueryLibPath =[[NSBundle mainBundle] URLForResource:@"jquery.min" withExtension:@"js" subdirectory:@"/JSLibraries" ];
     
+    NSString *fromJSToObjc = @"{\"MethodName\":\"wrappingWordsToSpans\",\"MethodArguments\":{\"arg1\":\"John\",\"arg2\":\"Doe\"}}";
+    
     NSString *offlineJqueryLib = [NSString stringWithFormat:@"function addJquery()"
                                   "{"
                                     "function loadScript(url, callback)"
@@ -174,19 +177,16 @@
                                     "{"
                                         "loadScript('%@', function ()"
                                         "{"
-                                            "var iframe = document.createElement('iframe');"
-                                            "iframe.setAttribute('src', '%@wrappingWordsToSpans');"
-                                            "document.documentElement.appendChild(iframe);"
-                                            "iframe.parentNode.removeChild(iframe);"
-                                            "iframe = null;"
+                                            "callNativeMethod('%@%@')"
                                         "});"
                                     "}"
-                                  "} ; addJquery();",jqueryLibPath.absoluteString,jsToObjcSchema];
+                                  "} ; addJquery();",jqueryLibPath.absoluteString,jsToObjcSchema,fromJSToObjc];
     [self stringByEvaluatingJavaScriptFromString:offlineJqueryLib];
 }
 - (void) wrappingWordsToSpans
 {
     NSURL *jqueryLibPath =[[NSBundle mainBundle] URLForResource:@"wrap.spans.to.words" withExtension:@"js" subdirectory:@"/JSLibraries" ];
+    NSString *fromJSToObjc = @"{\"MethodName\":\"didWrappingWordsToSpans\",\"MethodArguments\":{\"arg1\":\"John\",\"arg2\":\"Doe\"}}";
     
     NSString *includeJSFile = [NSString stringWithFormat:@"function includeJSFile()"
                                   "{"
@@ -202,99 +202,33 @@
                                   "}"
                                   "loadScript('%@', function ()"
                                   "{"
-                                        "var iframe = document.createElement('iframe');"
-                                        "iframe.setAttribute('src', '%@didWrappingWordsToSpans');"
-                                        "document.documentElement.appendChild(iframe);"
-                                        "iframe.parentNode.removeChild(iframe);"
-                                        "iframe = null;"
+                                        "callNativeMethod('%@%@')"
                                   "});"
-                                  "} ; includeJSFile();",jqueryLibPath.absoluteString,jsToObjcSchema];
+                                  "} ; includeJSFile();",jqueryLibPath.absoluteString,jsToObjcSchema,fromJSToObjc];
     [self stringByEvaluatingJavaScriptFromString:includeJSFile];
 }
-- (void) wrappingWordsToSpansOLD
+
+- (void) includeJSObjCUtilsJS
 {
-    NSString *looper = [NSString stringWithFormat:@""
-                        "function looper($el) {"
-                            "alert('inside looper ');"
-                            "var counter = 0, blnValidNode = true, text = '';"
-                            "if (isLooped($el)) return false;"
-                            "(function loop($dom) {"
-                                "if ($dom.get(0).tagName.toLowerCase() === 'a' && $dom.get(0).href !== '') {"
-                                    "counter++;"
-                                    "$dom.wrapInner('<span id=\"' + counter + '\"/>');"
-                                "} else {"
-                                    "$dom.contents().each(function() {"
-                                        "blnValidNode = isValidNode($(this).parent());"
-                                        "// Text"
-                                        "if (this.nodeType === 3 && blnValidNode) {"
-                                            "var arrText = $.trim($(this).text()) === '' ? $(this).text() : $(this).text().replace(/[\\r\\n]/ig, '<br/>'),"
-                                            "arrText = arrText.replace(/\\s+/g,' ').split(' '),"
-                                            "lenText = arrText.length,"
-                                            "containSpace = false;"
-                                            "if (arrText.length === 1 && $(this).parent().get(0).tagName.toLowerCase() === 'span') {"
-                                                "counter++;"
-                                                "$(this).parent().attr('id', 'p1-textid' + counter);"
-                                            "} else {"
-                                                "arrText.forEach(function(text, i) {"
-                                                    "if (text.replace(/[\r\n]/g, '').length > 0) {"
-                                                        "if (this.nodeType === 1) {"
-                                                            "loop($(this));"
-                                                        "} else {"
-                                                            "counter++;"
-                                                            "arrText[i] = '<span id=\"p1-textid' + counter + '\">' + ( containSpace ? ' ' : '' ) + arrText[i] + ( i < lenText - 1 ? ' ' : '' ) + '</span>';"
-                                                        "}"
-                                                        "containSpace = false;"
-                                                    "} else if (text === '' && i === 0) {"
-                                                        "containSpace = true;"
-                                                    "}"
-                                                "});"
-                                            "}"
-                                            "// Bug in Chrome"
-                                            "// http://bugs.jquery.com/ticket/12505"
-                                            "try {"
-                                                "text = arrText.join('');"
-                                                "$(this).replaceWith(text === '' ? ' ' : text);"
-                                            "} catch(e) {"
-                                                "if (e.code === 12) {"
-                                                    "try {"
-                                                        "text = arrText.join('');"
-                                                        "$(this).replaceWith($('<span/>').html(text === '' ? ' ' : text));"
-                                                    "} catch(e) {"
-                                                        "console.log(e);"
-                                                    "}"
-                                                "}"
-                                            "}"
-                                        "} else if (this.nodeType === 1 && blnValidNode) {"
-                                            "loop($(this));"
-                                        "}"
-                                    "});"
-                                "}"
-                            "})($el);"
-                            "function isValidNode($node) {"
-                                "var nodeName = $node.get(0).nodeName.toLowerCase(),"
-                                "arrInValidTags = ['script', 'code', 'textarea', 'select'],"
-                                "isTransformed = $node.css('transform') !== \"none\";"
-                                "return arrInValidTags.indexOf(nodeName) === -1 && !isTransformed ? true : false;"
-                            "}"
-                        "}"
-                        
-                        ""];
-    [self stringByEvaluatingJavaScriptFromString:looper];
+    NSURL *jqueryLibPath =[[NSBundle mainBundle] URLForResource:@"js.objc.utils" withExtension:@"js" subdirectory:@"/JSLibraries" ];
     
-    NSString *isLooped = [NSString stringWithFormat:@""
-                          "function isLooped($el) {"
-                                "alert('inside isLooped ');"
-                              "return $($el[0].querySelectorAll('span')).filter(function() { return this.id.match(//p[0-9]+-textid[0-9]+//); }).length > 0;"
-                          "}"
-                          ""];
-    [self stringByEvaluatingJavaScriptFromString:isLooped];
-    
-    NSString *startPoint = [NSString stringWithFormat:@""
-                                "$(function() {"
-                                    "looper($('body'));"
-                                "});"
-                            ""];
-    [self stringByEvaluatingJavaScriptFromString:startPoint];
+    NSString *includeJSFile = [NSString stringWithFormat:@"function includeJSFile()"
+                               "{"
+                               "function loadScript(url, callback)"
+                               "{"
+                               "var script = document.createElement('script');"
+                               "script.type = 'text/javascript';"
+                               "script.onload = function () {"
+                               "callback();"
+                               "};"
+                               "script.src = url;"
+                               "(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);"
+                               "}"
+                               "loadScript('%@', function ()"
+                               "{"
+                               "});"
+                               "} ; includeJSFile();",jqueryLibPath.absoluteString];
+    [self stringByEvaluatingJavaScriptFromString:includeJSFile];
 }
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
@@ -302,19 +236,34 @@
     if(request.URL.absoluteString.length>jsToObjcSchema.length)
     {
         NSString *schema = [request.URL.absoluteString substringToIndex:jsToObjcSchema.length];
-        NSLog(@"url : %@ cond : %d",schema,[schema caseInsensitiveCompare:jsToObjcSchema]== NSOrderedSame);
+        
         if([schema caseInsensitiveCompare:jsToObjcSchema]== NSOrderedSame)
         {
-            NSString *methodName = [request.URL.absoluteString stringByReplacingOccurrencesOfString:jsToObjcSchema withString:@""];
-            [self callNativeMethodFromJS:methodName];
+            NSURL *url =request.URL;
+            
+            NSString *jsonData = [url.absoluteString stringByReplacingOccurrencesOfString:jsToObjcSchema withString:@""];
+            jsonData = [jsonData stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            if(jsonData != nil)
+            {
+                NSError *error ;
+                
+                NSDictionary *dataFromJS = [NSJSONSerialization JSONObjectWithData:[jsonData dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
+                if(dataFromJS != nil)
+                {
+                    
+                    [self callNativeMethodFromJS:dataFromJS];
+                }
+            }
             return NO;
         }
     }
     return YES;
 }
 
-- (void) callNativeMethodFromJS:(NSString *) methodName
+- (void) callNativeMethodFromJS:(NSDictionary *) dataFromJS
 {
+    NSString *methodName = [dataFromJS objectForKey:@"MethodName"];
+    NSDictionary *methodArgs = [dataFromJS objectForKey:@"MethodArguments"];
     if([methodName isEqualToString:@"wrappingWordsToSpans"])
     {
         [self wrappingWordsToSpans];
@@ -322,6 +271,11 @@
     else if([methodName isEqualToString:@"didWrappingWordsToSpans"])
     {
         [self didWrappingWordsToSpans];
+    }
+    else if([methodName isEqualToString:@"NSLog"])
+    {
+        NSString *logMsg =[methodArgs objectForKey:@"arg1"];
+        NSLog(@"From JS : %@",logMsg);
     }
 }
 
@@ -333,7 +287,7 @@
 {
     NSString *applyCss = @"if(window.jQuery!==undefined)"
                         "{"
-                            "$('span').css('background-color','green');"
+                            "$('span').css('background-color','yellow');"
                         "}";
     [self stringByEvaluatingJavaScriptFromString:applyCss];
 }

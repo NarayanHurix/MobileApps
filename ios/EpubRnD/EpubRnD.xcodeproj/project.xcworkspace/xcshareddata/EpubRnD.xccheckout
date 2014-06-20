@@ -5,36 +5,46 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>426CE0C9-DD82-4C50-B992-E4486146CE5C</string>
+	<string>E384CFAC-1488-4BF4-B821-F0F83231D760</string>
 	<key>IDESourceControlProjectName</key>
 	<string>EpubRnD</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>4E6EE274-E450-48A4-ADF3-79D93EFE5E77</key>
-		<string>ssh://github.com/hurixdeveloper/EpubRnD-iOS.git</string>
+		<key>2EE33EA4-E160-49E7-B910-32BFBC531140</key>
+		<string>ssh://github.com/UdaySravanK/EpubRnDiOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>EpubRnD/EpubRnD.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>4E6EE274-E450-48A4-ADF3-79D93EFE5E77</key>
+		<key>2EE33EA4-E160-49E7-B910-32BFBC531140</key>
 		<string>../../..</string>
+		<key>D4828738-43ED-4CBF-9246-7E198214A846</key>
+		<string>../../../../workspace</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/hurixdeveloper/EpubRnD-iOS.git</string>
+	<string>ssh://github.com/UdaySravanK/EpubRnDiOS.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>4E6EE274-E450-48A4-ADF3-79D93EFE5E77</string>
+	<string>2EE33EA4-E160-49E7-B910-32BFBC531140</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>4E6EE274-E450-48A4-ADF3-79D93EFE5E77</string>
+			<string>2EE33EA4-E160-49E7-B910-32BFBC531140</string>
 			<key>IDESourceControlWCCName</key>
 			<string>gitworkspace</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D4828738-43ED-4CBF-9246-7E198214A846</string>
+			<key>IDESourceControlWCCName</key>
+			<string>workspace</string>
 		</dict>
 	</array>
 </dict>

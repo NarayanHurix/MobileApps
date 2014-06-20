@@ -1,3 +1,10 @@
+function  highlightSpan(event)
+{
+    console.log('clicked on span'+event);
+    event.preventDefault();
+    $(event.target).css('background-color','green');
+}
+
 $(function() {
    looper($('body'));
 });
@@ -36,7 +43,7 @@ function looper($el) {
                   loop($(this));
                 } else {
                   counter++;
-                  arrText[i] = '<span id="p1-textid' + counter + '">' + ( containSpace ? ' ' : '' ) + arrText[i] + ( i < lenText - 1 ? ' ' : '' ) + '</span>';
+                  arrText[i] = '<span onclick="onClickOnSpan(event)" id="p1-textid' + counter + '">' + ( containSpace ? ' ' : '' ) + arrText[i] + ( i < lenText - 1 ? ' ' : '' ) + '</span>';
                 }
                 containSpace = false;
               } else if (text === '' && i === 0) {
@@ -74,4 +81,19 @@ function looper($el) {
     
     return arrInValidTags.indexOf(nodeName) === -1 && !isTransformed ? true : false;
   }
+    
+    $('body').bind('mousedown',function()
+    {
+        NSLog("this is from javascript NSLog");
+        $('span').bind('mousemove',function(event)
+        {
+                       alert('on span');
+            $(event.target).css('background-color','green');
+        });
+    });
+    
+    $('body').bind('mouseup',function()
+    {
+        $('span').unbind('mousemove');
+    });
 }
