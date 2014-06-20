@@ -249,13 +249,13 @@ public class MyWebView extends WebView
 
 				String insertRule2 = "addCSSRule('p', 'text-align: justify;')";
 
-				String setImageRule = "addCSSRule('img', 'max-width: "+  (myWebView.getMeasuredWidth() -200)+"px; height:"+(myWebView.getMeasuredHeight() - 200)+"px')";
+				//String setImageRule = "addCSSRule('img', 'max-width: "+  (myWebView.getMeasuredWidth() -200)+"px; height:"+(myWebView.getMeasuredHeight() - 200)+"px')";
 
 				myWebView.loadUrl("javascript:" + varMySheet);
 				myWebView.loadUrl("javascript:" + addCSSRule);
 				myWebView.loadUrl("javascript:" + insertRule1);
 				myWebView.loadUrl("javascript:" + insertRule2);
-				myWebView.loadUrl("javascript:" + setImageRule);
+				//myWebView.loadUrl("javascript:" + setImageRule);
 
 				myWebView.loadUrl("javascript: jsInterface.paginationDone()");
 			}

@@ -89,16 +89,11 @@ public class PageView extends RelativeLayout implements MyWebViewLoadListener
 		_mWebView.setVisibility(View.INVISIBLE);
 		_mProgressBar.setVisibility(View.VISIBLE);
 	}
-
+	
 	@Override
-	public void onPageOutOfRange() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/*@Override
 	public void onPageOutOfRange() 
 	{
 		_mMyViewPager.onPageOutOfRange();
-	}*/
+	}
+	
 }
