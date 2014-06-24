@@ -108,7 +108,6 @@ function onTouchStart(e)
     if($(obj).is('span'))
     {
         var spanIDNumber = obj.id.split('-')[1];
-        NSLog('start word id : '+spanIDNumber);
         startWordID =spanIDNumber;
     }
 };
@@ -122,13 +121,12 @@ function onTouchEnd(e)
     if($(obj).is('span'))
     {
         var spanIDNumber = obj.id.split('-')[1];
-        NSLog('end word id : '+spanIDNumber);
         endWordID =spanIDNumber;
     }
     startWordID = -1;
     endWordID = -1;
 };
-
+var lastHoverdWordID = -1;
 function onTouchMove(e)
 {
     e.preventDefault();
@@ -139,19 +137,29 @@ function onTouchMove(e)
         if($(obj).is('span'))
         {
             var spanIDNumber = obj.id.split('-')[1];
-            NSLog('current word id : '+spanIDNumber);
-            endWordID = spanIDNumber;
-            if(startWordID>endWordID)
+            if(lastHoverdWordID != spanIDNumber)
             {
-                //swap with using extra variable
-                startWordID = startWordID+endWordID;
-                endWordID = startWordID-endWordID;
-                startWordID = startWordID - endWordID;
-            }
-            for(var i=startWordID;i<=endWordID;i++)
-            {
-                var spanIdToHighlight = 'wordID-'+i;
-                $('#'+spanIdToHighlight).css('background-color','green');
+                lastHoverdWordID = spanIDNumber;
+                endWordID = spanIDNumber;
+                NSLog('start 1:'+startWordID+' end :'+endWordID);
+                if(Number(startWordID)>Number(endWordID))
+                {
+                    //swap with using extra variable
+                    startWordID = Number(startWordID)+Number(endWordID);
+                    NSLog('start 2:'+startWordID+' end :'+endWordID);
+                    endWordID = Number(startWordID)-Number(endWordID);
+                    NSLog('start 3:'+startWordID+' end :'+endWordID);
+                    startWordID = Number(startWordID) - Number(endWordID);
+                    NSLog('start 4:'+startWordID+' end :'+endWordID);
+                }
+                $('span').css('background-color','rgba(0, 0, 0, 0)');
+                NSLog('start 5:'+startWordID+' end :'+endWordID);
+                for(var i=Number(startWordID);i<=Number(endWordID);i++)
+                {
+                    NSLog('start :'+startWordID+' end :'+endWordID+' highlight word ids : '+i);
+                    var spanIdToHighlight = 'wordID-'+i;
+                    $('#'+spanIdToHighlight).css('background-color','green');
+                }
             }
         }
     }
