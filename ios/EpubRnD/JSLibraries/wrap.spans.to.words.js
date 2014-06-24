@@ -81,19 +81,26 @@ function looper($el) {
     
     return arrInValidTags.indexOf(nodeName) === -1 && !isTransformed ? true : false;
   }
+    highlightSwitch = false;
     
-    $('body').bind('mousedown',function()
+//    $('span').bind('mousedown',function()
+//    {
+//        NSLog("mousedown on body");
+//        highlightSwitch = true;
+//    });
+    
+    $('span').bind('mousemove',function(event)
     {
-        NSLog("this is from javascript NSLog");
-        $('span').bind('mousemove',function(event)
+        if(!highlightSwitch)
         {
-                       alert('on span');
-            $(event.target).css('background-color','green');
-        });
+             $(event.target).css('background-color','green');
+             NSLog("mousedown on body");
+        }
     });
     
-    $('body').bind('mouseup',function()
-    {
-        $('span').unbind('mousemove');
-    });
+//    $('span').bind('mouseup',function()
+//    {
+//        NSLog("mouseup on body");
+//        highlightSwitch = false;
+//    });
 }

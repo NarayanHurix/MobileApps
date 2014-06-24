@@ -225,11 +225,15 @@
 - (IBAction)penToolEnable:(UIButton *)sender
 {
     
-    PEN_TOOL_ENABLE = PEN_TOOL_ENABLE?NO:YES;
-    [self.myViewPager setUserInteractionEnabled:!PEN_TOOL_ENABLE];
-    MyPageView *pageView = (MyPageView *)self.myViewPager.currenPageView;
-    [pageView performSelector:@selector(count) withObject:nil afterDelay:0];
-    [pageView.myWebView setUserInteractionEnabled:PEN_TOOL_ENABLE];
+    PEN_TOOL_SWITCH = PEN_TOOL_SWITCH?NO:YES;
+    
+    [self performSelector:@selector(count) withObject:nil afterDelay:0];
+    }
+
+- (IBAction)onTapHighlightBtn:(UIButton *)sender
+{
+    HIGHLIGHT_TOOL_SWITCH = HIGHLIGHT_TOOL_SWITCH?NO:YES;
+    [sender setSelected:HIGHLIGHT_TOOL_SWITCH];
 }
 
 @end

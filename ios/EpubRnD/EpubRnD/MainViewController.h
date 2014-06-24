@@ -21,6 +21,7 @@
 - (IBAction)increaseFontSize:(UIButton *)sender;
 - (void)onPageOutOfRange;
 - (IBAction)penToolEnable:(UIButton *)sender;
+- (IBAction)onTapHighlightBtn:(UIButton *)sender;
 
 @property (nonatomic,strong) NSArray *data;
 

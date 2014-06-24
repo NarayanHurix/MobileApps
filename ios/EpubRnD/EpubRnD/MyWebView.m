@@ -57,6 +57,8 @@
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    [self stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitUserSelect='none';"];
+    
     [self includeJSObjCUtilsJS];
     [self addJSLibrariesToHTML];
     [self updateFontSize];

@@ -8,6 +8,7 @@
 
 #import "MyViewPager.h"
 #import "GlobalConstants.h"
+#import "GlobalSettings.h"
 
 @implementation MyViewPager
 
@@ -56,28 +57,34 @@
 
 - (void) onSwipeLeft:(UISwipeGestureRecognizer *)gesture
 {
-    UIView *oldPage = self.currenPageView;
-    UIView *nextPage =  [_delegate getNextPage:oldPage];
-    self.currenPageView = nextPage;
-    
-    if(oldPage != self.currenPageView)
+    if(!HIGHLIGHT_TOOL_SWITCH)
     {
-        [self removeAllSubViews:self];
-        [self addSubview:nextPage];
+        UIView *oldPage = self.currenPageView;
+        UIView *nextPage =  [_delegate getNextPage:oldPage];
+        self.currenPageView = nextPage;
+    
+        if(oldPage != self.currenPageView)
+        {
+            [self removeAllSubViews:self];
+            [self addSubview:nextPage];
+        }
     }
 }
 
 - (void) onSwipeRight:(UISwipeGestureRecognizer *)gesture
 {
-    //previous PageView
-    UIView *oldPage = self.currenPageView;
-    UIView *previousPage = [_delegate getPreiousPage:oldPage];
-    self.currenPageView = previousPage;
-    
-    if(oldPage != self.currenPageView)
+    if(!HIGHLIGHT_TOOL_SWITCH)
     {
-        [self removeAllSubViews:self];
-        [self addSubview:previousPage];
+        //previous PageView
+        UIView *oldPage = self.currenPageView;
+        UIView *previousPage = [_delegate getPreiousPage:oldPage];
+        self.currenPageView = previousPage;
+    
+        if(oldPage != self.currenPageView)
+        {
+            [self removeAllSubViews:self];
+            [self addSubview:previousPage];
+        }
     }
 }
 

@@ -12,7 +12,8 @@
 @interface GlobalSettings : NSObject
 
 extern NSInteger CURRENT_FONT_SIZE;
-extern BOOL PEN_TOOL_ENABLE;
+extern BOOL PEN_TOOL_SWITCH;
+extern BOOL HIGHLIGHT_TOOL_SWITCH;
 + (void) initSettings;
 
 @end
