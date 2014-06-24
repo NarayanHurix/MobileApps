@@ -26,4 +26,6 @@
 
 - (void) loadViewWithData:(WebViewDAO *) data;
 - (void) updateFontSize;
+- (void) didHighlightButtonTap;
+
 @end

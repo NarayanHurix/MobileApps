@@ -289,9 +289,23 @@
 {
     NSString *applyCss = @"if(window.jQuery!==undefined)"
                         "{"
-                            "$('span').css('background-color','yellow');"
+                            "$('span').css('background-color','#00000000');"
                         "}";
     [self stringByEvaluatingJavaScriptFromString:applyCss];
+}
+
+- (void) didHighlightButtonTap
+{
+    NSString *switchDocTouch = @"";
+    if(HIGHLIGHT_TOOL_SWITCH)
+    {
+        switchDocTouch = @"bindDocumentTouch()";
+    }
+    else
+    {
+        switchDocTouch = @"unbindDocumentTouch()";
+    }
+    [self stringByEvaluatingJavaScriptFromString:switchDocTouch];
 }
 
 @end

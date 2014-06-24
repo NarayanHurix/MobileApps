@@ -234,6 +234,8 @@
 {
     HIGHLIGHT_TOOL_SWITCH = HIGHLIGHT_TOOL_SWITCH?NO:YES;
     [sender setSelected:HIGHLIGHT_TOOL_SWITCH];
+    MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
+    [myPageView.myWebView didHighlightButtonTap];
 }
 
 @end

@@ -1,8 +1,20 @@
-function  highlightSpan(event)
+function bindDocumentTouch()
 {
-    console.log('clicked on span'+event);
-    event.preventDefault();
-    $(event.target).css('background-color','green');
+    $(document).bind('touchstart',onTouchStart);
+    
+    $(document).bind('touchend',onTouchEnd);
+    
+    $(document).bind('touchmove',onTouchMove);
+    
+    NSLog('bind successfull');
+}
+
+function unbindDocumentTouch()
+{
+    $(document).unbind('touchstart');
+    $(document).unbind('touchmove');
+    $(document).unbind('touchend');
+    NSLog('unbind successfull');
 }
 
 $(function() {
@@ -35,7 +47,7 @@ function looper($el) {
 
           if (arrText.length === 1 && $(this).parent().get(0).tagName.toLowerCase() === 'span') {
             counter++;
-            $(this).parent().attr('id', 'p1-textid' + counter);            
+            $(this).parent().attr('id', 'wordID-' + counter);
           } else {
             arrText.forEach(function(text, i) {
               if (text.replace(/[\r\n]/g, '').length > 0) {
@@ -43,7 +55,7 @@ function looper($el) {
                   loop($(this));
                 } else {
                   counter++;
-                  arrText[i] = '<span onclick="onClickOnSpan(event)" id="p1-textid' + counter + '">' + ( containSpace ? ' ' : '' ) + arrText[i] + ( i < lenText - 1 ? ' ' : '' ) + '</span>';
+                  arrText[i] = '<span id="wordID-' + counter + '">' + ( containSpace ? ' ' : '' ) + arrText[i] + ( i < lenText - 1 ? ' ' : '' ) + '</span>';
                 }
                 containSpace = false;
               } else if (text === '' && i === 0) {
@@ -81,26 +93,69 @@ function looper($el) {
     
     return arrInValidTags.indexOf(nodeName) === -1 && !isTransformed ? true : false;
   }
-    highlightSwitch = false;
-    
-//    $('span').bind('mousedown',function()
-//    {
-//        NSLog("mousedown on body");
-//        highlightSwitch = true;
-//    });
-    
-    $('span').bind('mousemove',function(event)
-    {
-        if(!highlightSwitch)
-        {
-             $(event.target).css('background-color','green');
-             NSLog("mousedown on body");
-        }
-    });
-    
-//    $('span').bind('mouseup',function()
-//    {
-//        NSLog("mouseup on body");
-//        highlightSwitch = false;
-//    });
+  
 }
+var startWordID = -1;
+var endWordID = -1;
+function onTouchStart(e)
+{
+    startWordID = -1;
+    endWordID = -1;
+    e.preventDefault();
+    highlightSwitch = true;
+    var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+    var obj = document.elementFromPoint(touch.pageX,touch.pageY);
+    if($(obj).is('span'))
+    {
+        var spanIDNumber = obj.id.split('-')[1];
+        NSLog('start word id : '+spanIDNumber);
+        startWordID =spanIDNumber;
+    }
+};
+
+function onTouchEnd(e)
+{
+    e.preventDefault();
+    highlightSwitch = false;
+    var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+    var obj = document.elementFromPoint(touch.pageX,touch.pageY);
+    if($(obj).is('span'))
+    {
+        var spanIDNumber = obj.id.split('-')[1];
+        NSLog('end word id : '+spanIDNumber);
+        endWordID =spanIDNumber;
+    }
+    startWordID = -1;
+    endWordID = -1;
+};
+
+function onTouchMove(e)
+{
+    e.preventDefault();
+    var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+    var obj = document.elementFromPoint(touch.pageX,touch.pageY);
+    if(highlightSwitch)
+    {
+        if($(obj).is('span'))
+        {
+            var spanIDNumber = obj.id.split('-')[1];
+            NSLog('current word id : '+spanIDNumber);
+            endWordID = spanIDNumber;
+            if(startWordID>endWordID)
+            {
+                //swap with using extra variable
+                startWordID = startWordID+endWordID;
+                endWordID = startWordID-endWordID;
+                startWordID = startWordID - endWordID;
+            }
+            for(var i=startWordID;i<=endWordID;i++)
+            {
+                var spanIdToHighlight = 'wordID-'+i;
+                $('#'+spanIdToHighlight).css('background-color','green');
+            }
+        }
+    }
+};
+
+
+    
