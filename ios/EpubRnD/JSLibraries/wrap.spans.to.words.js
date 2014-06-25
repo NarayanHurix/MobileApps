@@ -1,3 +1,9 @@
+
+var highlightVosJSONObj = [];
+
+
+
+
 function bindDocumentTouch()
 {
     $(document).bind('touchstart',onTouchStart);
@@ -95,16 +101,33 @@ function looper($el) {
   }
   
 }
+var currentPageIndex= 0;
+
+function setCurrentPageIndex(pageIndex)
+{
+    currentPageIndex = pageIndex;
+}
+
+var currentPageWidth = 0;
+
+function setCurrentPageWidth(pageWidth)
+{
+    currentPageWidth = pageWidth;
+}
+
 var startWordID = -1;
 var endWordID = -1;
+var selectedText = '';
 function onTouchStart(e)
 {
     startWordID = -1;
     endWordID = -1;
+    selectedText = '';
+    
     e.preventDefault();
     highlightSwitch = true;
     var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-    var obj = document.elementFromPoint(touch.pageX,touch.pageY);
+    var obj = document.elementFromPoint(touch.pageX-window.pageXOffset,touch.pageY-window.pageYOffset);
     if($(obj).is('span'))
     {
         var spanIDNumber = obj.id.split('-')[1];
@@ -112,26 +135,39 @@ function onTouchStart(e)
     }
 };
 
+
 function onTouchEnd(e)
 {
     e.preventDefault();
     highlightSwitch = false;
-    var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-    var obj = document.elementFromPoint(touch.pageX,touch.pageY);
-    if($(obj).is('span'))
-    {
-        var spanIDNumber = obj.id.split('-')[1];
-        endWordID =spanIDNumber;
-    }
+//    var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+//    var obj = document.elementFromPoint(touch.pageX-window.pageXOffset,touch.pageY-window.pageYOffset);
+//    if($(obj).is('span'))
+//    {
+//        var spanIDNumber = obj.id.split('-')[1];
+//        endWordID =spanIDNumber;
+//    }
+    var jsonSaveHighlight = '{"MethodName":"saveTextHighlight","MethodArguments":{"arg1":"'+startWordID+'","arg2":"'+endWordID+'","arg3":"'+selectedText+'"}}';
+    callNativeMethod('jstoobjc:'+jsonSaveHighlight);
+    
+    var currHighlightVO = {};
+    currHighlightVO['startWordID'] = startWordID;
+    currHighlightVO['endWordID'] = endWordID;
+    
+    highlightVosJSONObj.push(currHighlightVO);
+    
+    drawSavedHighlights();
+    
     startWordID = -1;
     endWordID = -1;
+    selectedText = '';
 };
 var lastHoverdWordID = -1;
 function onTouchMove(e)
 {
     e.preventDefault();
     var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-    var obj = document.elementFromPoint(touch.pageX,touch.pageY);
+    var obj = document.elementFromPoint(touch.pageX-window.pageXOffset,touch.pageY-window.pageYOffset);
     if(highlightSwitch)
     {
         if($(obj).is('span'))
@@ -139,31 +175,82 @@ function onTouchMove(e)
             var spanIDNumber = obj.id.split('-')[1];
             if(lastHoverdWordID != spanIDNumber)
             {
+                
+                
+                if(Number(lastHoverdWordID)>Number(spanIDNumber))
+                {
+                    //moving backward
+                    if(Number(spanIDNumber)<Number(startWordID))
+                    {
+                        //crossed start word
+                        startWordID = spanIDNumber;
+                    }
+                    else
+                    {
+                        endWordID = spanIDNumber;
+                    }
+                }
+                else
+                {
+                    //moving forward
+                    if(Number(spanIDNumber)>Number(endWordID))
+                    {
+                        //crossed the end word
+                        endWordID = spanIDNumber;
+                    }
+                    else
+                    {
+                        startWordID = spanIDNumber;
+                    }
+                }
+                
                 lastHoverdWordID = spanIDNumber;
-                endWordID = spanIDNumber;
-                NSLog('start 1:'+startWordID+' end :'+endWordID);
+                
                 if(Number(startWordID)>Number(endWordID))
                 {
-                    //swap with using extra variable
                     startWordID = Number(startWordID)+Number(endWordID);
-                    NSLog('start 2:'+startWordID+' end :'+endWordID);
                     endWordID = Number(startWordID)-Number(endWordID);
-                    NSLog('start 3:'+startWordID+' end :'+endWordID);
                     startWordID = Number(startWordID) - Number(endWordID);
-                    NSLog('start 4:'+startWordID+' end :'+endWordID);
                 }
+                
                 $('span').css('background-color','rgba(0, 0, 0, 0)');
-                NSLog('start 5:'+startWordID+' end :'+endWordID);
-                for(var i=Number(startWordID);i<=Number(endWordID);i++)
-                {
-                    NSLog('start :'+startWordID+' end :'+endWordID+' highlight word ids : '+i);
-                    var spanIdToHighlight = 'wordID-'+i;
-                    $('#'+spanIdToHighlight).css('background-color','green');
-                }
+                highlightText(startWordID,endWordID);
+                drawSavedHighlights();
             }
         }
     }
 };
 
+function highlightText(sWordID,eWordID)
+{
+    selectedText = '';
+    for(var i=Number(startWordID);i<=Number(endWordID);i++)
+    {
+        var spanIdToHighlight = 'wordID-'+i;
+        $('#'+spanIdToHighlight).css('background-color','rgba(0,0,255,0.3)');
+        selectedText = selectedText+$('#'+spanIdToHighlight).text();
+    }
+}
 
-    
+function setHighlightsData(jsonData)
+{
+    highlightVosJSONObj = JSON.parse(jsonData);
+}
+
+function drawSavedHighlights()
+{
+    NSLog("len "+highlightVosJSONObj.length);
+    for(j in highlightVosJSONObj)
+    {
+        NSLog("vo is "+highlightVosJSONObj[j]);
+        for(var i=Number(highlightVosJSONObj[j].startWordID);i<=Number(highlightVosJSONObj[j].endWordID);i++)
+        {
+            var spanIdToHighlight = 'wordID-'+i;
+            $('#'+spanIdToHighlight).css('background-color','rgba(0,0,255,0.3)');
+            selectedText = selectedText+$('#'+spanIdToHighlight).text();
+        }
+    }
+}
+
+
+
