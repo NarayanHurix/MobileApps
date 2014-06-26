@@ -28,7 +28,6 @@
 		5A45B68819472E52003FA663 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5A45B68619472E52003FA663 /* InfoPlist.strings */; };
 		5A45B68A19472E52003FA663 /* EpubRnDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B68919472E52003FA663 /* EpubRnDTests.m */; };
 		5A45B69619472FEC003FA663 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B69419472FEC003FA663 /* MainViewController.m */; };
-		5A45B69719472FEC003FA663 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A45B69519472FEC003FA663 /* MainViewController.xib */; };
 		5A45B69A19473A2D003FA663 /* MyViewPager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B69919473A2D003FA663 /* MyViewPager.m */; };
 		5A45B6A019473AB0003FA663 /* MyWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B69F19473AB0003FA663 /* MyWebView.m */; };
 		5A45B6A319473B8F003FA663 /* MyPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B6A219473B8F003FA663 /* MyPageView.m */; };
@@ -41,6 +40,7 @@
 		5AC1F8BC19505E910088B1A7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8BB19505E910088B1A7 /* Security.framework */; };
 		5AC1F8BE19505E9E0088B1A7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8BD19505E9E0088B1A7 /* SystemConfiguration.framework */; };
 		5AD494A6194F27260059C0E9 /* AssetsContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD494A5194F27260059C0E9 /* AssetsContainer.m */; };
+		8BBF91D7195BFF2500E057E8 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BBF91D6195BFF2500E057E8 /* MainViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,7 +62,7 @@
 		5A26001119485A9800F472CE /* GlobalConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalConstants.m; sourceTree = "<group>"; };
 		5A3E309719488FC4001080F6 /* GlobalSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalSettings.h; sourceTree = "<group>"; };
 		5A3E309819488FC4001080F6 /* GlobalSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalSettings.m; sourceTree = "<group>"; };
-		5A45B65B19472E52003FA663 /* kitaboojune3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kitaboojune3.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A45B65B19472E52003FA663 /* EpubRnD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EpubRnD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A45B65E19472E52003FA663 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5A45B66019472E52003FA663 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		5A45B66219472E52003FA663 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -82,7 +82,6 @@
 		5A45B68919472E52003FA663 /* EpubRnDTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EpubRnDTests.m; sourceTree = "<group>"; };
 		5A45B69319472FEC003FA663 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		5A45B69419472FEC003FA663 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		5A45B69519472FEC003FA663 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainViewController.xib; path = /UdaySravanK/IOS_WorkField/Projects/UIWebViewRnDForEpub/workspace/EpubRnD/EpubRnD/MainViewController.xib; sourceTree = "<absolute>"; };
 		5A45B69819473A2D003FA663 /* MyViewPager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyViewPager.h; sourceTree = "<group>"; };
 		5A45B69919473A2D003FA663 /* MyViewPager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyViewPager.m; sourceTree = "<group>"; };
 		5A45B69E19473AB0003FA663 /* MyWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWebView.h; sourceTree = "<group>"; };
@@ -101,6 +100,7 @@
 		5AC1F8BD19505E9E0088B1A7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		5AD494A4194F27260059C0E9 /* AssetsContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetsContainer.h; sourceTree = "<group>"; };
 		5AD494A5194F27260059C0E9 /* AssetsContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetsContainer.m; sourceTree = "<group>"; };
+		8BBF91D6195BFF2500E057E8 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,7 +168,7 @@
 		5A45B65C19472E52003FA663 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5A45B65B19472E52003FA663 /* kitaboojune3.app */,
+				5A45B65B19472E52003FA663 /* EpubRnD.app */,
 				5A45B67B19472E52003FA663 /* EpubRnDTests.xctest */,
 			);
 			name = Products;
@@ -264,9 +264,9 @@
 		5A45B6AC19473D80003FA663 /* ControllerClasses */ = {
 			isa = PBXGroup;
 			children = (
+				8BBF91D6195BFF2500E057E8 /* MainViewController.xib */,
 				5A45B69319472FEC003FA663 /* MainViewController.h */,
 				5A45B69419472FEC003FA663 /* MainViewController.m */,
-				5A45B69519472FEC003FA663 /* MainViewController.xib */,
 			);
 			name = ControllerClasses;
 			sourceTree = "<group>";
@@ -308,7 +308,7 @@
 			);
 			name = EpubRnD;
 			productName = EpubRnD;
-			productReference = 5A45B65B19472E52003FA663 /* kitaboojune3.app */;
+			productReference = 5A45B65B19472E52003FA663 /* EpubRnD.app */;
 			productType = "com.apple.product-type.application";
 		};
 		5A45B67A19472E52003FA663 /* EpubRnDTests */ = {
@@ -338,6 +338,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = hurix;
 				TargetAttributes = {
+					5A45B65A19472E52003FA663 = {
+						DevelopmentTeam = V5SZS65EA4;
+					};
 					5A45B67A19472E52003FA663 = {
 						TestTargetID = 5A45B65A19472E52003FA663;
 					};
@@ -367,9 +370,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AAEED341949AE9F00F01F48 /* assets in Resources */,
+				8BBF91D7195BFF2500E057E8 /* MainViewController.xib in Resources */,
 				5A01669D1951987B00A5FA59 /* JSLibraries in Resources */,
 				5A45B66B19472E52003FA663 /* InfoPlist.strings in Resources */,
-				5A45B69719472FEC003FA663 /* MainViewController.xib in Resources */,
 				5A26000E194840E400F472CE /* AppViewController.xib in Resources */,
 				5A45B67619472E52003FA663 /* Images.xcassets in Resources */,
 			);
@@ -529,6 +532,8 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Subrat Mohanty (9V2C356F85)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Subrat Mohanty (9V2C356F85)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -537,7 +542,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EpubRnD/EpubRnD-Prefix.pch";
 				INFOPLIST_FILE = "EpubRnD/EpubRnD-Info.plist";
-				PRODUCT_NAME = kitaboojune3;
+				PRODUCT_NAME = EpubRnD;
+				PROVISIONING_PROFILE = "80652100-DBE5-4217-AB58-309B9DD901FD";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -548,6 +554,8 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Subrat Mohanty (9V2C356F85)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Subrat Mohanty (9V2C356F85)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -556,7 +564,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EpubRnD/EpubRnD-Prefix.pch";
 				INFOPLIST_FILE = "EpubRnD/EpubRnD-Info.plist";
-				PRODUCT_NAME = kitaboojune3;
+				PRODUCT_NAME = EpubRnD;
+				PROVISIONING_PROFILE = "80652100-DBE5-4217-AB58-309B9DD901FD";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
