@@ -5,46 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>E384CFAC-1488-4BF4-B821-F0F83231D760</string>
+	<string>575E5988-E34B-46CD-8052-3AB51A20DBF4</string>
 	<key>IDESourceControlProjectName</key>
 	<string>EpubRnD</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>2EE33EA4-E160-49E7-B910-32BFBC531140</key>
-		<string>ssh://github.com/UdaySravanK/EpubRnDiOS.git</string>
+		<key>A7306DD1-623C-4811-BC63-644681D5C10B</key>
+		<string>https://github.com/NarayanHurix/MobileApps.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>EpubRnD/EpubRnD.xcodeproj/project.xcworkspace</string>
+	<string>ios/EpubRnD/EpubRnD.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>2EE33EA4-E160-49E7-B910-32BFBC531140</key>
-		<string>../../..</string>
-		<key>D4828738-43ED-4CBF-9246-7E198214A846</key>
-		<string>../../../../workspace</string>
+		<key>A7306DD1-623C-4811-BC63-644681D5C10B</key>
+		<string>../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/UdaySravanK/EpubRnDiOS.git</string>
+	<string>https://github.com/NarayanHurix/MobileApps.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>2EE33EA4-E160-49E7-B910-32BFBC531140</string>
+	<string>A7306DD1-623C-4811-BC63-644681D5C10B</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>2EE33EA4-E160-49E7-B910-32BFBC531140</string>
+			<string>A7306DD1-623C-4811-BC63-644681D5C10B</string>
 			<key>IDESourceControlWCCName</key>
-			<string>gitworkspace</string>
-		</dict>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>D4828738-43ED-4CBF-9246-7E198214A846</string>
-			<key>IDESourceControlWCCName</key>
-			<string>workspace</string>
+			<string>MobileApps</string>
 		</dict>
 	</array>
 </dict>
