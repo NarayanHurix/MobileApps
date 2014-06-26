@@ -1,0 +1,21 @@
+.activity  li{
+	list-style: none;
+}
+.activity{
+	position: relative;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
+	margin: 20px auto;
+	width: 95%;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	padding: 1em;
+	-webkit-box-shadow: 0 0 5px 5px rgb(220,220,220);
+	-moz-box-shadow: 0 0 5px 5px rgb(220,220,220);
+	box-shadow: 0 0 5px 5px rgb(220,220,220);
+}
+li.activitySolution label{
+	background: green;
+}

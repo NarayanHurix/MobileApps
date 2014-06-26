@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tocxml><toc><node id="43,715" title="h" type="Unit"><node href="chapter0.xhtml#page-1" id="1" title="j" type="Chapter"/></node></toc><config>
+  <eBook id="6211"/>
+  <productionDate>04/17/2014</productionDate>
+  <isbn id="4444444444444"/>
+  <clientId id="1"/>
+  <locale langID="en_US" url="assets/locale/en_US/en_US.xml"/>
+  <theme id="winter-eve" path="css/style.swf"/>
+  <searchXMLPath url="assets/xml-bin/search/search.xml"/>
+  <helpFilePath url="http://www.hurix.com/"/>
+  <logInPage url="http://172.18.10.170:8280/eBookServices/index.html"/>
+  <print value="true"/>
+  <actualPageNDisplayPageDiff value="0"/>
+  <searchHighlightColor value="ffcc00"/>
+  <thumbnailImagePrefer value="880284_027_C01_"/>
+  <linkHighlightColor value=""/>
+  <glossaryHighlightColor value="FF00FF"/>
+  <resourceHighlightColor value="FF0000"/>
+  <tocHighlightColor value="3366FF"/>
+  <forgotPasswordSiteValue/>
+  
+  <!-- rajneesh tags start-->
+	 
+	 
+	  <chapterPath value="assets/xml-bin/chapters.xml"/>
+	  <glossaryPath value="assets/xml-bin/glossary/glossary.xml"/>
+	  <resourceXMLPath value="assets/xml-bin/resources.xml"/>
+	  <standardTrackerXMLPath value="assets/xml-bin/standardtracker.xml"/>
+	  <tocXMLPath value="assets/xml-bin/toc.xml"/>
+	  <interactiveIndexXMLPath value="assets/xml-bin/interactiveIndex.xml"/>
+	  <reportTemplatePath value="assets/templates/ReportTemplate.html"/>
+	  <view mode="offline"/>
+	  <torOpenAutomatic value="true"/>
+	  <service_keepAlive data="keepalive=true" methodName="sendKeepAliveMessage" methodType="POST" url="ebx_keepalive.do"/>
+	  <serviceUrl format="xml" method="POST" url="http://dss-uat.eppg.com/service.dss"/>
+	  <pageCaching enable="false" noofpages="5"/>
+	  <saveload isEnable="false" isVisible="true"/>
+	  <marqueeZoom isEnable="true" isVisible="true"/>
+	  <standardTracker isEnable="true" isVisible="true" viewType="teacher"/>
+	  <interactiveIndex isVisible="true"/> 
+	  <loadOtherXML value="true"/>
+
+<!-- rajneesh tags end-->
+  
+ 
+  <printStyle value="portrait"/>	
+  <defaultView isSinglePage="true"/>
+  
+  <winName value="Windowname"/>
+  <winLangName value="WindowLangname"/>
+
+	<mode playerMode="teacher"/>
+
+
+  
+  <security check="1040"/>
+ <defaultScreenFit fitHeight="true"/>
+
+	
+  <!-- Feature ON/OFF tags -->
+    <feedback isEnable="true" isVisible="true"/>
+    <logout isEnable="true" isVisible="true"/>
+    <video isEnable="true" isVisible="true"/>
+    <next isEnable="true" isVisible="true"/>
+    <highlight isEnable="true" isVisible="true"/>
+    <imageConnected isEnable="true" isVisible="true"/>
+    <imageZoom isEnable="true" isVisible="true"/>
+    <thumbnailView isEnable="true" isVisible="true"/>
+    <interactiveGame isEnable="true" isVisible="true"/>
+    <jumpToPage isEnable="true" isVisible="true"/>
+    <thesaurus isEnable="true" isVisible="true"/>
+    <textView isEnable="true" isVisible="true"/>
+    <goToLastPage isEnable="true" isVisible="true"/>
+    <help isEnable="true" isVisible="true"/>
+    <animation isEnable="true" isVisible="true"/>
+    <back isEnable="true" isVisible="true"/>
+    <fullScreen isEnable="true" isVisible="true"/>
+    <textSound isEnable="true" isVisible="true"/>
+    <close isEnable="true" isVisible="true"/>
+    <pageSlider isEnable="true" isVisible="true"/>
+    <prevChapter isEnable="true" isVisible="true"/>
+    <searchBtn isEnable="true" isVisible="true"/>
+    <showLayer isEnable="true" isVisible="true"/>
+    <soundClip isEnable="true" isVisible="true"/>
+    <doublePageView isEnable="true" isVisible="true"/>
+    <linkToPublishingHouse isEnable="true" isVisible="true"/>
+    <nextChapter isEnable="true" isVisible="true"/>
+    <uName isEnable="true" isVisible="true"/>
+    <pageNotes isEnable="true" isVisible="true"/>
+    <goToFirstPage isEnable="true" isVisible="true"/>
+    <exportResources isEnable="true" isVisible="true"/>
+    <magnifierTool isEnable="true" isVisible="true"/>
+    <eraser isEnable="true" isVisible="true"/>
+    <bookResources isEnable="true" isVisible="true"/>
+    <curtainMaskingTool isEnable="true" isVisible="true"/>
+    <credits isEnable="true" isVisible="true"/>
+    <tableOfContents isEnable="true" isVisible="true"/>
+    <switchUser isEnable="true" isVisible="true"/>
+    <corporatePresentationLink isEnable="true" isVisible="true"/>
+    <singlePageView isEnable="true" isVisible="true"/>
+    <contactUs isEnable="true" isVisible="true"/>
+    <colorPickerBtn isEnable="true" isVisible="true"/>
+    <progressivePageZoom isEnable="true" isVisible="true"/>
+    <linkToOwnResources isEnable="true" isVisible="true"/>
+    <pen isEnable="true" isVisible="true"/>
+    <panTool isEnable="true" isVisible="true"/>
+    <bookMarkShow isEnable="true" isVisible="true"/>
+    <pageZoom isEnable="true" isVisible="true"/>
+    <pageResources isEnable="true" isVisible="true"/>
+    <glossary isEnable="true" isVisible="true"/>
+    <onPageResourceLink isEnable="true" isVisible="true"/>
+    <lastPageVisited isEnable="true" isVisible="true"/>
+    <importResources isEnable="true" isVisible="true"/>
+    <fitToScreen isEnable="true" isVisible="true"/>
+    <fitScreenWidth isEnable="true" isVisible="true"/>
+    <fitToPageHeight isEnable="true" isVisible="true"/>
+    <fitToPageWidth isEnable="true" isVisible="true"/>
+    <volumeBar isEnable="true" isVisible="true"/>
+    <whiteboardTools isEnable="true" isVisible="true"/>
+
+	<printBtn isEnable="true" isVisible="true"/>
+	<exitBtn isEnable="true" isVisible="true"/>
+	<noteBtn isEnable="true" isVisible="true"/>
+	<historynext isEnable="false" isVisible="true"/>
+	<historyback isEnable="false" isVisible="true"/>
+	<zoomIn isEnable="true" isVisible="true"/>
+	<zoomOut isEnable="true" isVisible="true"/>
+	<fullScreen isEnable="true" isVisible="true"/>
+	<audioVolumeBtn isEnable="true" isVisible="false"/>
+	<audioOnBtn isEnable="true" isVisible="false"/>
+	<audioOffBtn isEnable="true" isVisible="false"/>
+	<lineBtn isEnable="true" isVisible="true"/>
+	<toc isEnable="true" isVisible="true"/>
+	<whiteboard isEnable="true" isVisible="true"/>
+	<myDataBtn isEnable="true" isVisible="true"/>
+
+  <!-- Feature Enable/Visible tags -->
+  <GATrackerId value="UA-21584546-2"/>
+	<GATrackerDebug value="false"/>
+	<GATrackingEnabled value="true"/> 
+	<deliveryMode value="online"/>
+</config></tocxml>
