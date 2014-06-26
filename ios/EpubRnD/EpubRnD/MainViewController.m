@@ -160,6 +160,7 @@
 
 - (IBAction)closeBook:(UIButton *)sender
 {
+    HIGHLIGHT_TOOL_SWITCH = NO;
     [self.view removeFromSuperview];
 }
 

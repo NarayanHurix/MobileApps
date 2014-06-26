@@ -279,19 +279,23 @@
         NSString *logMsg =[methodArgs objectForKey:@"arg1"];
         NSLog(@"From JS : %@",logMsg);
     }
+    else if([methodName isEqualToString:@"saveTextHighlight"])
+    {
+        NSString *startWordId =[methodArgs objectForKey:@"arg1"];
+        NSString *endWordId =[methodArgs objectForKey:@"arg2"];
+        NSString *text =[methodArgs objectForKey:@"arg3"];
+        [self saveTextHighlight:startWordId :endWordId highlightedText:text];
+    }
 }
 
 - (void) didWrappingWordsToSpans
 {
-    [self applyCSSToSpans];
+    
 }
-- (void) applyCSSToSpans
+    
+- (void) saveTextHighlight:(NSString *) startWordId :(NSString *) endWordID highlightedText:(NSString *) text
 {
-    NSString *applyCss = @"if(window.jQuery!==undefined)"
-                        "{"
-                            "$('span').css('background-color','#00000000');"
-                        "}";
-    [self stringByEvaluatingJavaScriptFromString:applyCss];
+    NSLog(@"saving text highlight sID: %@  eID: %@  text: %@",startWordId,endWordID,text);
 }
 
 - (void) didHighlightButtonTap
@@ -306,6 +310,10 @@
         switchDocTouch = @"unbindDocumentTouch()";
     }
     [self stringByEvaluatingJavaScriptFromString:switchDocTouch];
+    
+    NSString *setJSValues = [NSString stringWithFormat:@"setCurrentPageIndex(%d); setCurrentPageWidth(%f);",[self.webViewDAO getIndexOfPage],self.frame.size.width];
+    [self stringByEvaluatingJavaScriptFromString:setJSValues];
+    
 }
 
 @end
