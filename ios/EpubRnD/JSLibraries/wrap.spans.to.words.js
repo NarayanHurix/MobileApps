@@ -151,6 +151,7 @@ function onTouchEnd(e)
     callNativeMethod('jstoobjc:'+jsonSaveHighlight);
     
     var currHighlightVO = {};
+    
     currHighlightVO['startWordID'] = startWordID;
     currHighlightVO['endWordID'] = endWordID;
     
@@ -234,15 +235,17 @@ function highlightText(sWordID,eWordID)
 
 function setHighlightsData(jsonData)
 {
-    highlightVosJSONObj = JSON.parse(jsonData);
+    NSLog('here 11');
+    NSLog('from core data : '+jsonData);
+//    highlightVosJSONObj = JSON.parse(jsonData);
+//    NSLog('from core data : '+highlightVosJSONObj[0].startWordID);
+//    drawSavedHighlights();
 }
 
 function drawSavedHighlights()
 {
-    NSLog("len "+highlightVosJSONObj.length);
     for(j in highlightVosJSONObj)
     {
-        NSLog("vo is "+highlightVosJSONObj[j]);
         for(var i=Number(highlightVosJSONObj[j].startWordID);i<=Number(highlightVosJSONObj[j].endWordID);i++)
         {
             var spanIdToHighlight = 'wordID-'+i;
@@ -250,6 +253,21 @@ function drawSavedHighlights()
             selectedText = selectedText+$('#'+spanIdToHighlight).text();
         }
     }
+}
+
+function clearHighlightsArray()
+{
+    highlightVosJSONObj = [];
+}
+
+function addHightlight(startWID,endWID)
+{
+    var currHighlightVO = {};
+    
+    currHighlightVO['startWordID'] = startWID;
+    currHighlightVO['endWordID'] = endWID;
+    
+    highlightVosJSONObj.push(currHighlightVO);
 }
 
 

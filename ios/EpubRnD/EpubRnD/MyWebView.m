@@ -9,6 +9,7 @@
 #import "MyWebView.h"
 #import "GlobalSettings.h"
 
+
 @implementation MyWebView
 {
     NSString *jsToObjcSchema;
@@ -290,11 +291,40 @@
 
 - (void) didWrappingWordsToSpans
 {
-    
+    [self getAllHighlights];
 }
+
+- (NSManagedObjectContext *) managedObjectContext
+{
+    NSManagedObjectContext *context = Nil;
     
+    id delegate = [[UIApplication sharedApplication] delegate];
+    if([delegate performSelector:@selector(managedObjectContext)])
+    {
+        context = [delegate managedObjectContext];
+    }
+    
+    return context;
+}
+
 - (void) saveTextHighlight:(NSString *) startWordId :(NSString *) endWordID highlightedText:(NSString *) text
 {
+    NSManagedObjectContext *context = [self managedObjectContext];
+    
+    NSManagedObject *oneRecord = [NSEntityDescription insertNewObjectForEntityForName:@"Highlights" inManagedObjectContext:context];
+    [oneRecord setValue:startWordId forKey:@"startWordID"];
+    [oneRecord setValue:endWordID forKey:@"endWordID"];
+    //NSNumber *cIndex = [NSNumber numberWithInteger:[self.webViewDAO getIndexOfChapter]];
+    NSString *chIn =[NSString stringWithFormat:@"%d",[self.webViewDAO getIndexOfChapter]] ;
+    [oneRecord setValue:chIn forKey:@"chapterIndex"];
+    [oneRecord setValue:text forKey:@"highlightedText"];
+    NSError *error;
+    
+    if(![context save:&error])
+    {
+        NSLog(@"save highlight to sqlite failed with error : %@",[error localizedDescription]);
+    }
+    
     NSLog(@"saving text highlight sID: %@  eID: %@  text: %@",startWordId,endWordID,text);
 }
 
@@ -315,5 +345,54 @@
     [self stringByEvaluatingJavaScriptFromString:setJSValues];
     
 }
+
+-(void) getAllHighlights
+{
+    NSManagedObjectContext *context = [self managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Highlights" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSError *error;
+    
+    NSMutableArray *jsonArray = [[NSMutableArray alloc] init];
+    NSPredicate *onlyForThisChapter = [NSPredicate predicateWithFormat:@"chapterIndex = %d", [self.webViewDAO getIndexOfChapter]];
+    fetchRequest.predicate = onlyForThisChapter;
+    
+    NSArray *fetchedRecords = [context executeFetchRequest:fetchRequest error:&error];
+    if(!error)
+    {
+        [self stringByEvaluatingJavaScriptFromString:@"clearHighlightsArray()"];
+        for(NSManagedObject *record in fetchedRecords)
+        {
+            NSMutableDictionary *highlight = [[NSMutableDictionary alloc] init];
+            [highlight setObject:[record valueForKey:@"startWordID"] forKey:@"startWordID"];
+            [highlight setObject:[record valueForKey:@"endWordID"] forKey:@"endWordID"];
+            //        [highlight setObject:[record valueForKey:@"chapterIndex"] forKey:@"chapterIndex"];
+            //        [highlight setObject:[record valueForKey:@"highlightedText"] forKey:@"highlightedText"];
+            NSString *sWID =[record valueForKey:@"startWordID"];
+            NSString *eWID =[record valueForKey:@"endWordID"];
+            [self stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"addHightlight('%@','%@')",sWID,eWID]];
+            [jsonArray addObject:highlight];
+        }
+        [self stringByEvaluatingJavaScriptFromString:@"drawSavedHighlights()"];
+    }
+    
+//    NSError *jsonError;
+//    NSArray *temp = [NSArray arrayWithArray:jsonArray];
+//    NSData *data = [NSJSONSerialization dataWithJSONObject:temp options:kNilOptions error:&jsonError];
+//    if(jsonError)
+//    {
+//        NSLog(@"json error : %@",[jsonError localizedDescription]);
+//    }
+//    
+//    NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+//    
+//    NSString *send = [NSString stringWithFormat:@"setHighlightsData('%@')",jsonString];
+//    
+//    
+//    [self stringByEvaluatingJavaScriptFromString:send];
+    
+}
+
 
 @end

@@ -152,6 +152,20 @@
 			name = GlobalSettings;
 			sourceTree = "<group>";
 		};
+		5A43E7B1195D8DBE00D41CB0 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		5A43E7B9195D921800D41CB0 /* Base64 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Base64;
+			sourceTree = "<group>";
+		};
 		5A45B65219472E52003FA663 = {
 			isa = PBXGroup;
 			children = (
@@ -274,6 +288,8 @@
 		5A45B6AD19473DC4003FA663 /* source */ = {
 			isa = PBXGroup;
 			children = (
+				5A43E7B9195D921800D41CB0 /* Base64 */,
+				5A43E7B1195D8DBE00D41CB0 /* Utils */,
 				5A3E309619488FAC001080F6 /* GlobalSettings */,
 				5A26000F19485A8100F472CE /* Constants */,
 				5A45B6AA19473D33003FA663 /* ModelClasses */,
