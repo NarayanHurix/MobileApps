@@ -19,5 +19,7 @@ public class GlobalConstants
 	public static final int FIXED = 200;
 
 	public static boolean ENABLE_WEB_VIEW_TOUCH = false;
+	
+	
 
 }

@@ -39,7 +39,7 @@
             android:onClick="crash"
             android:text="crash"
             android:textSize="15sp" />
-        
+
         <Button
             android:id="@+id/bookmark_btn"
             android:layout_width="wrap_content"
@@ -49,14 +49,19 @@
             android:layout_margin="5dp"
             android:background="@drawable/selector_button" />
 
+        <ToggleButton
+            android:id="@+id/toggleButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/button3"
+            android:text="ToggleButton" />
+
     </RelativeLayout>
- 
+
     <com.hurix.epubRnD.Views.MyViewPager
         android:id="@+id/myViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-    </com.hurix.epubRnD.Views.MyViewPager> 
-    
- 
+    </com.hurix.epubRnD.Views.MyViewPager>
 
 </LinearLayout>

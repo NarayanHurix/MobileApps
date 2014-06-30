@@ -26,6 +26,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.ToggleButton;
 
 import com.hurix.epubRnD.Constants.GlobalConstants;
 import com.hurix.epubRnD.Controllers.ViewPagerController;
@@ -53,7 +54,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 	private Button bookmark_cancel;
 	private File file;
 	private static String APP_ID = "664df65e4a2f90162d7a39b4ff295081";
-
+	private ToggleButton _highlightSwitch;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,6 +65,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
 
 		setContentView(R.layout.activity_main);
+		_highlightSwitch = (ToggleButton) findViewById(R.id.toggleButton1);
+		_highlightSwitch.setOnClickListener(this);
 		checkForUpdates();
 		File file = new File(Constants.SDCARD+"/epubBook/" );
 		if (file.exists())
@@ -193,7 +197,11 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 			initiatePopupWindow();
 
 			break;
-
+		case R.id.toggleButton1:
+			
+			((PageView)_mViewPager.getCurrentPageView()).onClickHighlightSwitch();
+			
+			break;
 		default:
 			break;
 		}
@@ -383,5 +391,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 		  FeedbackManager.register(this, APP_ID, null);
 		  FeedbackManager.showFeedbackActivity(this);
 	}
+	 
+	
 
 }

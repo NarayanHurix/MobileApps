@@ -84,6 +84,11 @@ public class PageView extends RelativeLayout implements MyWebViewLoadListener
 		_mWebView.updateFontSize();
 	}
 
+	public void onClickHighlightSwitch()
+	{
+		_mWebView.onClickHighlightSwitch();
+	}
+	
 	@Override
 	public void onLoadStart() {
 		_mWebView.setVisibility(View.INVISIBLE);

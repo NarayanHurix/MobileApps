@@ -2,6 +2,10 @@ package com.hurix.epubRnD.Views;
 
 import java.lang.reflect.Method;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.hurix.epubRnD.Constants.GlobalConstants;
 import com.hurix.epubRnD.R;
 import com.hurix.epubRnD.Settings.GlobalSettings;
@@ -11,6 +15,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -108,14 +113,22 @@ public class MyWebView extends WebView
 	/*	gestureDetector.onTouchEvent(event);
         return super.onTouchEvent(event);*/
 	//	return   super.onTouchEvent(event);
-		if(gestureDetector.onTouchEvent(event))
-		{
-			return true;
-		}
-		else
+		if(GlobalSettings.HIGHLIGHT_SWITCH)
 		{
 			return super.onTouchEvent(event);
 		}
+		else
+		{
+			if(gestureDetector.onTouchEvent(event))
+			{
+				return true;
+			}
+			else
+			{
+				return super.onTouchEvent(event);
+			}
+		}
+		
 		
 		/*//return false;
 		if(GlobalConstants.ENABLE_WEB_VIEW_TOUCH)
@@ -178,6 +191,7 @@ public class MyWebView extends WebView
 		getSettings().setJavaScriptEnabled(true);
 		getSettings().setDefaultFontSize(GlobalSettings.FONT_SIZE);
 		getSettings().setAllowFileAccess(true);
+		
 		//		getSettings().setRenderPriority(RenderPriority.HIGH);
 		//		getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 		setHorizontalScrollBarEnabled(false);
@@ -308,11 +322,197 @@ public class MyWebView extends WebView
 				@Override
 				public void run() {
 					Log.d("here","JSLoadCallBack : "+computeHorizontalScrollRange()+" content height "+getContentHeight() +" "+computeHorizontalScrollExtent());
+					//disable default webview text selection feature
+					loadUrl("javascript: document.documentElement.style.webkitUserSelect='none'");
+					addJQueryJS();
+					
 				}
+				
 			});
+		}
+		
+		@JavascriptInterface
+		public void onJQueryJSLoaded()
+		{
+			((Activity)getContext()).runOnUiThread(new Runnable() {
 
+				@Override
+				public void run() {
+					addJS_Java_Utils_JS();
+				}
+				
+			});
+			
+		}
+		
+		@JavascriptInterface
+		public void onJSJavaUtilsLoaded()
+		{
+			((Activity)getContext()).runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					addWrapWordsWithSpansJS();
+				}
+				
+			});
+			
+		}
+		
+		@JavascriptInterface
+		public void log(String msg)
+		{
+			Log.d("From JS ", msg);
+		}
+		
+		@JavascriptInterface
+		public void onWrapWordsWithSpansJSLoaded()
+		{
+			((Activity)getContext()).runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					if(GlobalSettings.HIGHLIGHT_SWITCH)
+					{
+						loadUrl("javascript: bindDocumentTouch()");
+					}
+					else
+					{
+						loadUrl("javascript: unbindDocumentTouch()");
+					}
+					getAllHighlights();
+				}
+				
+			});
+			
+		}
+		
+		@JavascriptInterface
+		public void saveTextHighlight(String startWordID, String endWordID, String text)
+		{
+			SharedPreferences pref =  getContext().getSharedPreferences("UGCData", Context.MODE_PRIVATE);
+			String jsonArrStr = pref.getString("Highlights", "[]");
+			try {
+				JSONArray allHighlightsArray = new JSONArray(jsonArrStr);
+				
+				JSONObject hRecord = new JSONObject();
+				hRecord.put("startWordID", startWordID);
+				hRecord.put("endWordID",endWordID);
+				hRecord.put("chapterIndex", ""+_data.getIndexOfChapter());
+				hRecord.put("highlightedText", text);
+				allHighlightsArray.put(hRecord);
+				
+				SharedPreferences.Editor editor = pref.edit();
+				editor.putString("Highlights", allHighlightsArray.toString());
+				editor.commit();
+				
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Log.d("save highlight :  ","swid : "+startWordID +" ewid : "+endWordID +" text : "+text);
+		}
+		
+	}
+	
+	private void getAllHighlights() 
+	{
+		boolean foundHighlightsOnPage = false;
+		
+		SharedPreferences pref =  getContext().getSharedPreferences("UGCData", Context.MODE_PRIVATE);
+		String jsonArrStr = pref.getString("Highlights", "[]");
+		try {
+			JSONArray allHighlightsArray = new JSONArray(jsonArrStr);
+			for(int i =0 ;i<allHighlightsArray.length(); i++)
+			{
+				JSONObject hRecord = allHighlightsArray.getJSONObject(i);
+				if(hRecord.getString("chapterIndex").equalsIgnoreCase(""+_data.getIndexOfChapter()))
+				{
+					loadUrl("javascript: addHightlight('"+hRecord.getString("startWordID")+"','"+hRecord.getString("endWordID")+"')");
+					foundHighlightsOnPage = true;
+				}
+			}
+		}
+		catch(JSONException e)
+		{
+			e.printStackTrace();
+		}
+		//get all highlights from local storage
+		if(foundHighlightsOnPage)
+		{
+			loadUrl("javascript: drawSavedHighlights()");
 		}
 	}
+	
+	private void addJQueryJS() 
+	{
+		String path = "file:///android_asset/JSLibraries/jquery.min.js";
+		String script = "function includeJSFile()"
+                               +"{"
+                               +"function loadScript(url, callback)"
+                               +"{"
+                               +"var script = document.createElement('script');"
+                               +"script.type = 'text/javascript';"
+                               +"script.onload = function () {"
+                               +"callback();"
+                               +"};"
+                               +"script.src = url;"
+                               +"(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);"
+                               +"}"
+                               +"loadScript('"+path+"', function ()"
+                               +"{"
+                               +"jsInterface.onJQueryJSLoaded()"
+                               +"});"
+                               +"} ; includeJSFile();";
+		loadUrl("javascript: "+script);
+	}
+	
+	private void addJS_Java_Utils_JS() 
+	{
+		String path = "file:///android_asset/JSLibraries/js.java.utils.js";
+		String script = "function includeJSFile()"
+                               +"{"
+                               +"function loadScript(url, callback)"
+                               +"{"
+                               +"var script = document.createElement('script');"
+                               +"script.type = 'text/javascript';"
+                               +"script.onload = function () {"
+                               +"callback();"
+                               +"};"
+                               +"script.src = url;"
+                               +"(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);"
+                               +"}"
+                               +"loadScript('"+path+"', function ()"
+                               +"{"
+                               +"jsInterface.onJSJavaUtilsLoaded()"
+                               +"});"
+                               +"} ; includeJSFile();";
+		loadUrl("javascript: "+script);
+	}
+	
+	private void addWrapWordsWithSpansJS() 
+	{
+		String path = "file:///android_asset/JSLibraries/wrap.spans.to.words.js";
+		String script = "function includeJSFile()"
+                               +"{"
+                               +"function loadScript(url, callback)"
+                               +"{"
+                               +"var script = document.createElement('script');"
+                               +"script.type = 'text/javascript';"
+                               +"script.onload = function () {"
+                               +"callback();"
+                               +"};"
+                               +"script.src = url;"
+                               +"(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);"
+                               +"}"
+                               +"loadScript('"+path+"', function ()"
+                               +"{"
+                               +"jsInterface.onWrapWordsWithSpansJSLoaded()"
+                               +"});"
+                               +"} ; includeJSFile();";
+		loadUrl("javascript: "+script);
+	}
+	
 
 	@Override
 	protected void onAttachedToWindow() {
@@ -337,6 +537,7 @@ public class MyWebView extends WebView
 	{
 		isURLLoaded = false;
 		requestLayout();
+		
 	}
 
 	
@@ -519,11 +720,17 @@ public class MyWebView extends WebView
 			}
 			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE) 
 			{
-				_viewpager.onSwipeLeft();
+				if(!GlobalSettings.HIGHLIGHT_SWITCH)
+				{
+					_viewpager.onSwipeLeft();
+				}
 				
 			} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE) 
 			{
-				_viewpager.onSwipeRight();
+				if(!GlobalSettings.HIGHLIGHT_SWITCH)
+				{
+					_viewpager.onSwipeRight();
+				}
 			}
 
 
@@ -576,6 +783,18 @@ public class MyWebView extends WebView
 		    }
 		}
 	}
-	
+
+	public void onClickHighlightSwitch() 
+	{
+		GlobalSettings.HIGHLIGHT_SWITCH = !GlobalSettings.HIGHLIGHT_SWITCH;
+		if(GlobalSettings.HIGHLIGHT_SWITCH)
+		{
+			loadUrl("javascript: bindDocumentTouch()");
+		}
+		else
+		{
+			loadUrl("javascript: unbindDocumentTouch()");
+		}
+	}
 
 }
