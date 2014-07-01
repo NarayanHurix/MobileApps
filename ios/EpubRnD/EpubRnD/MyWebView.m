@@ -8,13 +8,15 @@
 
 #import "MyWebView.h"
 #import "GlobalSettings.h"
-
+#import "HighlightPopupViewController.h"
 
 @implementation MyWebView
 {
     NSString *jsToObjcSchema;
     
+    int stickHeight ,stickWidth;
 }
+@synthesize startStick,endStick;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -25,8 +27,8 @@
         self.delegate = self;
         self.scrollView.scrollEnabled = NO;
         self.scrollView.bounces = NO;
-        
-        
+        stickHeight = 40;
+        stickWidth =20;
     }
     return self;
 }
@@ -287,6 +289,41 @@
         NSString *text =[methodArgs objectForKey:@"arg3"];
         [self saveTextHighlight:startWordId :endWordId highlightedText:text];
     }
+    else if([methodName isEqualToString:@"updateHighlightSticksPositions"])
+    {
+        NSString *arg1 =[methodArgs objectForKey:@"arg1"];
+        NSString *arg2 =[methodArgs objectForKey:@"arg2"];
+        NSString *arg3 =[methodArgs objectForKey:@"arg3"];
+        NSString *arg4 =[methodArgs objectForKey:@"arg4"];
+        NSString *arg5 =[methodArgs objectForKey:@"arg5"];
+        NSString *arg6 =[methodArgs objectForKey:@"arg6"];
+        NSString *arg7 =[methodArgs objectForKey:@"arg7"];
+        NSString *arg8 =[methodArgs objectForKey:@"arg8"];
+        
+        int sX =  [arg1 intValue];
+        int sY =  [arg2 intValue];
+        int sW =  [arg3 intValue];
+        int sH =  [arg4 intValue];
+        
+        int eX =  [arg5 intValue];
+        int eY =  [arg6 intValue];
+        int eW =  [arg7 intValue];
+        int eH =  [arg8 intValue];
+        
+        [self updateHighlightSticksPositions:sX :sY :sW :sH :eX : eY :eW :eH];
+    }
+    else if([methodName isEqualToString:@"onTouchStart"])
+    {
+        
+    }
+    else if([methodName isEqualToString:@"onTouchEnd"])
+    {
+        [self stringByEvaluatingJavaScriptFromString:@"setTouchedStick(false,true)"];
+        if(startStick)
+        {
+            [self showHighlightContextMenu:startStick];
+        }
+    }
 }
 
 - (void) didWrappingWordsToSpans
@@ -305,6 +342,26 @@
     }
     
     return context;
+}
+
+- (void) saveHighlight
+{
+    [self stringByEvaluatingJavaScriptFromString:@"saveHighlight()"];
+    if(startStick)
+    {
+        [startStick removeFromSuperview];
+        startStick = nil;
+    }
+    
+    if(endStick)
+    {
+        [endStick removeFromSuperview];
+        endStick = nil;
+    }
+    if(highlightPopup)
+    {
+        [highlightPopup dismissPopoverAnimated:NO];
+    }
 }
 
 - (void) saveTextHighlight:(NSString *) startWordId :(NSString *) endWordID highlightedText:(NSString *) text
@@ -338,6 +395,17 @@
     else
     {
         switchDocTouch = @"unbindDocumentTouch()";
+        if(startStick)
+        {
+            [startStick removeFromSuperview];
+            startStick = nil;
+        }
+        
+        if(endStick)
+        {
+            [endStick removeFromSuperview];
+            endStick = nil;
+        }
     }
     [self stringByEvaluatingJavaScriptFromString:switchDocTouch];
     
@@ -395,4 +463,100 @@
 }
 
 
+- (void) updateHighlightSticksPositions:(int) sX  :(int) sY  :(int) sW :(int) sH :(int) eX  :(int) eY :(int) eW :(int) eH
+{
+    stickHeight = sH;
+    
+    if(!startStick)
+    {
+        int modifiedX = sX-stickWidth - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
+        int modifiedY = sY-stickHeight/2;
+        CGRect sRect = CGRectMake(modifiedX, modifiedY, stickWidth, stickHeight);
+        startStick = [[StartStickView alloc] initWithFrame:sRect];
+        startStick.myWebView = self;
+        [startStick setBackgroundColor:[UIColor redColor]];
+        [[self superview] addSubview:startStick];
+    }
+    else
+    {
+        int modifiedX = sX-stickWidth - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
+        int modifiedY = sY-stickHeight/2;
+        CGRect sRect = CGRectMake(modifiedX, modifiedY, stickWidth, stickHeight);
+        startStick.frame = sRect;
+    }
+    stickHeight = eH;
+    if(!endStick)
+    {
+        int modifiedX = eX - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
+        int modifiedY = eY-stickHeight/2;
+        CGRect eRect = CGRectMake(modifiedX, modifiedY, stickWidth, stickHeight);
+        endStick = [[EndStickView alloc] initWithFrame:eRect];
+        endStick.myWebView = self;
+        [endStick setBackgroundColor:[UIColor greenColor]];
+        [[self superview] addSubview:endStick];
+    }
+    else
+    {
+        int modifiedX = eX - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
+        int modifiedY = eY-stickHeight/2;
+        CGRect eRect = CGRectMake(modifiedX, modifiedY, stickWidth, stickHeight);
+        endStick.frame = eRect;
+    }
+}
+UIPopoverController *highlightPopup;
+-(void) showHighlightContextMenu:(UIView *) anchorView
+{
+    CGRect rect = CGRectMake(anchorView.frame.size.width/2, 0, 0, 0);
+    if(!highlightPopup)
+    {
+        HighlightPopupViewController *hContr = [[HighlightPopupViewController alloc ] init];
+        highlightPopup= [[UIPopoverController alloc] initWithContentViewController:hContr];
+        CGSize popoverContentSize = CGSizeMake(180, 60);
+        highlightPopup.popoverContentSize =popoverContentSize;
+        [highlightPopup setDelegate:self];
+        hContr.myWebView = self;
+        highlightPopup.passthroughViews = [NSArray arrayWithObjects:startStick,endStick,self, nil];
+        
+    }
+    [highlightPopup presentPopoverFromRect:rect inView:anchorView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    if(startStick)
+    {
+        [startStick removeFromSuperview];
+        startStick = nil;
+    }
+    
+    if(endStick)
+    {
+        [endStick removeFromSuperview];
+        endStick = nil;
+    }
+    
+    [self stringByEvaluatingJavaScriptFromString:@"setTouchedStick(false,true)"];
+}
+
+- (void) didTouchOnHighlightStick :(BOOL) isStartStick : (BOOL) isEndStick
+{
+    if(isStartStick)
+    {
+        [self stringByEvaluatingJavaScriptFromString:@"setTouchedStick(true,false)"];
+        if(highlightPopup)
+        {
+            [highlightPopup dismissPopoverAnimated:NO];
+        }
+    }
+    else
+    {
+        [self stringByEvaluatingJavaScriptFromString:@"setTouchedStick(false,true)"];
+        if(highlightPopup)
+        {
+            [highlightPopup dismissPopoverAnimated:NO];
+        }
+    }
+    
+}
 @end

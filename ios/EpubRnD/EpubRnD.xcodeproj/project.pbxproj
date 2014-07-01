@@ -34,6 +34,10 @@
 		5A45B6A319473B8F003FA663 /* MyPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B6A219473B8F003FA663 /* MyPageView.m */; };
 		5A45B6A619473CB0003FA663 /* WebViewDAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B6A519473CB0003FA663 /* WebViewDAO.m */; };
 		5A45B6A919473D11003FA663 /* ChapterVO.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B6A819473D11003FA663 /* ChapterVO.m */; };
+		5A51EC021962C1630065A595 /* HighlightPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A51EC001962C1630065A595 /* HighlightPopupViewController.m */; };
+		5A51EC031962C1630065A595 /* HighlightPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A51EC011962C1630065A595 /* HighlightPopupViewController.xib */; };
+		5A51EC061962D1050065A595 /* StartStickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A51EC051962D1050065A595 /* StartStickView.m */; };
+		5A51EC091962D1E70065A595 /* EndStickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A51EC081962D1E70065A595 /* EndStickView.m */; };
 		5AAEED341949AE9F00F01F48 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 5AAEED331949AE9F00F01F48 /* assets */; };
 		5AC1F8B619505DA30088B1A7 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8B519505DA30088B1A7 /* HockeySDK.framework */; };
 		5AC1F8B819505E750088B1A7 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8B719505E750088B1A7 /* CoreText.framework */; };
@@ -93,6 +97,13 @@
 		5A45B6A519473CB0003FA663 /* WebViewDAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewDAO.m; sourceTree = "<group>"; };
 		5A45B6A719473D11003FA663 /* ChapterVO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChapterVO.h; sourceTree = "<group>"; };
 		5A45B6A819473D11003FA663 /* ChapterVO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChapterVO.m; sourceTree = "<group>"; };
+		5A51EBFF1962C1630065A595 /* HighlightPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightPopupViewController.h; sourceTree = "<group>"; };
+		5A51EC001962C1630065A595 /* HighlightPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighlightPopupViewController.m; sourceTree = "<group>"; };
+		5A51EC011962C1630065A595 /* HighlightPopupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HighlightPopupViewController.xib; sourceTree = "<group>"; };
+		5A51EC041962D1050065A595 /* StartStickView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartStickView.h; sourceTree = "<group>"; };
+		5A51EC051962D1050065A595 /* StartStickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartStickView.m; sourceTree = "<group>"; };
+		5A51EC071962D1E70065A595 /* EndStickView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EndStickView.h; sourceTree = "<group>"; };
+		5A51EC081962D1E70065A595 /* EndStickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EndStickView.m; sourceTree = "<group>"; };
 		5AAEED331949AE9F00F01F48 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		5AC1F8B519505DA30088B1A7 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HockeySDK.framework; path = "Vendor/HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework"; sourceTree = "<group>"; };
 		5AC1F8B719505E750088B1A7 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -157,13 +168,6 @@
 			children = (
 			);
 			name = Utils;
-			sourceTree = "<group>";
-		};
-		5A43E7B9195D921800D41CB0 /* Base64 */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Base64;
 			sourceTree = "<group>";
 		};
 		5A45B65219472E52003FA663 = {
@@ -263,6 +267,7 @@
 		5A45B6AB19473D4E003FA663 /* ViewClasses */ = {
 			isa = PBXGroup;
 			children = (
+				5A51EBFE1962C1310065A595 /* HighlightPopup */,
 				5A45B69819473A2D003FA663 /* MyViewPager.h */,
 				5A45B69919473A2D003FA663 /* MyViewPager.m */,
 				5A45B69E19473AB0003FA663 /* MyWebView.h */,
@@ -271,6 +276,10 @@
 				5A45B6A219473B8F003FA663 /* MyPageView.m */,
 				5AD494A4194F27260059C0E9 /* AssetsContainer.h */,
 				5AD494A5194F27260059C0E9 /* AssetsContainer.m */,
+				5A51EC041962D1050065A595 /* StartStickView.h */,
+				5A51EC051962D1050065A595 /* StartStickView.m */,
+				5A51EC071962D1E70065A595 /* EndStickView.h */,
+				5A51EC081962D1E70065A595 /* EndStickView.m */,
 			);
 			name = ViewClasses;
 			sourceTree = "<group>";
@@ -288,7 +297,7 @@
 		5A45B6AD19473DC4003FA663 /* source */ = {
 			isa = PBXGroup;
 			children = (
-				5A43E7B9195D921800D41CB0 /* Base64 */,
+				5A51EBB619628F390065A595 /* QuickActionPopup */,
 				5A43E7B1195D8DBE00D41CB0 /* Utils */,
 				5A3E309619488FAC001080F6 /* GlobalSettings */,
 				5A26000F19485A8100F472CE /* Constants */,
@@ -297,6 +306,23 @@
 				5A45B6AC19473D80003FA663 /* ControllerClasses */,
 			);
 			name = source;
+			sourceTree = "<group>";
+		};
+		5A51EBB619628F390065A595 /* QuickActionPopup */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = QuickActionPopup;
+			sourceTree = "<group>";
+		};
+		5A51EBFE1962C1310065A595 /* HighlightPopup */ = {
+			isa = PBXGroup;
+			children = (
+				5A51EBFF1962C1630065A595 /* HighlightPopupViewController.h */,
+				5A51EC001962C1630065A595 /* HighlightPopupViewController.m */,
+				5A51EC011962C1630065A595 /* HighlightPopupViewController.xib */,
+			);
+			name = HighlightPopup;
 			sourceTree = "<group>";
 		};
 		5AC1F8B419505D680088B1A7 /* Vendor */ = {
@@ -382,6 +408,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A51EC031962C1630065A595 /* HighlightPopupViewController.xib in Resources */,
 				5AAEED341949AE9F00F01F48 /* assets in Resources */,
 				5A01669D1951987B00A5FA59 /* JSLibraries in Resources */,
 				5A45B66B19472E52003FA663 /* InfoPlist.strings in Resources */,
@@ -415,7 +442,10 @@
 				5A3E309919488FC4001080F6 /* GlobalSettings.m in Sources */,
 				5A45B6A319473B8F003FA663 /* MyPageView.m in Sources */,
 				5A45B6A619473CB0003FA663 /* WebViewDAO.m in Sources */,
+				5A51EC091962D1E70065A595 /* EndStickView.m in Sources */,
 				5A45B6A919473D11003FA663 /* ChapterVO.m in Sources */,
+				5A51EC061962D1050065A595 /* StartStickView.m in Sources */,
+				5A51EC021962C1630065A595 /* HighlightPopupViewController.m in Sources */,
 				5A45B66D19472E52003FA663 /* main.m in Sources */,
 				5A45B69619472FEC003FA663 /* MainViewController.m in Sources */,
 				5A45B6A019473AB0003FA663 /* MyWebView.m in Sources */,

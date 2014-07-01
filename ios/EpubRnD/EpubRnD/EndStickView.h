@@ -1,0 +1,17 @@
+//
+//  EndStickView.h
+//  EpubRnD
+//
+//  Created by UdaySravan K on 01/07/14.
+//  Copyright (c) 2014 hurix. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@class MyWebView;
+
+@interface EndStickView : UIView
+
+@property (nonatomic,retain) MyWebView *myWebView;
+
+@end
