@@ -19,7 +19,7 @@
 - (IBAction)decreaseFontSize:(UIButton *)sender;
 
 - (IBAction)increaseFontSize:(UIButton *)sender;
-- (void)onPageOutOfRange;
+//- (void)onPageOutOfRange;
 - (IBAction)penToolEnable:(UIButton *)sender;
 - (IBAction)onTapHighlightBtn:(UIButton *)sender;
 

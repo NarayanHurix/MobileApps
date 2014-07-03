@@ -559,4 +559,10 @@ UIPopoverController *highlightPopup;
     }
     
 }
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"json error : touchesBegan");
+}
+
 @end

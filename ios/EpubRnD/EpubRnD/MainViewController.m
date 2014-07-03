@@ -12,8 +12,6 @@
 
 @interface MainViewController ()
 
-
-
 @end
 
 @implementation MainViewController
@@ -23,7 +21,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-       
     }
     return self;
 }
@@ -41,6 +38,20 @@
     // Dispose of any resources that can be recreated.
 }
 
+//- (UIView *)getFirstPage
+//{
+//    CGRect parentFrame = [self.view frame];
+//    MyPageView *pageView = [[MyPageView alloc] initWithFrame:parentFrame];
+//    
+//    WebViewDAO *webDAO = [WebViewDAO new];
+//    webDAO.chapterVO = [self.data objectAtIndex:0];
+//    [webDAO setIndexOfPage:0];
+//    [webDAO setIndexOfChapter:0];
+//    
+//    [pageView loadViewWithData:webDAO];
+//    return  pageView;
+//}
+
 - (UIView *)getNextPage:(UIView *)oldPageView
 {
     MyPageView *oldPage = (MyPageView *)oldPageView;
@@ -57,7 +68,7 @@
         {
             //end of the chapters and pages so return the same page
             indexOfChapter--;
-            return oldPageView;
+            return nil;
         }
         else
         {
@@ -92,7 +103,7 @@
     return nil;
 }
 
-- (UIView *)getPreiousPage:(UIView *)oldPageView
+- (UIView *)getPreviousPage:(UIView *)oldPageView
 {
     MyPageView *oldPage = (MyPageView *)oldPageView;
     NSInteger indexOfPage = [oldPage.myWebView.webViewDAO getIndexOfPage];
@@ -106,7 +117,7 @@
         if(indexOfChapter<0)
         {
             //return the same page
-            return oldPageView;
+            return nil;
         }
         else
         {
@@ -229,7 +240,7 @@
     PEN_TOOL_SWITCH = PEN_TOOL_SWITCH?NO:YES;
     
     [self performSelector:@selector(count) withObject:nil afterDelay:0];
-    }
+}
 
 - (IBAction)onTapHighlightBtn:(UIButton *)sender
 {
@@ -237,6 +248,7 @@
     [sender setSelected:HIGHLIGHT_TOOL_SWITCH];
     MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
     [myPageView.myWebView didHighlightButtonTap];
+    
+    myPageView.touchHelperView.userInteractionEnabled = !HIGHLIGHT_TOOL_SWITCH;
 }
-
 @end

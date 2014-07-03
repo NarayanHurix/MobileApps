@@ -17,6 +17,7 @@
 @property (nonatomic,retain) AssetsContainer *assetsContainer;
 
 @property (nonatomic,retain) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic,retain) UIView *touchHelperView ;
 
 - (void) loadViewWithData:(WebViewDAO *) data;
 @end

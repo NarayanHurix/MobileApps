@@ -15,15 +15,16 @@
     UIBezierPath *path;
 }
 
-@synthesize myWebView,activityIndicator;
+@synthesize myWebView,activityIndicator,touchHelperView;
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        path = [UIBezierPath bezierPath];
-        [path setLineWidth:2.0];
+//        path = [UIBezierPath bezierPath];
+//        [path setLineWidth:2.0];
+        
     }
     return self;
 }
@@ -34,7 +35,11 @@
     myWebView = [[MyWebView alloc] initWithFrame:parentFrame];
     [myWebView loadViewWithData:data];
     myWebView.myDelegate = self;
+    
+    touchHelperView = [[UIView alloc] initWithFrame:parentFrame];
     [self addSubview:myWebView];
+    [self addSubview:touchHelperView];
+    [self bringSubviewToFront:touchHelperView];
     
     activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [activityIndicator hidesWhenStopped];
@@ -73,37 +78,37 @@
     [viewPager onPageOutOfRange];
 }
 
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-    [[UIColor whiteColor] setStroke];
-    [path stroke];
-}
+//- (void)drawRect:(CGRect)rect
+//{
+//    // Drawing code
+//    [[UIColor whiteColor] setStroke];
+//    [path stroke];
+//}
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint p = [touch locationInView:self];
-    [path moveToPoint:p];
-    
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint p = [touch locationInView:self];
-    [path addLineToPoint:p]; // (4)
-    [self setNeedsDisplay];
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [self touchesMoved:touches withEvent:event];
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [self touchesEnded:touches withEvent:event];
-}
+//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+//{
+//    UITouch *touch = [touches anyObject];
+//    CGPoint p = [touch locationInView:self];
+//    [path moveToPoint:p];
+//    
+//}
+//
+//- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+//{
+//    UITouch *touch = [touches anyObject];
+//    CGPoint p = [touch locationInView:self];
+//    [path addLineToPoint:p]; // (4)
+//    [self setNeedsDisplay];
+//}
+//
+//- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+//{
+//    [self touchesMoved:touches withEvent:event];
+//}
+//
+//- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+//{
+//    [self touchesEnded:touches withEvent:event];
+//}
 
 @end

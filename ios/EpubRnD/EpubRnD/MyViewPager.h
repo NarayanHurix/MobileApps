@@ -12,9 +12,8 @@
 @protocol MyViewPagerDelegate <NSObject>
 
 @required
-- (UIView *) getPreiousPage:(UIView*) oldPageView;
+- (UIView *) getPreviousPage:(UIView*) oldPageView;
 - (UIView *) getNextPage:(UIView*) oldPageView;
-
 @end
 
 @interface MyViewPager : UIView
