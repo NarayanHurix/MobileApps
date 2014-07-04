@@ -267,7 +267,7 @@
 		5A45B6AB19473D4E003FA663 /* ViewClasses */ = {
 			isa = PBXGroup;
 			children = (
-				5A51EBFE1962C1310065A595 /* HighlightPopup */,
+				5A51EBFE1962C1310065A595 /* TextHighlight */,
 				5A45B69819473A2D003FA663 /* MyViewPager.h */,
 				5A45B69919473A2D003FA663 /* MyViewPager.m */,
 				5A45B69E19473AB0003FA663 /* MyWebView.h */,
@@ -315,14 +315,14 @@
 			name = QuickActionPopup;
 			sourceTree = "<group>";
 		};
-		5A51EBFE1962C1310065A595 /* HighlightPopup */ = {
+		5A51EBFE1962C1310065A595 /* TextHighlight */ = {
 			isa = PBXGroup;
 			children = (
 				5A51EBFF1962C1630065A595 /* HighlightPopupViewController.h */,
 				5A51EC001962C1630065A595 /* HighlightPopupViewController.m */,
 				5A51EC011962C1630065A595 /* HighlightPopupViewController.xib */,
 			);
-			name = HighlightPopup;
+			name = TextHighlight;
 			sourceTree = "<group>";
 		};
 		5AC1F8B419505D680088B1A7 /* Vendor */ = {

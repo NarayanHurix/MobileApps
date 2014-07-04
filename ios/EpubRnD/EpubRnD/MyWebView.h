@@ -33,4 +33,5 @@
 - (void) didHighlightButtonTap;
 - (void) didTouchOnHighlightStick :(BOOL) isStartStick : (BOOL) isEndStick;
 - (void) saveHighlight;
+- (void) closePopupAndClearHighlight;
 @end

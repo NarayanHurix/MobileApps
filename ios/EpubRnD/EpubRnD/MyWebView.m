@@ -28,7 +28,7 @@
         self.scrollView.scrollEnabled = NO;
         self.scrollView.bounces = NO;
         stickHeight = 40;
-        stickWidth =20;
+        stickWidth =15;
     }
     return self;
 }
@@ -58,6 +58,7 @@
     [self loadRequest:urlRqst];
     
 }
+
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     [self stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitUserSelect='none';"];
@@ -191,7 +192,7 @@
 - (void) wrappingWordsToSpans
 {
     NSURL *jqueryLibPath =[[NSBundle mainBundle] URLForResource:@"wrap.spans.to.words" withExtension:@"js" subdirectory:@"/JSLibraries" ];
-    NSString *fromJSToObjc = @"{\"MethodName\":\"didWrappingWordsToSpans\",\"MethodArguments\":{\"arg1\":\"John\",\"arg2\":\"Doe\"}}";
+    NSString *fromJSToObjc = @"{\"MethodName\":\"didWrappingWordsToSpans\",\"MethodArguments\":{}}";
     
     NSString *includeJSFile = [NSString stringWithFormat:@"function includeJSFile()"
                                   "{"
@@ -236,6 +237,31 @@
     [self stringByEvaluatingJavaScriptFromString:includeJSFile];
 }
 
+- (void) includeWordHighlightsManagerJS
+{
+    NSURL *jqueryLibPath =[[NSBundle mainBundle] URLForResource:@"word.highlights.manager" withExtension:@"js" subdirectory:@"/JSLibraries" ];
+    NSString *fromJSToObjc = @"{\"MethodName\":\"didHighlightManagerJSadded\",\"MethodArguments\":{}}";
+    
+    NSString *includeJSFile = [NSString stringWithFormat:@"function includeJSFile()"
+                               "{"
+                               "function loadScript(url, callback)"
+                               "{"
+                               "var script = document.createElement('script');"
+                               "script.type = 'text/javascript';"
+                               "script.onload = function () {"
+                               "callback();"
+                               "};"
+                               "script.src = url;"
+                               "(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);"
+                               "}"
+                               "loadScript('%@', function ()"
+                               "{"
+                               "callNativeMethod('%@%@')"
+                               "});"
+                               "} ; includeJSFile();",jqueryLibPath.absoluteString,jsToObjcSchema,fromJSToObjc];
+    [self stringByEvaluatingJavaScriptFromString:includeJSFile];
+}
+
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     if(request.URL.absoluteString.length>jsToObjcSchema.length)
@@ -276,6 +302,10 @@
     else if([methodName isEqualToString:@"didWrappingWordsToSpans"])
     {
         [self didWrappingWordsToSpans];
+    }
+    else if([methodName isEqualToString:@"didHighlightManagerJSadded"])
+    {
+        [self didHighlightManagerJSadded];
     }
     else if([methodName isEqualToString:@"NSLog"])
     {
@@ -328,6 +358,11 @@
 
 - (void) didWrappingWordsToSpans
 {
+    [self includeWordHighlightsManagerJS];
+}
+
+- (void) didHighlightManagerJSadded
+{
     [self getAllHighlights];
 }
 
@@ -346,7 +381,27 @@
 
 - (void) saveHighlight
 {
-    [self stringByEvaluatingJavaScriptFromString:@"saveHighlight()"];
+    [self stringByEvaluatingJavaScriptFromString:@"saveCurrentHighlight()"];
+    if(startStick)
+    {
+        [startStick removeFromSuperview];
+        startStick = nil;
+    }
+    
+    if(endStick)
+    {
+        [endStick removeFromSuperview];
+        endStick = nil;
+    }
+    if(highlightPopup)
+    {
+        [highlightPopup dismissPopoverAnimated:NO];
+    }
+}
+
+- (void) closePopupAndClearHighlight
+{
+    [self stringByEvaluatingJavaScriptFromString:@"clearCurrentHighlight()"];
     if(startStick)
     {
         [startStick removeFromSuperview];
@@ -471,17 +526,16 @@
     {
         int modifiedX = sX-stickWidth - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
         int modifiedY = sY-stickHeight/2;
-        CGRect sRect = CGRectMake(modifiedX, modifiedY, stickWidth, stickHeight);
+        CGRect sRect = CGRectMake(modifiedX+3, modifiedY, stickWidth, stickHeight);
         startStick = [[StartStickView alloc] initWithFrame:sRect];
         startStick.myWebView = self;
-        [startStick setBackgroundColor:[UIColor redColor]];
         [[self superview] addSubview:startStick];
     }
     else
     {
         int modifiedX = sX-stickWidth - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
         int modifiedY = sY-stickHeight/2;
-        CGRect sRect = CGRectMake(modifiedX, modifiedY, stickWidth, stickHeight);
+        CGRect sRect = CGRectMake(modifiedX+3, modifiedY, stickWidth, stickHeight);
         startStick.frame = sRect;
     }
     stickHeight = eH;
@@ -489,17 +543,16 @@
     {
         int modifiedX = eX - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
         int modifiedY = eY-stickHeight/2;
-        CGRect eRect = CGRectMake(modifiedX, modifiedY, stickWidth, stickHeight);
+        CGRect eRect = CGRectMake(modifiedX-3, modifiedY, stickWidth, stickHeight);
         endStick = [[EndStickView alloc] initWithFrame:eRect];
         endStick.myWebView = self;
-        [endStick setBackgroundColor:[UIColor greenColor]];
         [[self superview] addSubview:endStick];
     }
     else
     {
         int modifiedX = eX - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
         int modifiedY = eY-stickHeight/2;
-        CGRect eRect = CGRectMake(modifiedX, modifiedY, stickWidth, stickHeight);
+        CGRect eRect = CGRectMake(modifiedX-3, modifiedY, stickWidth, stickHeight);
         endStick.frame = eRect;
     }
 }
@@ -515,7 +568,7 @@ UIPopoverController *highlightPopup;
         highlightPopup.popoverContentSize =popoverContentSize;
         [highlightPopup setDelegate:self];
         hContr.myWebView = self;
-        highlightPopup.passthroughViews = [NSArray arrayWithObjects:startStick,endStick,self, nil];
+        highlightPopup.passthroughViews = [NSArray arrayWithObjects:self,startStick,endStick, nil];
         
     }
     [highlightPopup presentPopoverFromRect:rect inView:anchorView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -558,11 +611,6 @@ UIPopoverController *highlightPopup;
         }
     }
     
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    NSLog(@"json error : touchesBegan");
 }
 
 @end

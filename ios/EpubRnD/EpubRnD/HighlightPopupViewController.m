@@ -40,4 +40,8 @@
 {
     [myWebView saveHighlight];
 }
+- (IBAction)Close:(id)sender
+{
+    [myWebView closePopupAndClearHighlight];
+}
 @end

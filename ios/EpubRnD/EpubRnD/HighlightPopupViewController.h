@@ -13,5 +13,6 @@
 - (IBAction)didClickOnSave:(id)sender;
 
 @property (nonatomic,retain) MyWebView *myWebView;
+- (IBAction)Close:(id)sender;
 
 @end

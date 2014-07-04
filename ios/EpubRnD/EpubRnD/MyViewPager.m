@@ -103,7 +103,8 @@
     
     NSArray *viewsToRemove = [parentView subviews];
     for (UIView *v in viewsToRemove) {
-        [v removeFromSuperview];
+        
+        [self destroyView:v];
     }
 }
 
@@ -246,7 +247,7 @@
     {
         if(adjucentPrev)
         {
-            [adjucentPrev removeFromSuperview ];
+            [self destroyView:adjucentPrev];
         }
         adjucentPrev =self.currenPageView;
         self.currenPageView = adjucentNext;
@@ -288,7 +289,7 @@
     {
         if(adjucentNext)
         {
-            [adjucentNext removeFromSuperview];
+            [self destroyView:adjucentNext];
         }
         adjucentNext = self.currenPageView;
         self.currenPageView = adjucentPrev;
@@ -316,5 +317,10 @@
     
 }
 
+
+- (void) destroyView:(UIView *) view
+{
+    [view removeFromSuperview];
+}
 
 @end
