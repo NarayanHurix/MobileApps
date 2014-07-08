@@ -1,13 +1,12 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:ignore="MergeRootFrame" >
 
     <RelativeLayout
-        android:id="@+id/font_btn"
+        android:id="@+id/topBarRL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
@@ -55,13 +54,20 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/button3"
             android:text="ToggleButton" />
-
     </RelativeLayout>
 
-    <com.hurix.epubRnD.Views.MyViewPager
+    <com.hurix.epubRnD.Views.MyViewFlipper
         android:id="@+id/myViewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </com.hurix.epubRnD.Views.MyViewPager>
+        android:layout_height="match_parent"
+        android:layout_below="@id/topBarRL" >
+    </com.hurix.epubRnD.Views.MyViewFlipper>
 
-</LinearLayout>
+    <com.hurix.epubRnD.Views.TopMostLayout
+        android:id="@+id/topMostLayer"
+        android:layout_below="@id/topBarRL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </com.hurix.epubRnD.Views.TopMostLayout>
+
+</RelativeLayout>

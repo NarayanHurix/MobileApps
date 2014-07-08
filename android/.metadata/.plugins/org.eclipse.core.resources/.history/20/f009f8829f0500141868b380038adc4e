@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-public class MyViewPager extends RelativeLayout {//implements GestureDetector.OnGestureListener{
+public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.OnGestureListener{
 
 //	private final GestureDetector gestureDetector;
 //	private static final int SWIPE_THRESHOLD = 100;
@@ -19,19 +19,19 @@ public class MyViewPager extends RelativeLayout {//implements GestureDetector.On
     	public abstract PageView getNextView(PageView oldView);
     }
     
-	public MyViewPager(Context context) {
+	public MyViewFlipper(Context context) {
 		super(context);
 		//gestureDetector = new GestureDetector(context,this);
 		init(context);
 	}
 
-	public MyViewPager(Context context, AttributeSet attrs) {
+	public MyViewFlipper(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		//gestureDetector = new GestureDetector(context,this);
 		init(context);
 	}
 
-	public MyViewPager(Context context, AttributeSet attrs, int defStyle) {
+	public MyViewFlipper(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		//gestureDetector = new GestureDetector(context,this);
 		init(context);

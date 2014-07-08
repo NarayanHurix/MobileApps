@@ -40,21 +40,23 @@ import com.hurix.epubRnD.VOs.ManifestVO;
 import com.hurix.epubRnD.VOs.PathVO;
 import com.hurix.epubRnD.VOs.SpineVO;
 import com.hurix.epubRnD.VOs.WebViewDAO;
-import com.hurix.epubRnD.Views.MyViewPager;
+import com.hurix.epubRnD.Views.MyViewFlipper;
 import com.hurix.epubRnD.Views.MyWebView;
 import com.hurix.epubRnD.Views.PageView;
+import com.hurix.epubRnD.Views.TopMostLayout;
 
 @SuppressLint("SdCardPath")
 public class MainActivity extends ActionBarActivity implements OnClickListener{
 
 	private ArrayList<ChapterVO> chaptersColl = new ArrayList<ChapterVO>();
-	private MyViewPager _mViewPager;
+	private MyViewFlipper _mViewPager;
 	private Button bookmark;
 	private Button bookmark_add;
 	private Button bookmark_cancel;
 	private File file;
 	private static String APP_ID = "664df65e4a2f90162d7a39b4ff295081";
 	private ToggleButton _highlightSwitch;
+	private TopMostLayout _topMostLayout;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 		setContentView(R.layout.activity_main);
 		_highlightSwitch = (ToggleButton) findViewById(R.id.toggleButton1);
 		_highlightSwitch.setOnClickListener(this);
+		_topMostLayout = (TopMostLayout) findViewById(R.id.topMostLayer);
 		checkForUpdates();
 		File file = new File(Constants.SDCARD+"/epubBook/" );
 		if (file.exists())
@@ -123,7 +126,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 
 
 		//	prepareData();
-		_mViewPager = (MyViewPager) findViewById(R.id.myViewPager);
+		_mViewPager = (MyViewFlipper) findViewById(R.id.myViewPager);
+		_topMostLayout.setMyViewFlipper(_mViewPager);
 		bookmark = (Button)findViewById(R.id.bookmark_btn);
 		bookmark.setOnClickListener(this);
 		ViewPagerController controller = new ViewPagerController();
@@ -174,6 +178,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 			((PageView)_mViewPager.getCurrentPageView()).updateFontSize();
 
 		}
+		_mViewPager.refreshAdjucentPages();
 	}
 
 	public void decreaseFontSize(View view)

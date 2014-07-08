@@ -1,27 +1,22 @@
 package com.hurix.epubRnD.Views;
 
 
-import com.hurix.epubRnD.R;
-import com.hurix.epubRnD.Views.MyWebView.MyGestureDetector;
-import com.hurix.epubRnD.Views.MyWebView.MyWebViewLoadListener;
-
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+
+import com.hurix.epubRnD.R;
+import com.hurix.epubRnD.Views.MyWebView.MyWebViewLoadListener;
 
 public class PageView extends RelativeLayout implements MyWebViewLoadListener
 {
 	private MyWebView _mWebView;
 	private ProgressBar _mProgressBar;
-	private MyViewPager _mMyViewPager;
-	private GestureDetector gestureDetector;
-	private FrameLayout _mainHolder;
-	public PageView(Context context,MyViewPager myViewPager) {
+	private MyViewFlipper _mMyViewPager;
+	public PageView(Context context,MyViewFlipper myViewPager) {
 		super(context);
 		_mMyViewPager = myViewPager;
 		init(context);
@@ -46,20 +41,6 @@ public class PageView extends RelativeLayout implements MyWebViewLoadListener
 		_mWebView.setMyWebViewLoadListener(this);
 		_mProgressBar = (ProgressBar)findViewById(R.id.pageLoadingProgressWheel);
 	
-//		MyGestureDetector gestureDetector =_mWebView.new MyGestureDetector(context);
-//		_mainHolder.setOnTouchListener(gestureDetector);
-	/*	_mWebView.setOnTouchListener(new View.OnTouchListener() {
-			
-		
-		        @Override
-		        public boolean onTouch(View v, MotionEvent event) {
-		            // TODO Auto-generated method stub
-
-		            return gestureDetector.onTouchEvent(event);
-		            // return false;
-
-		        }
-		    });*/
 	}
 
 	public MyWebView getWebView()
@@ -100,5 +81,4 @@ public class PageView extends RelativeLayout implements MyWebViewLoadListener
 	{
 		_mMyViewPager.onPageOutOfRange();
 	}
-	
 }

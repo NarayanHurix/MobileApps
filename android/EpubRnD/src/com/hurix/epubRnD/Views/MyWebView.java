@@ -6,23 +6,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.hurix.epubRnD.Constants.GlobalConstants;
-import com.hurix.epubRnD.R;
-import com.hurix.epubRnD.Settings.GlobalSettings;
-import com.hurix.epubRnD.VOs.WebViewDAO;
-
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ActionMode;
-import android.view.ActionMode.Callback;
 import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,14 +23,17 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.webkit.JavascriptInterface;
-import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ScrollView;
 import android.widget.Toast;
+
+import com.hurix.epubRnD.R;
+import com.hurix.epubRnD.Constants.GlobalConstants;
+import com.hurix.epubRnD.Settings.GlobalSettings;
+import com.hurix.epubRnD.VOs.WebViewDAO;
 
 @SuppressLint("NewApi")
 public class MyWebView extends WebView 
@@ -52,7 +48,7 @@ public class MyWebView extends WebView
 	private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 	private OnPageChangeListener _listener;
 	private ViewGroup _currentView;
-    private MyViewPager _viewpager;
+    private MyViewFlipper _viewpager;
     Object actionMode;
 	public interface OnPageChangeListener
 	{
@@ -119,7 +115,8 @@ public class MyWebView extends WebView
 		}
 		else
 		{
-			if(gestureDetector.onTouchEvent(event))
+			//if(gestureDetector.onTouchEvent(event))
+			if(_viewpager.touch(event))
 			{
 				return true;
 			}
@@ -142,38 +139,6 @@ public class MyWebView extends WebView
 		}*/
 
 	}
-	
-
-//	@Override
-//	public boolean onInterceptTouchEvent(MotionEvent event) {
-//		/*switch (event.getAction()) {
-//	        case MotionEvent.ACTION_DOWN:
-//	            mLastX = event.getX();
-//	            mLastY = event.getY();
-//	            mStartY = mLastY;
-//	            break;
-//	        case MotionEvent.ACTION_CANCEL:
-//	        case MotionEvent.ACTION_UP:
-//	            mIsBeingDragged = false;
-//	            break;
-//	        case MotionEvent.ACTION_MOVE:
-//	            float x = event.getX();
-//	            float y = event.getY();
-//	            float xDelta = Math.abs(x - mLastX);
-//	            float yDelta = Math.abs(y - mLastY);
-//
-//	            float yDeltaTotal = y - mStartY;
-//	            if (yDelta > xDelta && Math.abs(yDeltaTotal) > mTouchSlop) {
-//	                mIsBeingDragged = true;
-//	                mStartY = y;
-//	                return true;
-//	            }
-//	            break;
-//	    }
-//		 */
-//		return false;
-//	}
-
 
 	@SuppressLint({ "NewApi", "SetJavaScriptEnabled" })
 	private void init(Context context)
@@ -270,8 +235,10 @@ public class MyWebView extends WebView
 				myWebView.loadUrl("javascript:" + insertRule1);
 				myWebView.loadUrl("javascript:" + insertRule2);
 				//myWebView.loadUrl("javascript:" + setImageRule);
-
-				myWebView.loadUrl("javascript: jsInterface.paginationDone()");
+				String data = "{\"MethodName\":\"paginationDone\",\"MethodArguments\":{}}";
+				String callBackToNative  = "jsInterface.callNativeMethod('jstoobjc:"+data+"');";
+				
+				myWebView.loadUrl("javascript: "+callBackToNative);
 			}
 		}
 	}
@@ -314,49 +281,87 @@ public class MyWebView extends WebView
 
 	class JSLoadCallBack 
 	{
-		@JavascriptInterface
-		public void paginationDone()
-		{
-			((Activity)getContext()).runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					Log.d("here","JSLoadCallBack : "+computeHorizontalScrollRange()+" content height "+getContentHeight() +" "+computeHorizontalScrollExtent());
-					//disable default webview text selection feature
-					loadUrl("javascript: document.documentElement.style.webkitUserSelect='none'");
-					addJQueryJS();
-					
-				}
-				
-			});
-		}
 		
 		@JavascriptInterface
-		public void onJQueryJSLoaded()
+		public void callNativeMethod(String text)
 		{
-			((Activity)getContext()).runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					addJS_Java_Utils_JS();
-				}
-				
-			});
-			
-		}
-		
-		@JavascriptInterface
-		public void onJSJavaUtilsLoaded()
-		{
-			((Activity)getContext()).runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					addWrapWordsWithSpansJS();
-				}
-				
-			});
-			
+			String jsonData = text.replace("jstoobjc:", "");
+			try
+			{
+				JSONObject jObj= new JSONObject(jsonData);
+				final String methodName = jObj.getString("MethodName");
+				final JSONObject argsJsonObj = jObj.getJSONObject("MethodArguments");
+				((Activity)getContext()).runOnUiThread(new Runnable() 
+				{
+					@Override
+					public void run() 
+					{
+						try
+						{
+							if(methodName.equals("paginationDone"))
+							{
+								paginationDone();
+							}
+							else if(methodName.equals("onJQueryJSLoaded"))
+							{
+								onJQueryJSLoaded();
+							}
+							else if(methodName.equals("onJSJavaUtilsLoaded"))
+							{
+								onJSJavaUtilsLoaded();
+							}
+							else if(methodName.equals("onWrapWordsWithSpansJSLoaded"))
+							{
+								onWrapWordsWithSpansJSLoaded();
+							}
+							else if(methodName.equals("onWordHighlightManagerJS"))
+							{
+								onWordHighlightManagerJS();
+							}
+							else if(methodName.equals("saveTextHighlight"))
+							{
+								saveTextHighlight(argsJsonObj.getString("arg1"),argsJsonObj.getString("arg2"),argsJsonObj.getString("arg3"));
+							}
+							else if(methodName.equals("onTouchStart"))
+							{
+								
+							}
+							else if(methodName.equals("onTouchEnd"))
+							{
+								
+							}
+							else if(methodName.equals("updateHighlightSticksPositions"))
+							{
+								float sX = Float.parseFloat(argsJsonObj.getString("arg1"));
+								float sY = Float.parseFloat(argsJsonObj.getString("arg2"));
+								float sW = Float.parseFloat(argsJsonObj.getString("arg3"));
+								float sH = Float.parseFloat(argsJsonObj.getString("arg4"));
+								float eX = Float.parseFloat(argsJsonObj.getString("arg5"));
+								float eY = Float.parseFloat(argsJsonObj.getString("arg6"));
+								float eW = Float.parseFloat(argsJsonObj.getString("arg7"));
+								float eH = Float.parseFloat(argsJsonObj.getString("arg8"));
+							}
+							else if(methodName.equals(""))
+							{
+								
+							}
+							else if(methodName.equals(""))
+							{
+								
+							}
+							
+						}
+						catch(JSONException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+			catch(JSONException e)
+			{
+				e.printStackTrace();
+			}
 		}
 		
 		@JavascriptInterface
@@ -365,30 +370,42 @@ public class MyWebView extends WebView
 			Log.d("From JS ", msg);
 		}
 		
-		@JavascriptInterface
-		public void onWrapWordsWithSpansJSLoaded()
+		private void paginationDone()
 		{
-			((Activity)getContext()).runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					if(GlobalSettings.HIGHLIGHT_SWITCH)
-					{
-						loadUrl("javascript: bindDocumentTouch()");
-					}
-					else
-					{
-						loadUrl("javascript: unbindDocumentTouch()");
-					}
-					getAllHighlights();
-				}
-				
-			});
-			
+			//disable default webview text selection feature
+			loadUrl("javascript: document.documentElement.style.webkitUserSelect='none'");
+			addJQueryJS();
 		}
 		
-		@JavascriptInterface
-		public void saveTextHighlight(String startWordID, String endWordID, String text)
+		private void onJQueryJSLoaded()
+		{
+			addJS_Java_Utils_JS();
+		}
+		
+		private void onJSJavaUtilsLoaded()
+		{
+			addWrapWordsWithSpansJS();
+		}
+		
+		private void onWrapWordsWithSpansJSLoaded()
+		{
+			addWordHighlightManagerJS();
+		}
+		
+		private void onWordHighlightManagerJS()
+		{
+			if(GlobalSettings.HIGHLIGHT_SWITCH)
+			{
+				loadUrl("javascript: bindDocumentTouch()");
+			}
+			else
+			{
+				loadUrl("javascript: unbindDocumentTouch()");
+			}
+			getAllHighlights();
+		}
+		
+		private void saveTextHighlight(String startWordID, String endWordID, String text)
 		{
 			SharedPreferences pref =  getContext().getSharedPreferences("UGCData", Context.MODE_PRIVATE);
 			String jsonArrStr = pref.getString("Highlights", "[]");
@@ -447,6 +464,8 @@ public class MyWebView extends WebView
 	private void addJQueryJS() 
 	{
 		String path = "file:///android_asset/JSLibraries/jquery.min.js";
+		String data = "{\"MethodName\":\"onJQueryJSLoaded\",\"MethodArguments\":{}}";
+		String callBackToNative  = " jsInterface.callNativeMethod('jstoobjc:"+data+"');";
 		String script = "function includeJSFile()"
                                +"{"
                                +"function loadScript(url, callback)"
@@ -461,7 +480,7 @@ public class MyWebView extends WebView
                                +"}"
                                +"loadScript('"+path+"', function ()"
                                +"{"
-                               +"jsInterface.onJQueryJSLoaded()"
+                               +callBackToNative
                                +"});"
                                +"} ; includeJSFile();";
 		loadUrl("javascript: "+script);
@@ -470,6 +489,8 @@ public class MyWebView extends WebView
 	private void addJS_Java_Utils_JS() 
 	{
 		String path = "file:///android_asset/JSLibraries/js.java.utils.js";
+		String data = "{\"MethodName\":\"onJSJavaUtilsLoaded\",\"MethodArguments\":{}}";
+		String callBackToNative  = " jsInterface.callNativeMethod('jstoobjc:"+data+"');";
 		String script = "function includeJSFile()"
                                +"{"
                                +"function loadScript(url, callback)"
@@ -484,7 +505,7 @@ public class MyWebView extends WebView
                                +"}"
                                +"loadScript('"+path+"', function ()"
                                +"{"
-                               +"jsInterface.onJSJavaUtilsLoaded()"
+                               +callBackToNative
                                +"});"
                                +"} ; includeJSFile();";
 		loadUrl("javascript: "+script);
@@ -493,6 +514,9 @@ public class MyWebView extends WebView
 	private void addWrapWordsWithSpansJS() 
 	{
 		String path = "file:///android_asset/JSLibraries/wrap.spans.to.words.js";
+		String data = "{\"MethodName\":\"onWrapWordsWithSpansJSLoaded\",\"MethodArguments\":{}}";
+		String callBackToNative  = " jsInterface.callNativeMethod('jstoobjc:"+data+"');";
+		
 		String script = "function includeJSFile()"
                                +"{"
                                +"function loadScript(url, callback)"
@@ -507,7 +531,33 @@ public class MyWebView extends WebView
                                +"}"
                                +"loadScript('"+path+"', function ()"
                                +"{"
-                               +"jsInterface.onWrapWordsWithSpansJSLoaded()"
+                               +callBackToNative
+                               +"});"
+                               +"} ; includeJSFile();";
+		loadUrl("javascript: "+script);
+	}
+	
+	private void addWordHighlightManagerJS() 
+	{
+		String path = "file:///android_asset/JSLibraries/word.highlights.manager.js";
+		String data = "{\"MethodName\":\"onWordHighlightManagerJS\",\"MethodArguments\":{}}";
+		String callBackToNative  = " jsInterface.callNativeMethod('jstoobjc:"+data+"');";
+		
+		String script = "function includeJSFile()"
+                               +"{"
+                               +"function loadScript(url, callback)"
+                               +"{"
+                               +"var script = document.createElement('script');"
+                               +"script.type = 'text/javascript';"
+                               +"script.onload = function () {"
+                               +"callback();"
+                               +"};"
+                               +"script.src = url;"
+                               +"(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);"
+                               +"}"
+                               +"loadScript('"+path+"', function ()"
+                               +"{"
+                               +callBackToNative
                                +"});"
                                +"} ; includeJSFile();";
 		loadUrl("javascript: "+script);
@@ -521,15 +571,17 @@ public class MyWebView extends WebView
 
 	private void calculateNoOfPages()
 	{
-		int newPageCount = computeHorizontalScrollRange()/getMeasuredWidth();
-		getData().setPageCount(newPageCount);
-		Log.d("here","total pages in Spine : "+newPageCount+" curr page : "+(getData().getIndexOfPage()+1));
+		if(getMeasuredWidth() != 0)
+		{
+			int newPageCount = computeHorizontalScrollRange()/getMeasuredWidth();
+			getData().setPageCount(newPageCount);
+		}
+//		Log.d("here","total pages in Spine : "+newPageCount+" curr page : "+(getData().getIndexOfPage()+1));
 	}
 
 	@Override
 	protected void onScrollChanged(int l, int t, int oldl, int oldt) 
 	{
-		Log.d("here","onScrollChanged : "+getData().getPageCount()+" curr page : "+(getData().getIndexOfPage()+1));
 		super.onScrollChanged(l, t, oldl, oldt);
 	}
 
@@ -537,7 +589,6 @@ public class MyWebView extends WebView
 	{
 		isURLLoaded = false;
 		requestLayout();
-		
 	}
 
 	
@@ -557,6 +608,7 @@ public class MyWebView extends WebView
 			Log.e("dd", "Exception in emulateShiftHeld()", e);
 		}
 	}
+	
 	public void selectAndCopyText() {
 		try {
 			Method m = WebView.class.getMethod("emulateShiftHeld", null);
@@ -570,10 +622,6 @@ public class MyWebView extends WebView
 		}
 	}
 
-
-	
-	
-
 	public void setOnPageChangeListener(OnPageChangeListener _listener) {
 		this._listener = _listener;
 	}
@@ -582,88 +630,7 @@ public class MyWebView extends WebView
 		addView(view,0);
 		_currentView = view;
 	}
-	/*@SuppressLint("NewApi")
-	@Override
-	public android.view.ActionMode startActionMode(android.view.ActionMode.Callback callback) {
-		// this will start a new, custom Contextual Action Mode, in which you can control
-		// the menu options available.
-		String name = callback.getClass().toString();
-		if (name.contains("SelectActionModeCallback")) {
-			mActionModeCallback = callback;
-		}
-		mActionModeCallback = new CustomActionModeCallback();
-		// We haven't actually done anything yet. Send our custom callback 
-		// to the superclass so it will be shown on screen.
-		return super.startActionModeForChild(this, mActionModeCallback);
-
-	}
-	//@SuppressLint("NewApi")
-	@SuppressLint("NewApi")
-	private class CustomActionModeCallback implements ActionMode.Callback {
-
-
-		@SuppressLint("NewApi")
-		@Override
-		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-
-			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.context_menu, menu);
-			return true;
-		}
-
-
-		@Override
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-
-			return false; // Return false if nothing is done
-		}
-
-
-		@SuppressWarnings("deprecation")
-		@Override
-		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-
-			switch (item.getItemId())
-			{
-			case R.id.copy:
-				mode.finish();
-				GlobalConstants.ENABLE_WEB_VIEW_TOUCH = false;
-				//get the copied text and print to log
-				int sdk = android.os.Build.VERSION.SDK_INT;
-				if(sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
-					android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-					clipboard.setText("text to clip");
-				} else {
-					android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE); 
-					android.content.ClipData clip = android.content.ClipData.newPlainText("text label","text to clip");
-					clipboard.setPrimaryClip(clip);
-				}
-
-				selectAndCopyText();
-				return true;
-			case R.id.button2:
-
-				mode.finish();
-				return true;
-
-
-			default:
-				mode.finish();
-				return false;
-			}
-		}
-
-		@Override
-		public void onDestroyActionMode(ActionMode mode) {
-			clearFocus();
-			mActionModeCallback  = null;
-		}
-
-
-	}
-	 */
-
-	public void setViewPager(MyViewPager _viewpager) {
+	public void setViewPager(MyViewFlipper _viewpager) {
 		this._viewpager = _viewpager;
 	}
 
@@ -697,6 +664,7 @@ public class MyWebView extends WebView
 		@Override
 		public boolean onTouch(View v, MotionEvent event) 
 		{
+			_viewpager.touch(event);
 			return gDetector.onTouchEvent(event);
 		}
 
@@ -732,7 +700,6 @@ public class MyWebView extends WebView
 					_viewpager.onSwipeRight();
 				}
 			}
-
 
 			return super.onFling(e1, e2, velocityX, velocityY);
 

@@ -4,22 +4,19 @@ import java.util.ArrayList;
 
 import com.hurix.epubRnD.VOs.ChapterVO;
 import com.hurix.epubRnD.VOs.WebViewDAO;
-import com.hurix.epubRnD.Views.MyViewPager;
+import com.hurix.epubRnD.Views.MyViewFlipper;
+import com.hurix.epubRnD.Views.MyViewFlipper.OnPageChangeListener;
 import com.hurix.epubRnD.Views.MyWebView;
-import com.hurix.epubRnD.Views.MyViewPager.OnPageChangeListener;
 import com.hurix.epubRnD.Views.PageView;
-
-import android.view.ViewGroup;
 
 public class ViewPagerController implements OnPageChangeListener
 {
 
 	private ArrayList<ChapterVO> chaptersColl;
-	private MyViewPager _mViewPager;
-	private MyWebView _my_WebView;
+	private MyViewFlipper _mViewPager;
 	
 	
-	public void setData(ArrayList<ChapterVO> chaptersColl,MyViewPager viewPager)
+	public void setData(ArrayList<ChapterVO> chaptersColl,MyViewFlipper viewPager)
 	{
 		this.chaptersColl = chaptersColl;
 		_mViewPager = viewPager;
@@ -47,7 +44,7 @@ public class ViewPagerController implements OnPageChangeListener
 			{
 				//return the same page
 				chapterIndex = 0;
-				return oldPage;
+				return null;
 			}
 			else
 			{
@@ -101,7 +98,7 @@ public class ViewPagerController implements OnPageChangeListener
 			{
 				//end of the chapters and pages so return the same page
 				chapterIndex--;
-				return oldPage;
+				return null;
 			}
 			else
 			{
