@@ -81,6 +81,7 @@ public class MyWebView extends WebView
 		public abstract void onLoadStart();
 		public abstract void onLoadFinish();
 		public abstract void onPageOutOfRange();
+		public abstract void checkPageBuffer();
 	}
 
 	public void setMyWebViewLoadListener(MyWebViewLoadListener myWebViewLoadListener)
@@ -269,7 +270,6 @@ public class MyWebView extends WebView
 						}
 						else
 						{
-
 							scrollTo(getMeasuredWidth()*getData().getIndexOfPage(), 0);
 							_mMyWebViewLoadListener.onLoadFinish();
 						}
@@ -403,6 +403,7 @@ public class MyWebView extends WebView
 				loadUrl("javascript: unbindDocumentTouch()");
 			}
 			getAllHighlights();
+			_mMyWebViewLoadListener.checkPageBuffer();
 		}
 		
 		private void saveTextHighlight(String startWordID, String endWordID, String text)

@@ -43,20 +43,20 @@ import com.hurix.epubRnD.VOs.WebViewDAO;
 import com.hurix.epubRnD.Views.MyViewFlipper;
 import com.hurix.epubRnD.Views.MyWebView;
 import com.hurix.epubRnD.Views.PageView;
-import com.hurix.epubRnD.Views.TopMostLayout;
+import com.hurix.epubRnD.Views.FixedTopMostLayout;
 
 @SuppressLint("SdCardPath")
 public class MainActivity extends ActionBarActivity implements OnClickListener{
 
 	private ArrayList<ChapterVO> chaptersColl = new ArrayList<ChapterVO>();
 	private MyViewFlipper _mViewPager;
-	private Button bookmark;
+//	private Button bookmark;
 	private Button bookmark_add;
 	private Button bookmark_cancel;
 	private File file;
 	private static String APP_ID = "664df65e4a2f90162d7a39b4ff295081";
 	private ToggleButton _highlightSwitch;
-	private TopMostLayout _topMostLayout;
+	private FixedTopMostLayout _topMostLayout;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 		setContentView(R.layout.activity_main);
 		_highlightSwitch = (ToggleButton) findViewById(R.id.toggleButton1);
 		_highlightSwitch.setOnClickListener(this);
-		_topMostLayout = (TopMostLayout) findViewById(R.id.topMostLayer);
+		_topMostLayout = (FixedTopMostLayout) findViewById(R.id.topMostLayer);
 		checkForUpdates();
 		File file = new File(Constants.SDCARD+"/epubBook/" );
 		if (file.exists())
@@ -128,8 +128,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 		//	prepareData();
 		_mViewPager = (MyViewFlipper) findViewById(R.id.myViewPager);
 		_topMostLayout.setMyViewFlipper(_mViewPager);
-		bookmark = (Button)findViewById(R.id.bookmark_btn);
-		bookmark.setOnClickListener(this);
+//		bookmark = (Button)findViewById(R.id.bookmark_btn);
+//		bookmark.setOnClickListener(this);
 		ViewPagerController controller = new ViewPagerController();
 		controller.setData(chaptersColl,_mViewPager);
 		//_mViewPager.setOnPageChangeListener((OnPageChangeListener) controller);
@@ -197,11 +197,11 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.bookmark_btn:
-
-			initiatePopupWindow();
-
-			break;
+//		case R.id.bookmark_btn:
+//
+//			initiatePopupWindow();
+//
+//			break;
 		case R.id.toggleButton1:
 			
 			((PageView)_mViewPager.getCurrentPageView()).onClickHighlightSwitch();
@@ -212,36 +212,36 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 		}
 
 	}
-	private PopupWindow pwindo;
-	private void initiatePopupWindow() {
-		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(R.layout.bookmark_popup,(ViewGroup) findViewById(R.id.bookmark_layout));
-		pwindo = new PopupWindow(layout, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-		pwindo.setOutsideTouchable(true);
-		pwindo.setFocusable(true);
-		pwindo.setBackgroundDrawable(new BitmapDrawable());
-		//pwindo.showAtLocation(bookmark, Gravity.RIGHT, 0, 0);
-		pwindo.showAsDropDown(bookmark, 50, -30);
-		bookmark_add = (Button)layout.findViewById(R.id.add);
-		bookmark_cancel = (Button)layout.findViewById(R.id.dismiss);
-
-		bookmark_add.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-		bookmark_cancel.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				pwindo.dismiss();
-			}
-		});
-	}
+//	private PopupWindow pwindo;
+//	private void initiatePopupWindow() {
+//		LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//		View layout = inflater.inflate(R.layout.bookmark_popup,(ViewGroup) findViewById(R.id.bookmark_layout));
+//		pwindo = new PopupWindow(layout, android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+//		pwindo.setOutsideTouchable(true);
+//		pwindo.setFocusable(true);
+//		pwindo.setBackgroundDrawable(new BitmapDrawable());
+//		//pwindo.showAtLocation(bookmark, Gravity.RIGHT, 0, 0);
+//		pwindo.showAsDropDown(bookmark, 50, -30);
+//		bookmark_add = (Button)layout.findViewById(R.id.add);
+//		bookmark_cancel = (Button)layout.findViewById(R.id.dismiss);
+//
+//		bookmark_add.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//		});
+//		bookmark_cancel.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				pwindo.dismiss();
+//			}
+//		});
+//	}
 	private void CopyAssets() {
 		AssetManager assetManager = getAssets();
 		String[] files = null;

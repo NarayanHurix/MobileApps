@@ -81,4 +81,10 @@ public class PageView extends RelativeLayout implements MyWebViewLoadListener
 	{
 		_mMyViewPager.onPageOutOfRange();
 	}
+	
+	@Override
+	public void checkPageBuffer()
+	{
+		_mMyViewPager.checkPageBuffer();
+	}
 }

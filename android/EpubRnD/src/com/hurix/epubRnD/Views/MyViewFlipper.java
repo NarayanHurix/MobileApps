@@ -22,7 +22,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
     private PageView _currentView,_adjacentNext,_adjacentPrev;
     private int MIN_MOVE_TO_CHANGE_PAGE = 60;
     private int PAGE_ADJAST_ANIM_DURATION= 500;
-    
+    private int NO_OF_PIXELS_TO_MOVE_FOR_ANIM ;
     public interface OnPageChangeListener
     {
     	public abstract PageView getPreviousView(PageView oldView);
@@ -52,10 +52,12 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 		//return gestureDetector.onTouchEvent(event);
 		return false;
 	}*/
+	
 	private void init(Context context)
 	{
-		
+		NO_OF_PIXELS_TO_MOVE_FOR_ANIM = (int) (35 * context.getResources().getDisplayMetrics().density);
 	}
+	
 	/*@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		// TODO Auto-generated method stub
@@ -152,17 +154,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 				offsetX = 0;
 				offsetY = 0;
 				startTouchPoint = new Point((int)e1.getX() , (int)e1.getY());
-				if(_adjacentNext == null)
-				{
-					_adjacentNext = _listener.getNextView(_currentView);
-					if(_adjacentNext != null)
-					{
-						addView(_adjacentNext);
-						RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(getMeasuredWidth(), getMeasuredHeight());
-						params.leftMargin = getMeasuredWidth();
-						_adjacentNext.setLayoutParams(params);
-					}
-				}
+				
 				break;
 				
 			case MotionEvent.ACTION_MOVE:
@@ -241,169 +233,131 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 		return true;
 	}
 	
-	private void positionPages(int offsetX,int offsetY)
+	private void positionPages(final int offsetX,final int offsetY)
 	{
-		if(_currentView != null)
-		{
-			RelativeLayout.LayoutParams paramsCurrentPage = new RelativeLayout.LayoutParams(getMeasuredWidth(), getMeasuredHeight());
-			paramsCurrentPage.leftMargin= offsetX;
-			paramsCurrentPage.rightMargin = -offsetX;
-			_currentView.setLayoutParams(paramsCurrentPage);
-		}
-		
-		if(_adjacentNext != null)
-		{
-			RelativeLayout.LayoutParams paramsAdjacentNext = new RelativeLayout.LayoutParams(getMeasuredWidth(), getMeasuredHeight());
-			paramsAdjacentNext.leftMargin= getMeasuredWidth() + offsetX;
-			paramsAdjacentNext.rightMargin = -(getMeasuredWidth() + offsetX);
-			_adjacentNext.setLayoutParams(paramsAdjacentNext);
-		}
-		
-		if(_adjacentPrev != null)
-		{
-			RelativeLayout.LayoutParams paramsAdjacentPrev = new RelativeLayout.LayoutParams(getMeasuredWidth(), getMeasuredHeight());
-			paramsAdjacentPrev.leftMargin= -getMeasuredWidth() + offsetX;
-			paramsAdjacentPrev.rightMargin = -(-getMeasuredWidth() + offsetX);
-			_adjacentPrev.setLayoutParams(paramsAdjacentPrev);
-		}
+		((Activity)getContext()).runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				if(_currentView != null)
+				{
+					RelativeLayout.LayoutParams paramsCurrentPage = new RelativeLayout.LayoutParams(getMeasuredWidth(), getMeasuredHeight());
+					paramsCurrentPage.leftMargin= offsetX;
+					paramsCurrentPage.rightMargin = -offsetX;
+					_currentView.setLayoutParams(paramsCurrentPage);
+				}
+				
+				if(_adjacentNext != null)
+				{
+					RelativeLayout.LayoutParams paramsAdjacentNext = new RelativeLayout.LayoutParams(getMeasuredWidth(), getMeasuredHeight());
+					paramsAdjacentNext.leftMargin= getMeasuredWidth() + offsetX;
+					paramsAdjacentNext.rightMargin = -(getMeasuredWidth() + offsetX);
+					_adjacentNext.setLayoutParams(paramsAdjacentNext);
+				}
+				
+				if(_adjacentPrev != null)
+				{
+					RelativeLayout.LayoutParams paramsAdjacentPrev = new RelativeLayout.LayoutParams(getMeasuredWidth(), getMeasuredHeight());
+					paramsAdjacentPrev.leftMargin= -getMeasuredWidth() + offsetX;
+					paramsAdjacentPrev.rightMargin = -(-getMeasuredWidth() + offsetX);
+					_adjacentPrev.setLayoutParams(paramsAdjacentPrev);
+				}
+			}
+		});
 	}
-	
-	
 	
 	private void completeNextPageAnim()
 	{
+		offsetX = offsetX-NO_OF_PIXELS_TO_MOVE_FOR_ANIM;
 		if(Math.abs(offsetX)>=getMeasuredWidth())
 	    {
 			//add next page remove previous page
-			
+			if(_adjacentPrev != null)
+	        {
+	            removeView(_adjacentPrev);
+	            _adjacentPrev = null;
+	        }
+	        _adjacentPrev =_currentView;
+	        _currentView = _adjacentNext;
+	        _adjacentNext = _listener.getNextView(_currentView);
+	        if(_adjacentNext != null)
+	        {
+	        	addView(_adjacentNext);
+	        }
+	        offsetX = offsetY = 0;
+	        positionPages(0, 0);
 	    }
 	    else
 	    {
 	    	//positionPages(offsetX,offsetY);
-	    	offsetX = -(offsetX + getMeasuredWidth());
-	    	TranslateAnimation animCurrPage = new TranslateAnimation(0, offsetX, 0, 0);
-	    	animCurrPage.setDuration(PAGE_ADJAST_ANIM_DURATION);
-	    	animCurrPage.setAnimationListener(new AnimationListener() {
-				
-				@Override
-				public void onAnimationStart(Animation animation) {}
-				
-				@Override
-				public void onAnimationRepeat(Animation animation) {}
-				
-				@Override
-				public void onAnimationEnd(Animation animation) {}
-					
-				
-			});
-	    	TranslateAnimation animNextPage = new TranslateAnimation(0, offsetX, 0, 0);
-	    	animNextPage.setDuration(PAGE_ADJAST_ANIM_DURATION);
-	    	animNextPage.setAnimationListener(new AnimationListener() {
-				
-				@Override
-				public void onAnimationStart(Animation animation) {
-					
-				}
-				
-				@Override
-				public void onAnimationRepeat(Animation animation) {
-					
-				}
-				
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					if(_adjacentPrev != null)
-			        {
-			            removeView(_adjacentPrev);
-			            _adjacentPrev = null;
-			        }
-			        _adjacentPrev =_currentView;
-			        _currentView = _adjacentNext;
-			        _adjacentNext = _listener.getNextView(_currentView);
-			        if(_adjacentNext != null)
-			        {
-			        	addView(_adjacentNext);
-			        }
-			        offsetX = offsetY = 0;
-			        positionPages(0, 0);
-				}
-			});
-	    	_currentView.startAnimation(animCurrPage);
-	    	_adjacentNext.startAnimation(animNextPage);
+	    	
+	    	Message msg = new Message();
+	    	msg.arg1 = offsetX;
+	    	msg.arg2 = offsetY;
+	    	msg.what = 100;
+	    	handler.sendMessage(msg);
+	    	positionPages(offsetX, offsetY);
 	    }
 	}
+	
+	private void completePreviousPageAnim()
+	{
+		offsetX = offsetX+NO_OF_PIXELS_TO_MOVE_FOR_ANIM;
+		if(Math.abs(offsetX)>=getMeasuredWidth())
+	    {
+	        //add previuos page remove next page
+			if(_adjacentNext != null)
+	        {
+	            removeView(_adjacentNext);
+	            _adjacentNext = null;
+	        }
+	        _adjacentNext = _currentView;
+	        _currentView = _adjacentPrev;
+	        _adjacentPrev = _listener.getPreviousView(_currentView);
+	        if(_adjacentPrev != null)
+	        {
+	        	addView(_adjacentPrev);
+	        }
+	        offsetX = offsetY = 0;
+        	positionPages(0, 0);
+	    }
+	    else
+	    {
+	    	Message msg = new Message();
+	    	msg.arg1 = offsetX;
+	    	msg.arg2 = offsetY;
+	    	msg.what = 200;
+	    	handler.sendMessage(msg);
+	    	positionPages(offsetX, offsetY);
+	    }
+	}
+	
+	
+
+	
 	Handler handler = new Handler(new Handler.Callback() {
 		
 		@Override
 		public boolean handleMessage(Message msg) 
 		{
-			int marginLeft = msg.arg1;
-			int marginTop = msg.arg2;
-			positionPages(marginLeft,marginTop);
-			
+			if(msg.what == 100)
+			{
+				int marginLeft = msg.arg1;
+				int marginTop = msg.arg2;
+				positionPages(marginLeft,marginTop);
+				completeNextPageAnim();
+			}
+			else if(msg.what == 200)
+			{
+				int marginLeft = msg.arg1;
+				int marginTop = msg.arg2;
+				positionPages(marginLeft,marginTop);
+				completePreviousPageAnim();
+			}
 			return false;
 		}
 	});
-	private void completePreviousPageAnim()
-	{
-		
-		if(Math.abs(offsetX)>=getMeasuredWidth())
-	    {
-	        //add previuos page remove next page
-			
-	    }
-	    else
-	    {
-	    	offsetX = getMeasuredWidth()-offsetX;
-	    	TranslateAnimation animCurrPage = new TranslateAnimation(0, offsetX, 0, 0);
-	    	animCurrPage.setDuration(PAGE_ADJAST_ANIM_DURATION);
-	    	animCurrPage.setAnimationListener(new AnimationListener() {
-				
-				@Override
-				public void onAnimationStart(Animation animation) {}
-				
-				@Override
-				public void onAnimationRepeat(Animation animation) {}
-				
-				@Override
-				public void onAnimationEnd(Animation animation) {}
-					
-				
-			});
-	    	TranslateAnimation animPrevPage = new TranslateAnimation(0, offsetX, 0, 0);
-	    	animPrevPage.setDuration(PAGE_ADJAST_ANIM_DURATION);
-	    	animPrevPage.setAnimationListener(new AnimationListener() {
-				
-				@Override
-				public void onAnimationStart(Animation animation) {}
-				
-				@Override
-				public void onAnimationRepeat(Animation animation) {}
-				
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					if(_adjacentNext != null)
-			        {
-			            removeView(_adjacentNext);
-			            _adjacentNext = null;
-			        }
-			        _adjacentNext = _currentView;
-			        _currentView = _adjacentPrev;
-			        _adjacentPrev = _listener.getPreviousView(_currentView);
-			        if(_adjacentPrev != null)
-			        {
-			        	addView(_adjacentPrev);
-			        }
-			        offsetX = offsetY = 0;
-		        	positionPages(0, 0);
-			        
-				}
-			});
-	    	_currentView.startAnimation(animCurrPage);
-	    	_adjacentPrev.startAnimation(animPrevPage);
-	    }
-	}
-	
 	public void setOnPageChangeListener(OnPageChangeListener _listener) {
 		this._listener = _listener;
 	}
@@ -424,6 +378,20 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 //		onSwipeRight();//load last page of same chapter
 	}
 
+	public void checkPageBuffer()
+	{
+		if(_adjacentNext == null)
+		{
+			_adjacentNext = _listener.getNextView(_currentView);
+			if(_adjacentNext != null)
+			{
+				addView(_adjacentNext);
+				RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(getMeasuredWidth(), getMeasuredHeight());
+				params.leftMargin = getMeasuredWidth();
+				_adjacentNext.setLayoutParams(params);
+			}
+		}
+	}
 	public void refreshAdjacentPages() 
 	{
 		if(_adjacentNext != null)
@@ -458,4 +426,127 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 //		offsetX = offsetY = 0;
 //        positionPages(0, 0);
 	}
+	
+//	private void completeNextPageAnim()
+//	{
+//		if(Math.abs(offsetX)>=getMeasuredWidth())
+//	    {
+//			//add next page remove previous page
+//			
+//	    }
+//	    else
+//	    {
+//	    	//positionPages(offsetX,offsetY);
+//	    	offsetX = -(offsetX + getMeasuredWidth());
+//	    	TranslateAnimation animCurrPage = new TranslateAnimation(0, offsetX, 0, 0);
+//	    	animCurrPage.setDuration(PAGE_ADJAST_ANIM_DURATION);
+//	    	animCurrPage.setAnimationListener(new AnimationListener() {
+//				
+//				@Override
+//				public void onAnimationStart(Animation animation) {}
+//				
+//				@Override
+//				public void onAnimationRepeat(Animation animation) {}
+//				
+//				@Override
+//				public void onAnimationEnd(Animation animation) {}
+//					
+//				
+//			});
+//	    	TranslateAnimation animNextPage = new TranslateAnimation(0, offsetX, 0, 0);
+//	    	animNextPage.setDuration(PAGE_ADJAST_ANIM_DURATION);
+//	    	animNextPage.setAnimationListener(new AnimationListener() {
+//				
+//				@Override
+//				public void onAnimationStart(Animation animation) {
+//					
+//				}
+//				
+//				@Override
+//				public void onAnimationRepeat(Animation animation) {
+//					
+//				}
+//				
+//				@Override
+//				public void onAnimationEnd(Animation animation) {
+//					if(_adjacentPrev != null)
+//			        {
+//			            removeView(_adjacentPrev);
+//			            _adjacentPrev = null;
+//			        }
+//			        _adjacentPrev =_currentView;
+//			        _currentView = _adjacentNext;
+//			        _adjacentNext = _listener.getNextView(_currentView);
+//			        if(_adjacentNext != null)
+//			        {
+//			        	addView(_adjacentNext);
+//			        }
+//			        offsetX = offsetY = 0;
+//			        positionPages(0, 0);
+//				}
+//			});
+//	    	_currentView.startAnimation(animCurrPage);
+//	    	_adjacentNext.startAnimation(animNextPage);
+//	    }
+//	}
+//	
+//	private void completePreviousPageAnim()
+//	{
+//		
+//		if(Math.abs(offsetX)>=getMeasuredWidth())
+//	    {
+//	        //add previuos page remove next page
+//			
+//	    }
+//	    else
+//	    {
+//	    	offsetX = getMeasuredWidth()-offsetX;
+//	    	TranslateAnimation animCurrPage = new TranslateAnimation(0, offsetX, 0, 0);
+//	    	animCurrPage.setDuration(PAGE_ADJAST_ANIM_DURATION);
+//	    	animCurrPage.setAnimationListener(new AnimationListener() {
+//				
+//				@Override
+//				public void onAnimationStart(Animation animation) {}
+//				
+//				@Override
+//				public void onAnimationRepeat(Animation animation) {}
+//				
+//				@Override
+//				public void onAnimationEnd(Animation animation) {}
+//					
+//				
+//			});
+//	    	TranslateAnimation animPrevPage = new TranslateAnimation(0, offsetX, 0, 0);
+//	    	animPrevPage.setDuration(PAGE_ADJAST_ANIM_DURATION);
+//	    	animPrevPage.setAnimationListener(new AnimationListener() {
+//				
+//				@Override
+//				public void onAnimationStart(Animation animation) {}
+//				
+//				@Override
+//				public void onAnimationRepeat(Animation animation) {}
+//				
+//				@Override
+//				public void onAnimationEnd(Animation animation) {
+//					if(_adjacentNext != null)
+//			        {
+//			            removeView(_adjacentNext);
+//			            _adjacentNext = null;
+//			        }
+//			        _adjacentNext = _currentView;
+//			        _currentView = _adjacentPrev;
+//			        _adjacentPrev = _listener.getPreviousView(_currentView);
+//			        if(_adjacentPrev != null)
+//			        {
+//			        	addView(_adjacentPrev);
+//			        }
+//			        offsetX = offsetY = 0;
+//		        	positionPages(0, 0);
+//			        
+//				}
+//			});
+//	    	_currentView.startAnimation(animCurrPage);
+//	    	_adjacentPrev.startAnimation(animPrevPage);
+//	    }
+//	}
 }
