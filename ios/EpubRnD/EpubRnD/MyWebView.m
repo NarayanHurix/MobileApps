@@ -15,6 +15,7 @@
     NSString *jsToObjcSchema;
     
     int stickHeight ,stickWidth;
+    BOOL SHOULD_DISMISS;
 }
 @synthesize startStick,endStick;
 
@@ -29,6 +30,7 @@
         self.scrollView.bounces = NO;
         stickHeight = 40;
         stickWidth =15;
+        SHOULD_DISMISS = NO;
     }
     return self;
 }
@@ -395,6 +397,7 @@
     }
     if(highlightPopup)
     {
+        SHOULD_DISMISS = YES;
         [highlightPopup dismissPopoverAnimated:NO];
     }
 }
@@ -415,6 +418,7 @@
     }
     if(highlightPopup)
     {
+        SHOULD_DISMISS = YES;
         [highlightPopup dismissPopoverAnimated:NO];
     }
 }
@@ -571,9 +575,14 @@ UIPopoverController *highlightPopup;
         highlightPopup.passthroughViews = [NSArray arrayWithObjects:self,startStick,endStick, nil];
         
     }
+    SHOULD_DISMISS = NO;
     [highlightPopup presentPopoverFromRect:rect inView:anchorView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
+- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+{
+    return SHOULD_DISMISS;
+}
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
@@ -588,28 +597,28 @@ UIPopoverController *highlightPopup;
         [endStick removeFromSuperview];
         endStick = nil;
     }
-    
+    SHOULD_DISMISS = NO;
     [self stringByEvaluatingJavaScriptFromString:@"setTouchedStick(false,true)"];
 }
 
 - (void) didTouchOnHighlightStick :(BOOL) isStartStick : (BOOL) isEndStick
 {
-    if(isStartStick)
-    {
-        [self stringByEvaluatingJavaScriptFromString:@"setTouchedStick(true,false)"];
-        if(highlightPopup)
-        {
-            [highlightPopup dismissPopoverAnimated:NO];
-        }
-    }
-    else
-    {
-        [self stringByEvaluatingJavaScriptFromString:@"setTouchedStick(false,true)"];
-        if(highlightPopup)
-        {
-            [highlightPopup dismissPopoverAnimated:NO];
-        }
-    }
+//    if(isStartStick)
+//    {
+//        [self stringByEvaluatingJavaScriptFromString:@"setTouchedStick(true,false)"];
+//        if(highlightPopup)
+//        {
+//            [highlightPopup dismissPopoverAnimated:NO];
+//        }
+//    }
+//    else
+//    {
+//        [self stringByEvaluatingJavaScriptFromString:@"setTouchedStick(false,true)"];
+//        if(highlightPopup)
+//        {
+//            [highlightPopup dismissPopoverAnimated:NO];
+//        }
+//    }
     
 }
 

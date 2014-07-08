@@ -9,12 +9,16 @@
 #import "MyViewPager.h"
 #import "GlobalConstants.h"
 #import "GlobalSettings.h"
+#import "MyPageView.h"
+
+const int MIN_MOVE_TO_CHANGE_PAGE = 120;
 
 @implementation MyViewPager
 {
     CGPoint startTouchPoint ,endTouchPoint;
     UIView *adjucentNext,*adjucentPrev;
     int offsetX,offsetY;
+    
     BOOL pendingPageAnimCompleted;
 }
 
@@ -192,7 +196,7 @@
             CGPoint touchLocation = [touch locationInView:self];
             endTouchPoint = touchLocation;
             
-            if((startTouchPoint.x-endTouchPoint.x)>30 )
+            if((startTouchPoint.x-endTouchPoint.x)>MIN_MOVE_TO_CHANGE_PAGE )
             {
                 //flip success
                 //moving forward direction
@@ -203,7 +207,7 @@
                     [self performSelector:@selector(completeNextPageAnimation) withObject:self afterDelay:0.0 ];
                 }
             }
-            else if((endTouchPoint.x-startTouchPoint.x)>30)
+            else if((endTouchPoint.x-startTouchPoint.x)>MIN_MOVE_TO_CHANGE_PAGE)
             {
                 //moving backward direction
                 if([_delegate getPreviousPage:self.currenPageView])
@@ -321,6 +325,20 @@
 - (void) destroyView:(UIView *) view
 {
     [view removeFromSuperview];
+}
+
+- (void) refreshAdjucentPages
+{
+    if(adjucentNext)
+    {
+        MyPageView *mpv = (MyPageView *)adjucentNext;
+        [mpv.myWebView updateFontSize];
+    }
+    if(adjucentPrev)
+    {
+        MyPageView *mpv = (MyPageView *)adjucentPrev;
+        [mpv.myWebView updateFontSize];
+    }
 }
 
 @end

@@ -24,5 +24,5 @@
 
 - (void) initWithPageView:(UIView *) view;
 - (void) onPageOutOfRange;
-
+- (void) refreshAdjucentPages;
 @end

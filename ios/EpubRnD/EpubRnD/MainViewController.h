@@ -22,6 +22,8 @@
 //- (void)onPageOutOfRange;
 - (IBAction)penToolEnable:(UIButton *)sender;
 - (IBAction)onTapHighlightBtn:(UIButton *)sender;
+@property (weak, nonatomic) IBOutlet UIButton *btnFontIncrease;
+@property (weak, nonatomic) IBOutlet UIButton *btnFontDecrease;
 
 @property (nonatomic,strong) NSArray *data;
 

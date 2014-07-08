@@ -175,33 +175,7 @@
     [self.view removeFromSuperview];
 }
 
-- (IBAction)decreaseFontSize:(UIButton *)sender
-{
-    CURRENT_FONT_SIZE-=FONT_SIZE_STEP_SIZE;
-    if(CURRENT_FONT_SIZE<MIN_FONT_SIZE)
-    {
-        CURRENT_FONT_SIZE+=FONT_SIZE_STEP_SIZE;
-    }
-    else
-    {
-        MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
-        [myPageView.myWebView updateFontSize];
-    }
-}
 
-- (IBAction)increaseFontSize:(UIButton *)sender
-{
-    CURRENT_FONT_SIZE+=FONT_SIZE_STEP_SIZE;
-    if(CURRENT_FONT_SIZE>MAX_FONT_SIZE)
-    {
-        CURRENT_FONT_SIZE-=FONT_SIZE_STEP_SIZE;
-    }
-    else
-    {
-        MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
-        [myPageView.myWebView updateFontSize];
-    }
-}
 
 //- (void)onPageOutOfRange
 //{
@@ -250,5 +224,38 @@
     [myPageView.myWebView didHighlightButtonTap];
     
     myPageView.touchHelperView.userInteractionEnabled = !HIGHLIGHT_TOOL_SWITCH;
+    self.btnFontDecrease.userInteractionEnabled = !HIGHLIGHT_TOOL_SWITCH;
+    self.btnFontIncrease.userInteractionEnabled = !HIGHLIGHT_TOOL_SWITCH;
 }
+
+- (IBAction)decreaseFontSize:(UIButton *)sender
+{
+    CURRENT_FONT_SIZE-=FONT_SIZE_STEP_SIZE;
+    if(CURRENT_FONT_SIZE<MIN_FONT_SIZE)
+    {
+        CURRENT_FONT_SIZE+=FONT_SIZE_STEP_SIZE;
+    }
+    else
+    {
+        MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
+        [myPageView.myWebView updateFontSize];
+        [_myViewPager refreshAdjucentPages];
+    }
+}
+
+- (IBAction)increaseFontSize:(UIButton *)sender
+{
+    CURRENT_FONT_SIZE+=FONT_SIZE_STEP_SIZE;
+    if(CURRENT_FONT_SIZE>MAX_FONT_SIZE)
+    {
+        CURRENT_FONT_SIZE-=FONT_SIZE_STEP_SIZE;
+    }
+    else
+    {
+        MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
+        [myPageView.myWebView updateFontSize];
+        [_myViewPager refreshAdjucentPages];
+    }
+}
+
 @end
