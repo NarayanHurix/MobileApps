@@ -22,21 +22,27 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.hurix.epubRnD.R;
 import com.hurix.epubRnD.Constants.GlobalConstants;
 import com.hurix.epubRnD.Settings.GlobalSettings;
 import com.hurix.epubRnD.VOs.WebViewDAO;
+import com.hurix.epubRnD.widgets.QuickAction;
+import com.hurix.epubRnD.widgets.QuickAction.OnDismissListener;
 
 @SuppressLint("NewApi")
-public class MyWebView extends WebView 
+public class MyWebView extends WebView implements OnDismissListener,OnClickListener
 {
 	
 	private WebViewDAO _data;
@@ -50,12 +56,17 @@ public class MyWebView extends WebView
 	private ViewGroup _currentView;
     private MyViewFlipper _viewpager;
     Object actionMode;
+    
+    private float stickHeight;
+    private float stickWidth;
 	public interface OnPageChangeListener
 	{
 		public abstract ViewGroup getPreviousView(ViewGroup oldView);
 		public abstract ViewGroup getNextView(ViewGroup oldView);
 	}
 	GestureDetector gestureDetector = new GestureDetector(new MyGestureDetector());
+	private StartStickView startStick;
+	private EndStickView endStick;
 	public MyWebView(Context context) {
 		super(context);
 	
@@ -107,6 +118,10 @@ public class MyWebView extends WebView
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		calculateNoOfPages();
+		if(event.getAction() == MotionEvent.ACTION_DOWN)
+		{
+			onScrollChanged(getScrollX(), getScrollY(), getScrollX(), getScrollY());
+		}
 	/*	gestureDetector.onTouchEvent(event);
         return super.onTouchEvent(event);*/
 	//	return   super.onTouchEvent(event);
@@ -145,7 +160,8 @@ public class MyWebView extends WebView
 	private void init(Context context)
 	{
 		isURLLoaded = false;
-
+		stickWidth = 20 *getContext().getResources().getDisplayMetrics().density;
+		stickHeight = 40*getContext().getResources().getDisplayMetrics().density;
 		if(android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.HONEYCOMB)
 		{
 			getSettings().setAllowContentAccess(true);
@@ -223,7 +239,7 @@ public class MyWebView extends WebView
 						+ "}";
 
 				String insertRule1 = "addCSSRule('html', 'padding: 0px; height: "
-						+ (myWebView.getMeasuredHeight() )
+						+ (myWebView.getMeasuredHeight()/getContext().getResources().getDisplayMetrics().density )
 						+ "px; -webkit-column-gap: 0px; -webkit-column-width: "
 						+ myWebView.getMeasuredWidth() + "px;')";
 
@@ -324,11 +340,11 @@ public class MyWebView extends WebView
 							}
 							else if(methodName.equals("onTouchStart"))
 							{
-								
+								highlightActionDown();
 							}
 							else if(methodName.equals("onTouchEnd"))
 							{
-								
+								highlightActionUp();
 							}
 							else if(methodName.equals("updateHighlightSticksPositions"))
 							{
@@ -340,6 +356,8 @@ public class MyWebView extends WebView
 								float eY = Float.parseFloat(argsJsonObj.getString("arg6"));
 								float eW = Float.parseFloat(argsJsonObj.getString("arg7"));
 								float eH = Float.parseFloat(argsJsonObj.getString("arg8"));
+								updateHighlightSticksPosition(sX,sY,sW,sH,eX,eY,eW,eH);
+								
 							}
 							else if(methodName.equals(""))
 							{
@@ -626,7 +644,7 @@ public class MyWebView extends WebView
 	public void setOnPageChangeListener(OnPageChangeListener _listener) {
 		this._listener = _listener;
 	}
-	public void initWithView(ViewGroup view) 
+	private void initWithView(ViewGroup view) 
 	{
 		addView(view,0);
 		_currentView = view;
@@ -762,7 +780,143 @@ public class MyWebView extends WebView
 		else
 		{
 			loadUrl("javascript: unbindDocumentTouch()");
+			loadUrl("javascript: clearCurrentHighlight()");
+			closeHighlight();
+			
+		}
+	}
+	private QuickAction _popUp;
+	
+	private void updateHighlightSticksPosition(float sX, float sY, float sW, float sH, float eX, float eY, float eW, float eH)
+	{
+		stickHeight = sH;
+		sX = sX * getContext().getResources().getDisplayMetrics().density;
+		sY = sY * getContext().getResources().getDisplayMetrics().density;
+		sW = sW * getContext().getResources().getDisplayMetrics().density;
+		sH = sH * getContext().getResources().getDisplayMetrics().density;
+		eX = eX * getContext().getResources().getDisplayMetrics().density;
+		eY = eY * getContext().getResources().getDisplayMetrics().density;
+		eW = eW * getContext().getResources().getDisplayMetrics().density;
+		eH = eH * getContext().getResources().getDisplayMetrics().density;
+		float modifiedX, modifiedY;
+		
+	    if(startStick == null)
+	    {
+	        startStick = new StartStickView(getContext());
+	        ((PageView)getParent().getParent()).addView(startStick);
+	    }
+	    modifiedX = sX-stickWidth - (getMeasuredWidth()*_data.getIndexOfPage());
+        modifiedY = sY-stickHeight/2;
+	    RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams((int)stickWidth, (int)stickHeight);
+        params1.leftMargin = (int)(modifiedX+3);
+        params1.topMargin = (int)(modifiedY);
+        startStick.setLayoutParams(params1);
+        
+	    stickHeight = eH;
+	    if(endStick == null)
+	    {
+	        endStick = new EndStickView(getContext());
+	        ((PageView)getParent().getParent()).addView(endStick);
+	    }
+	    modifiedX = eX - (getMeasuredWidth()*_data.getIndexOfPage());
+    	modifiedY = eY-stickHeight/2;
+	    RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams((int)stickWidth, (int)stickHeight);
+        params2.leftMargin = (int)(modifiedX-3);
+        params2.topMargin = (int)(modifiedY);
+        endStick.setLayoutParams(params2);
+        
+	    startStick.bringToFront();
+	    endStick.bringToFront();
+	    if(_popUp == null)
+	    {
+	    	_popUp = new QuickAction(getContext());
+	    	_popUp.setAlertLayout(R.layout.highlight_popup);
+	    	_popUp.setOnDismissListener(this);
+	    	_popUp.getDialog().setCanceledOnTouchOutside(false);
+	    	Window window = _popUp.getDialog().getWindow();
+	        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+	                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+	        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+	        
+	        _popUp.findViewById(R.id.highlightSaveBtn).setOnClickListener(this);
+	        _popUp.findViewById(R.id.highlightClearBtn).setOnClickListener(this);
+	    }
+	}
+	
+	
+
+	private void highlightActionDown()
+	{
+		if(_popUp != null)
+		{
+			_popUp.dismiss();
+		}
+	}
+	
+	private void highlightActionUp()
+	{
+		if(_popUp != null)
+		{
+			if(startStick != null)
+			{
+				startStick.post(new Runnable() 
+		    	{
+					@Override
+					public void run() {
+						try {
+							_popUp.show(startStick);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				});
+			}
+		}
+	}
+	
+	@Override
+	public void onDismiss() 
+	{
+		
+	}
+	
+	private void closeHighlight()
+	{
+		if(_popUp != null)
+		{
+			_popUp.dismiss();
+			_popUp = null;
+		}
+		
+		if(startStick != null)
+		{
+			((ViewGroup)startStick.getParent()).removeView(startStick);
+			startStick = null;
+		}
+		if(endStick != null)
+		{
+			((ViewGroup)endStick.getParent()).removeView(endStick);
+			endStick = null;
 		}
 	}
 
+	@Override
+	public void onClick(View v) 
+	{
+		switch (v.getId()) 
+		{
+			case R.id.highlightSaveBtn:
+				loadUrl("javascript: saveCurrentHighlight()");
+				closeHighlight();
+				break;
+			case R.id.highlightClearBtn:
+				loadUrl("javascript: clearCurrentHighlight()");
+				closeHighlight();
+				break;
+			default:
+				break;
+		}
+		
+	}
 }
