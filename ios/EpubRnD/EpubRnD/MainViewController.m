@@ -239,7 +239,7 @@
     {
         MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
         [myPageView.myWebView updateFontSize];
-        [_myViewPager refreshAdjucentPages];
+        [_myViewPager refreshAdjacentPages];
     }
 }
 
@@ -254,7 +254,7 @@
     {
         MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
         [myPageView.myWebView updateFontSize];
-        [_myViewPager refreshAdjucentPages];
+        [_myViewPager refreshAdjacentPages];
     }
 }
 
