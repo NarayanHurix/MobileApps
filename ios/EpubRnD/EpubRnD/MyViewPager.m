@@ -16,7 +16,7 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
 @implementation MyViewPager
 {
     CGPoint startTouchPoint ,endTouchPoint;
-    UIView *adjucentNext,*adjucentPrev;
+    UIView *adjacentNext,*adjacentPrev;
     int offsetX,offsetY;
     
     BOOL pendingPageAnimCompleted;
@@ -128,16 +128,16 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
             offsetX = 0;
             offsetY = 0;
         }
-        if(!adjucentNext)
+        if(!adjacentNext)
         {
-            adjucentNext = [_delegate getNextPage:self.currenPageView];
-            if(adjucentNext)
+            adjacentNext = [_delegate getNextPage:self.currenPageView];
+            if(adjacentNext)
             {
-                [self addSubview: adjucentNext];
+                [self addSubview: adjacentNext];
                 
                 self.currenPageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
                 
-                adjucentNext.frame = CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
+                adjacentNext.frame = CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
                 
             }
         }
@@ -156,13 +156,13 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
                 //flipping to next page
                 if(self.currenPageView)
                 {
-                    if(adjucentNext)
+                    if(adjacentNext)
                     {
                         offsetX = -(startTouchPoint.x-touchLocation.x);
                         if(offsetX>=-self.frame.size.width)
                         {
                             self.currenPageView.frame = CGRectMake(offsetX, offsetY, self.frame.size.width, self.frame.size.height);
-                            adjucentNext.frame = CGRectMake(offsetX+self.frame.size.width, offsetY, self.frame.size.width, self.frame.size.height);
+                            adjacentNext.frame = CGRectMake(offsetX+self.frame.size.width, offsetY, self.frame.size.width, self.frame.size.height);
                         }
                     }
                 }
@@ -172,13 +172,13 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
                 //flipping to previuos page
                 if(self.currenPageView)
                 {
-                    if(adjucentPrev)
+                    if(adjacentPrev)
                     {
                         offsetX=(touchLocation.x-startTouchPoint.x);;
                         if(offsetX<=self.frame.size.width)
                         {
                             self.currenPageView.frame = CGRectMake(offsetX, offsetY, self.frame.size.width, self.frame.size.height);
-                            adjucentPrev.frame = CGRectMake(offsetX-self.frame.size.width, offsetY, self.frame.size.width, self.frame.size.height);
+                            adjacentPrev.frame = CGRectMake(offsetX-self.frame.size.width, offsetY, self.frame.size.width, self.frame.size.height);
                         }
                     }
                 }
@@ -221,13 +221,13 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
             {
                 //revert flip since not considered as successfull flip
                 self.currenPageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-                if(adjucentPrev)
+                if(adjacentPrev)
                 {
-                    adjucentPrev.frame = CGRectMake(-self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
+                    adjacentPrev.frame = CGRectMake(-self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
                 }
-                if(adjucentNext)
+                if(adjacentNext)
                 {
-                    adjucentNext.frame = CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
+                    adjacentNext.frame = CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
                 }
             }
         }
@@ -244,28 +244,28 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
     else
     {
         self.currenPageView.frame = CGRectMake(offsetX, offsetY, self.frame.size.width, self.frame.size.height);
-        adjucentNext.frame = CGRectMake(offsetX+self.frame.size.width, offsetY, self.frame.size.width, self.frame.size.height);
+        adjacentNext.frame = CGRectMake(offsetX+self.frame.size.width, offsetY, self.frame.size.width, self.frame.size.height);
     }
     
     if(pendingPageAnimCompleted)
     {
-        if(adjucentPrev)
+        if(adjacentPrev)
         {
-            [self destroyView:adjucentPrev];
+            [self destroyView:adjacentPrev];
         }
-        adjucentPrev =self.currenPageView;
-        self.currenPageView = adjucentNext;
-        adjucentNext = [_delegate getNextPage:self.currenPageView];
-        [self addSubview: adjucentNext];
+        adjacentPrev =self.currenPageView;
+        self.currenPageView = adjacentNext;
+        adjacentNext = [_delegate getNextPage:self.currenPageView];
+        [self addSubview: adjacentNext];
         
         self.currenPageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-        if(adjucentPrev)
+        if(adjacentPrev)
         {
-            adjucentPrev.frame = CGRectMake(-self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
+            adjacentPrev.frame = CGRectMake(-self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
         }
-        if(adjucentNext)
+        if(adjacentNext)
         {
-            adjucentNext.frame = CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
+            adjacentNext.frame = CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
         }
         pendingPageAnimCompleted = YES;
     }
@@ -285,29 +285,29 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
     else
     {
         self.currenPageView.frame = CGRectMake(offsetX, offsetY, self.frame.size.width, self.frame.size.height);
-        adjucentPrev.frame = CGRectMake(offsetX-self.frame.size.width, offsetY, self.frame.size.width, self.frame.size.height);
+        adjacentPrev.frame = CGRectMake(offsetX-self.frame.size.width, offsetY, self.frame.size.width, self.frame.size.height);
     }
     
     
     if(pendingPageAnimCompleted)
     {
-        if(adjucentNext)
+        if(adjacentNext)
         {
-            [self destroyView:adjucentNext];
+            [self destroyView:adjacentNext];
         }
-        adjucentNext = self.currenPageView;
-        self.currenPageView = adjucentPrev;
-        adjucentPrev = [_delegate getPreviousPage:self.currenPageView];
-        [self addSubview: adjucentPrev];
+        adjacentNext = self.currenPageView;
+        self.currenPageView = adjacentPrev;
+        adjacentPrev = [_delegate getPreviousPage:self.currenPageView];
+        [self addSubview: adjacentPrev];
         
         self.currenPageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-        if(adjucentPrev)
+        if(adjacentPrev)
         {
-            adjucentPrev.frame = CGRectMake(-self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
+            adjacentPrev.frame = CGRectMake(-self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
         }
-        if(adjucentNext)
+        if(adjacentNext)
         {
-            adjucentNext.frame = CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
+            adjacentNext.frame = CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
         }
     }
     else
@@ -327,16 +327,16 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
     [view removeFromSuperview];
 }
 
-- (void) refreshAdjucentPages
+- (void) refreshAdjacentPages
 {
-    if(adjucentNext)
+    if(adjacentNext)
     {
-        MyPageView *mpv = (MyPageView *)adjucentNext;
+        MyPageView *mpv = (MyPageView *)adjacentNext;
         [mpv.myWebView updateFontSize];
     }
-    if(adjucentPrev)
+    if(adjacentPrev)
     {
-        MyPageView *mpv = (MyPageView *)adjucentPrev;
+        MyPageView *mpv = (MyPageView *)adjacentPrev;
         [mpv.myWebView updateFontSize];
     }
 }
