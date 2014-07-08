@@ -19,9 +19,9 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 //	private static final int SWIPE_THRESHOLD = 100;
 //    private static final int SWIPE_VELOCITY_THRESHOLD = 100;
     private OnPageChangeListener _listener;
-    private PageView _currentView,_adjucentNext,_adjucentPrev;
+    private PageView _currentView,_adjacentNext,_adjacentPrev;
     private int MIN_MOVE_TO_CHANGE_PAGE = 60;
-    private int PAGE_ADJUST_ANIM_DURATION= 500;
+    private int PAGE_ADJAST_ANIM_DURATION= 500;
     
     public interface OnPageChangeListener
     {
@@ -152,15 +152,15 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 				offsetX = 0;
 				offsetY = 0;
 				startTouchPoint = new Point((int)e1.getX() , (int)e1.getY());
-				if(_adjucentNext == null)
+				if(_adjacentNext == null)
 				{
-					_adjucentNext = _listener.getNextView(_currentView);
-					if(_adjucentNext != null)
+					_adjacentNext = _listener.getNextView(_currentView);
+					if(_adjacentNext != null)
 					{
-						addView(_adjucentNext);
+						addView(_adjacentNext);
 						RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(getMeasuredWidth(), getMeasuredHeight());
 						params.leftMargin = getMeasuredWidth();
-						_adjucentNext.setLayoutParams(params);
+						_adjacentNext.setLayoutParams(params);
 					}
 				}
 				break;
@@ -170,7 +170,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 				if(startTouchPoint.x>e1.getX())
 				{
 					//moving to next page
-					if(_adjucentNext != null)
+					if(_adjacentNext != null)
 					{
 						offsetX = (int)(e1.getX() - startTouchPoint.x);
 						positionPages(offsetX,offsetY);
@@ -179,7 +179,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 				else if(startTouchPoint.x<e1.getX())
 				{
 					//moving to previous page
-					if(_adjucentPrev != null)
+					if(_adjacentPrev != null)
 					{
 						offsetX = (int)(e1.getX() - startTouchPoint.x);
 						positionPages(offsetX,offsetY);
@@ -251,20 +251,20 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 			_currentView.setLayoutParams(paramsCurrentPage);
 		}
 		
-		if(_adjucentNext != null)
+		if(_adjacentNext != null)
 		{
-			RelativeLayout.LayoutParams paramsAdjucentNext = new RelativeLayout.LayoutParams(getMeasuredWidth(), getMeasuredHeight());
-			paramsAdjucentNext.leftMargin= getMeasuredWidth() + offsetX;
-			paramsAdjucentNext.rightMargin = -(getMeasuredWidth() + offsetX);
-			_adjucentNext.setLayoutParams(paramsAdjucentNext);
+			RelativeLayout.LayoutParams paramsAdjacentNext = new RelativeLayout.LayoutParams(getMeasuredWidth(), getMeasuredHeight());
+			paramsAdjacentNext.leftMargin= getMeasuredWidth() + offsetX;
+			paramsAdjacentNext.rightMargin = -(getMeasuredWidth() + offsetX);
+			_adjacentNext.setLayoutParams(paramsAdjacentNext);
 		}
 		
-		if(_adjucentPrev != null)
+		if(_adjacentPrev != null)
 		{
-			RelativeLayout.LayoutParams paramsAdjucentPrev = new RelativeLayout.LayoutParams(getMeasuredWidth(), getMeasuredHeight());
-			paramsAdjucentPrev.leftMargin= -getMeasuredWidth() + offsetX;
-			paramsAdjucentPrev.rightMargin = -(-getMeasuredWidth() + offsetX);
-			_adjucentPrev.setLayoutParams(paramsAdjucentPrev);
+			RelativeLayout.LayoutParams paramsAdjacentPrev = new RelativeLayout.LayoutParams(getMeasuredWidth(), getMeasuredHeight());
+			paramsAdjacentPrev.leftMargin= -getMeasuredWidth() + offsetX;
+			paramsAdjacentPrev.rightMargin = -(-getMeasuredWidth() + offsetX);
+			_adjacentPrev.setLayoutParams(paramsAdjacentPrev);
 		}
 	}
 	
@@ -282,7 +282,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 	    	//positionPages(offsetX,offsetY);
 	    	offsetX = -(offsetX + getMeasuredWidth());
 	    	TranslateAnimation animCurrPage = new TranslateAnimation(0, offsetX, 0, 0);
-	    	animCurrPage.setDuration(PAGE_ADJUST_ANIM_DURATION);
+	    	animCurrPage.setDuration(PAGE_ADJAST_ANIM_DURATION);
 	    	animCurrPage.setAnimationListener(new AnimationListener() {
 				
 				@Override
@@ -297,7 +297,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 				
 			});
 	    	TranslateAnimation animNextPage = new TranslateAnimation(0, offsetX, 0, 0);
-	    	animNextPage.setDuration(PAGE_ADJUST_ANIM_DURATION);
+	    	animNextPage.setDuration(PAGE_ADJAST_ANIM_DURATION);
 	    	animNextPage.setAnimationListener(new AnimationListener() {
 				
 				@Override
@@ -312,24 +312,24 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 				
 				@Override
 				public void onAnimationEnd(Animation animation) {
-					if(_adjucentPrev != null)
+					if(_adjacentPrev != null)
 			        {
-			            removeView(_adjucentPrev);
-			            _adjucentPrev = null;
+			            removeView(_adjacentPrev);
+			            _adjacentPrev = null;
 			        }
-			        _adjucentPrev =_currentView;
-			        _currentView = _adjucentNext;
-			        _adjucentNext = _listener.getNextView(_currentView);
-			        if(_adjucentNext != null)
+			        _adjacentPrev =_currentView;
+			        _currentView = _adjacentNext;
+			        _adjacentNext = _listener.getNextView(_currentView);
+			        if(_adjacentNext != null)
 			        {
-			        	addView(_adjucentNext);
+			        	addView(_adjacentNext);
 			        }
 			        offsetX = offsetY = 0;
 			        positionPages(0, 0);
 				}
 			});
 	    	_currentView.startAnimation(animCurrPage);
-	    	_adjucentNext.startAnimation(animNextPage);
+	    	_adjacentNext.startAnimation(animNextPage);
 	    }
 	}
 	Handler handler = new Handler(new Handler.Callback() {
@@ -356,7 +356,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 	    {
 	    	offsetX = getMeasuredWidth()-offsetX;
 	    	TranslateAnimation animCurrPage = new TranslateAnimation(0, offsetX, 0, 0);
-	    	animCurrPage.setDuration(PAGE_ADJUST_ANIM_DURATION);
+	    	animCurrPage.setDuration(PAGE_ADJAST_ANIM_DURATION);
 	    	animCurrPage.setAnimationListener(new AnimationListener() {
 				
 				@Override
@@ -371,7 +371,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 				
 			});
 	    	TranslateAnimation animPrevPage = new TranslateAnimation(0, offsetX, 0, 0);
-	    	animPrevPage.setDuration(PAGE_ADJUST_ANIM_DURATION);
+	    	animPrevPage.setDuration(PAGE_ADJAST_ANIM_DURATION);
 	    	animPrevPage.setAnimationListener(new AnimationListener() {
 				
 				@Override
@@ -382,17 +382,17 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 				
 				@Override
 				public void onAnimationEnd(Animation animation) {
-					if(_adjucentNext != null)
+					if(_adjacentNext != null)
 			        {
-			            removeView(_adjucentNext);
-			            _adjucentNext = null;
+			            removeView(_adjacentNext);
+			            _adjacentNext = null;
 			        }
-			        _adjucentNext = _currentView;
-			        _currentView = _adjucentPrev;
-			        _adjucentPrev = _listener.getPreviousView(_currentView);
-			        if(_adjucentPrev != null)
+			        _adjacentNext = _currentView;
+			        _currentView = _adjacentPrev;
+			        _adjacentPrev = _listener.getPreviousView(_currentView);
+			        if(_adjacentPrev != null)
 			        {
-			        	addView(_adjucentPrev);
+			        	addView(_adjacentPrev);
 			        }
 			        offsetX = offsetY = 0;
 		        	positionPages(0, 0);
@@ -400,7 +400,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 				}
 			});
 	    	_currentView.startAnimation(animCurrPage);
-	    	_adjucentPrev.startAnimation(animPrevPage);
+	    	_adjacentPrev.startAnimation(animPrevPage);
 	    }
 	}
 	
@@ -424,15 +424,15 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 //		onSwipeRight();//load last page of same chapter
 	}
 
-	public void refreshAdjucentPages() 
+	public void refreshAdjacentPages() 
 	{
-		if(_adjucentNext != null)
+		if(_adjacentNext != null)
 		{
-			_adjucentNext.updateFontSize();
+			_adjacentNext.updateFontSize();
 		}
-		if(_adjucentPrev != null)
+		if(_adjacentPrev != null)
 		{
-			_adjucentPrev.updateFontSize();
+			_adjacentPrev.updateFontSize();
 		}
 //		if(_adjucentNext != null)
 //        {

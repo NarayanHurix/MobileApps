@@ -178,7 +178,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 			((PageView)_mViewPager.getCurrentPageView()).updateFontSize();
 
 		}
-		_mViewPager.refreshAdjucentPages();
+		_mViewPager.refreshAdjacentPages();
 	}
 
 	public void decreaseFontSize(View view)
