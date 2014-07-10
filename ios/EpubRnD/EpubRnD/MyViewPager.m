@@ -9,16 +9,15 @@
 #import "MyViewPager.h"
 #import "GlobalConstants.h"
 #import "GlobalSettings.h"
-#import "MyPageView.h"
 
 const int MIN_MOVE_TO_CHANGE_PAGE = 120;
 
 @implementation MyViewPager
 {
     CGPoint startTouchPoint ,endTouchPoint;
-    UIView *adjacentNext,*adjacentPrev;
+    MyPageView *adjacentNext,*adjacentPrev;
     int offsetX,offsetY;
-    
+    BOOL adjucentPagesLoaded;
     BOOL pendingPageAnimCompleted;
 }
 
@@ -59,12 +58,19 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
 }
 */
 
-- (void) initWithPageView:(UIView *) view
+- (void) initWithPageView:(MyPageView *) view
 {
+    adjucentPagesLoaded = NO;
+    adjacentNext = Nil;
+    adjacentPrev = Nil;
+    self.currenPageView = Nil;
+    
     self.currenPageView = view;
     [self removeAllSubViews:self];
     [self addSubview:view];
     pendingPageAnimCompleted = YES;
+    
+    [self checkAdjacentPagesLoaded];
 }
 
 
@@ -72,8 +78,8 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
 {
     if(!HIGHLIGHT_TOOL_SWITCH)
     {
-        UIView *oldPage = self.currenPageView;
-        UIView *nextPage =  [_delegate getNextPage:oldPage];
+        MyPageView *oldPage = self.currenPageView;
+        MyPageView *nextPage =  [_delegate getNextPage:oldPage];
         self.currenPageView = nextPage;
     
         if(oldPage != self.currenPageView)
@@ -89,8 +95,8 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
     if(!HIGHLIGHT_TOOL_SWITCH)
     {
         //previous PageView
-        UIView *oldPage = self.currenPageView;
-        UIView *previousPage = [_delegate getPreviousPage:oldPage];
+        MyPageView *oldPage = self.currenPageView;
+        MyPageView *previousPage = [_delegate getPreviousPage:oldPage];
         self.currenPageView = previousPage;
     
         if(oldPage != self.currenPageView)
@@ -114,7 +120,19 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
 
 - (void)onPageOutOfRange
 {
-    [self onSwipeRight:nil];
+    self.currenPageView = adjacentPrev;
+    adjacentPrev = [_delegate getPreviousPage:self.currenPageView];
+    [self addSubview: adjacentPrev];
+    
+    self.currenPageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    if(adjacentPrev)
+    {
+        adjacentPrev.frame = CGRectMake(-self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
+    }
+    if(adjacentNext)
+    {
+        adjacentNext.frame = CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
+    }
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -128,19 +146,7 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
             offsetX = 0;
             offsetY = 0;
         }
-        if(!adjacentNext)
-        {
-            adjacentNext = [_delegate getNextPage:self.currenPageView];
-            if(adjacentNext)
-            {
-                [self addSubview: adjacentNext];
-                
-                self.currenPageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-                
-                adjacentNext.frame = CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
-                
-            }
-        }
+        [self checkAdjacentPagesLoaded];
     }
 }
 
@@ -268,6 +274,7 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
             adjacentNext.frame = CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
         }
         pendingPageAnimCompleted = YES;
+        [self didPageFlipCompleted];
     }
     else
     {
@@ -309,6 +316,7 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
         {
             adjacentNext.frame = CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
         }
+        [self didPageFlipCompleted];
     }
     else
     {
@@ -340,5 +348,37 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
         [mpv.myWebView updateFontSize];
     }
 }
+
+- (void) didPageFlipCompleted
+{
+    [_delegate didPageChange: self.currenPageView];
+}
+
+- (void) checkAdjacentPagesLoaded
+{
+    if(!adjacentNext)
+    {
+        adjacentNext = [_delegate getNextPage:self.currenPageView];
+        if(adjacentNext)
+        {
+            [self addSubview: adjacentNext];
+            adjacentNext.frame = CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
+        }
+    }
+    if(!adjacentPrev)
+    {
+        adjacentPrev = [_delegate getPreviousPage:self.currenPageView];
+        if(adjacentPrev)
+        {
+            [self addSubview: adjacentPrev];
+            adjacentPrev.frame = CGRectMake(-self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
+        }
+    }
+    if(self.currenPageView)
+    {
+        self.currenPageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    }
+}
+
 
 @end

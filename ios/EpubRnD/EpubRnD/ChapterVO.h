@@ -11,5 +11,6 @@
 @interface ChapterVO : NSObject
 
 @property (nonatomic,strong) NSString *chapterURL;
+@property (nonatomic,readwrite) NSInteger pageCountInChapter;
 
 @end

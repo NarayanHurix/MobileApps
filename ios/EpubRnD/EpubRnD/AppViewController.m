@@ -96,12 +96,16 @@
 
 - (IBAction)openBook:(id)sender
 {
+    [BookModelFactory sharedInstance].chaptersColl = chaptersColl;
+    [BookModelFactory sharedInstance].pageCountInBook = 0;
+    
     self.myPVC = [[MainViewController alloc] init];
     
     [[self.myPVC view] setFrame:[[self view] bounds]];
     [[self view]  addSubview:[self.myPVC view]];
     [[self view] bringSubviewToFront:[self.myPVC view]];
-    [self.myPVC setBookData:chaptersColl];
+    
+    [self.myPVC openBook];
 }
 
 @end

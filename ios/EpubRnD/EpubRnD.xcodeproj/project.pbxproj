@@ -38,6 +38,7 @@
 		5A51EC031962C1630065A595 /* HighlightPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A51EC011962C1630065A595 /* HighlightPopupViewController.xib */; };
 		5A51EC061962D1050065A595 /* StartStickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A51EC051962D1050065A595 /* StartStickView.m */; };
 		5A51EC091962D1E70065A595 /* EndStickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A51EC081962D1E70065A595 /* EndStickView.m */; };
+		5A7EF3DE196D6F7200C8AF45 /* HelperViewForPageCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A7EF3DD196D6F7200C8AF45 /* HelperViewForPageCount.m */; };
 		5AAEED341949AE9F00F01F48 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 5AAEED331949AE9F00F01F48 /* assets */; };
 		5AC1F8B619505DA30088B1A7 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8B519505DA30088B1A7 /* HockeySDK.framework */; };
 		5AC1F8B819505E750088B1A7 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8B719505E750088B1A7 /* CoreText.framework */; };
@@ -45,6 +46,7 @@
 		5AC1F8BC19505E910088B1A7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8BB19505E910088B1A7 /* Security.framework */; };
 		5AC1F8BE19505E9E0088B1A7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8BD19505E9E0088B1A7 /* SystemConfiguration.framework */; };
 		5AD494A6194F27260059C0E9 /* AssetsContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD494A5194F27260059C0E9 /* AssetsContainer.m */; };
+		5AE76630196E88CA002BE2DE /* BookModelFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AE7662F196E88CA002BE2DE /* BookModelFactory.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +106,8 @@
 		5A51EC051962D1050065A595 /* StartStickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartStickView.m; sourceTree = "<group>"; };
 		5A51EC071962D1E70065A595 /* EndStickView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EndStickView.h; sourceTree = "<group>"; };
 		5A51EC081962D1E70065A595 /* EndStickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EndStickView.m; sourceTree = "<group>"; };
+		5A7EF3DC196D6F7200C8AF45 /* HelperViewForPageCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperViewForPageCount.h; sourceTree = "<group>"; };
+		5A7EF3DD196D6F7200C8AF45 /* HelperViewForPageCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperViewForPageCount.m; sourceTree = "<group>"; };
 		5AAEED331949AE9F00F01F48 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		5AC1F8B519505DA30088B1A7 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HockeySDK.framework; path = "Vendor/HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework"; sourceTree = "<group>"; };
 		5AC1F8B719505E750088B1A7 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -112,6 +116,8 @@
 		5AC1F8BD19505E9E0088B1A7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		5AD494A4194F27260059C0E9 /* AssetsContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetsContainer.h; sourceTree = "<group>"; };
 		5AD494A5194F27260059C0E9 /* AssetsContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetsContainer.m; sourceTree = "<group>"; };
+		5AE7662E196E88CA002BE2DE /* BookModelFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookModelFactory.h; sourceTree = "<group>"; };
+		5AE7662F196E88CA002BE2DE /* BookModelFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookModelFactory.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +266,8 @@
 				5A45B6A519473CB0003FA663 /* WebViewDAO.m */,
 				5A45B6A719473D11003FA663 /* ChapterVO.h */,
 				5A45B6A819473D11003FA663 /* ChapterVO.m */,
+				5AE7662E196E88CA002BE2DE /* BookModelFactory.h */,
+				5AE7662F196E88CA002BE2DE /* BookModelFactory.m */,
 			);
 			name = ModelClasses;
 			sourceTree = "<group>";
@@ -267,13 +275,10 @@
 		5A45B6AB19473D4E003FA663 /* ViewClasses */ = {
 			isa = PBXGroup;
 			children = (
+				5A7EF3D4196D613400C8AF45 /* ViewPager */,
 				5A51EBFE1962C1310065A595 /* TextHighlight */,
-				5A45B69819473A2D003FA663 /* MyViewPager.h */,
-				5A45B69919473A2D003FA663 /* MyViewPager.m */,
 				5A45B69E19473AB0003FA663 /* MyWebView.h */,
 				5A45B69F19473AB0003FA663 /* MyWebView.m */,
-				5A45B6A119473B8F003FA663 /* MyPageView.h */,
-				5A45B6A219473B8F003FA663 /* MyPageView.m */,
 				5AD494A4194F27260059C0E9 /* AssetsContainer.h */,
 				5AD494A5194F27260059C0E9 /* AssetsContainer.m */,
 				5A51EC041962D1050065A595 /* StartStickView.h */,
@@ -297,6 +302,7 @@
 		5A45B6AD19473DC4003FA663 /* source */ = {
 			isa = PBXGroup;
 			children = (
+				5A7EF3DB196D6F3500C8AF45 /* HelperViews */,
 				5A51EBB619628F390065A595 /* QuickActionPopup */,
 				5A43E7B1195D8DBE00D41CB0 /* Utils */,
 				5A3E309619488FAC001080F6 /* GlobalSettings */,
@@ -323,6 +329,26 @@
 				5A51EC011962C1630065A595 /* HighlightPopupViewController.xib */,
 			);
 			name = TextHighlight;
+			sourceTree = "<group>";
+		};
+		5A7EF3D4196D613400C8AF45 /* ViewPager */ = {
+			isa = PBXGroup;
+			children = (
+				5A45B6A119473B8F003FA663 /* MyPageView.h */,
+				5A45B6A219473B8F003FA663 /* MyPageView.m */,
+				5A45B69819473A2D003FA663 /* MyViewPager.h */,
+				5A45B69919473A2D003FA663 /* MyViewPager.m */,
+			);
+			name = ViewPager;
+			sourceTree = "<group>";
+		};
+		5A7EF3DB196D6F3500C8AF45 /* HelperViews */ = {
+			isa = PBXGroup;
+			children = (
+				5A7EF3DC196D6F7200C8AF45 /* HelperViewForPageCount.h */,
+				5A7EF3DD196D6F7200C8AF45 /* HelperViewForPageCount.m */,
+			);
+			name = HelperViews;
 			sourceTree = "<group>";
 		};
 		5AC1F8B419505D680088B1A7 /* Vendor */ = {
@@ -444,10 +470,12 @@
 				5A45B6A619473CB0003FA663 /* WebViewDAO.m in Sources */,
 				5A51EC091962D1E70065A595 /* EndStickView.m in Sources */,
 				5A45B6A919473D11003FA663 /* ChapterVO.m in Sources */,
+				5AE76630196E88CA002BE2DE /* BookModelFactory.m in Sources */,
 				5A51EC061962D1050065A595 /* StartStickView.m in Sources */,
 				5A51EC021962C1630065A595 /* HighlightPopupViewController.m in Sources */,
 				5A45B66D19472E52003FA663 /* main.m in Sources */,
 				5A45B69619472FEC003FA663 /* MainViewController.m in Sources */,
+				5A7EF3DE196D6F7200C8AF45 /* HelperViewForPageCount.m in Sources */,
 				5A45B6A019473AB0003FA663 /* MyWebView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
