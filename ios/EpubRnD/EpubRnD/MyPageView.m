@@ -31,7 +31,7 @@
 
 - (void) loadViewWithData:(WebViewDAO *) data
 {
-    CGRect parentFrame = [self frame];
+    CGRect parentFrame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     myWebView = [[MyWebView alloc] initWithFrame:parentFrame];
     [myWebView loadViewWithData:data];
     myWebView.myDelegate = self;

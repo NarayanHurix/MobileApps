@@ -63,7 +63,7 @@
 		5A01669C1951987B00A5FA59 /* JSLibraries */ = {isa = PBXFileReference; lastKnownFileType = folder; path = JSLibraries; sourceTree = "<group>"; };
 		5A26000A194840E400F472CE /* AppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppViewController.h; sourceTree = "<group>"; };
 		5A26000B194840E400F472CE /* AppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppViewController.m; sourceTree = "<group>"; };
-		5A26000C194840E400F472CE /* AppViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppViewController.xib; sourceTree = "<group>"; };
+		5A26000C194840E400F472CE /* AppViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AppViewController.xib; path = /UdaySravanK/git_workspace/MobileApps/ios/EpubRnD/EpubRnD/AppViewController.xib; sourceTree = "<absolute>"; };
 		5A26001019485A9800F472CE /* GlobalConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalConstants.h; sourceTree = "<group>"; };
 		5A26001119485A9800F472CE /* GlobalConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalConstants.m; sourceTree = "<group>"; };
 		5A3E309719488FC4001080F6 /* GlobalSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalSettings.h; sourceTree = "<group>"; };

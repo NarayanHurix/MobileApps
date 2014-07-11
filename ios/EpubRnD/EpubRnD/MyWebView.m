@@ -65,8 +65,8 @@
 {
     [self stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitUserSelect='none';"];
     
-    [self includeJSObjCUtilsJS];
-    [self addJSLibrariesToHTML];
+//    [self includeJSObjCUtilsJS];
+//    [self addJSLibrariesToHTML];
     [self updateFontSize];
 }
 
@@ -104,10 +104,9 @@
     "mySheet.insertRule(selector + '{' + newRule + ';}', ruleIndex);"   // For Firefox, Chrome, etc.
     "}";
     
-    NSString *insertRule1 = [NSString stringWithFormat:@"addCSSRule('html', 'padding: 0px; height: %fpx; -webkit-column-gap: 0px; -webkit-column-width: %fpx;margin-top:10px;')", webView.frame.size.height-100, webView.frame.size.width];
+    NSString *insertRule1 = [NSString stringWithFormat:@"addCSSRule('html', 'height: %fpx; -webkit-column-gap: 0px; -webkit-column-width: %fpx;')", webView.frame.size.height, webView.frame.size.width];
     NSString *insertRule2 = [NSString stringWithFormat:@"addCSSRule('p', 'text-align: justify;')"];
     //NSString *setTextSizeRule = [NSString stringWithFormat:@"addCSSRule('body', '-webkit-text-size-adjust: %d%%;')", currentTextSize];
-    
     
     [webView stringByEvaluatingJavaScriptFromString:varMySheet];
     
@@ -116,6 +115,7 @@
     [webView stringByEvaluatingJavaScriptFromString:insertRule1];
     
     [webView stringByEvaluatingJavaScriptFromString:insertRule2];
+    
     
     CGSize contentSize = CGSizeMake([[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollWidth;"] floatValue],
                                     [[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight;"] floatValue]);

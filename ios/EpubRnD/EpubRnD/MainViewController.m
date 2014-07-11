@@ -11,7 +11,10 @@
 #include "GlobalSettings.h"
 
 @interface MainViewController ()
-
+{
+    int currentPageNo;
+    WebViewDAO *currentPageWebViewDAO;
+}
 @end
 
 @implementation MainViewController
@@ -30,6 +33,7 @@
     [super viewDidLoad];
      _myViewPager.delegate = self;
     _myViewPager.mainController = self;
+    self.helperForPageCount.frame = _myViewPager.frame;
 
 }
 
@@ -74,8 +78,8 @@
         else
         {
             //next chapter first page
-            CGRect parentFrame = [self.view frame];
-            MyPageView *pageView = [[MyPageView alloc] initWithFrame:parentFrame];
+            CGRect rect = CGRectMake(0, 0, _myViewPager.frame.size.width, _myViewPager.frame.size.height);
+            MyPageView *pageView = [[MyPageView alloc] initWithFrame:rect];
             
             WebViewDAO *webDAO = [WebViewDAO new];
             webDAO.chapterVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:indexOfChapter];
@@ -89,8 +93,8 @@
     else
     {
         //next page in same chapter
-        CGRect parentFrame = [self.view frame];
-        MyPageView *pageView = [[MyPageView alloc] initWithFrame:parentFrame];
+        CGRect rect = CGRectMake(0, 0, _myViewPager.frame.size.width, _myViewPager.frame.size.height);
+        MyPageView *pageView = [[MyPageView alloc] initWithFrame:rect];
         
         WebViewDAO *webDAO = [WebViewDAO new];
         webDAO.chapterVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:indexOfChapter];
@@ -123,8 +127,8 @@
         else
         {
             //previous chapter last page
-            CGRect parentFrame = [self.view frame];
-            MyPageView *pageView = [[MyPageView alloc] initWithFrame:parentFrame];
+            CGRect rect = CGRectMake(0, 0, _myViewPager.frame.size.width, _myViewPager.frame.size.height);
+            MyPageView *pageView = [[MyPageView alloc] initWithFrame:rect];
             
             WebViewDAO *webDAO = [WebViewDAO new];
             webDAO.chapterVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:indexOfChapter];
@@ -139,8 +143,8 @@
     else if(indexOfPage <= pageCount-1)
     {
         //same chapter previous page
-        CGRect parentFrame = [self.view frame];
-        MyPageView *pageView = [[MyPageView alloc] initWithFrame:parentFrame];
+        CGRect rect = CGRectMake(0, 0, _myViewPager.frame.size.width, _myViewPager.frame.size.height);
+        MyPageView *pageView = [[MyPageView alloc] initWithFrame:rect];
         
         WebViewDAO *webDAO = [WebViewDAO new];
         webDAO.chapterVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:indexOfChapter];
@@ -157,8 +161,10 @@
 
 - (void)openBook
 {
+    currentPageWebViewDAO = nil;
     [self.bookLoadingIndicatorView setHidden:NO];
     [self.bookLoadActInd startAnimating];
+    currentPageNo = 1;
     [self.helperForPageCount startPageCounting:self];
     
 }
@@ -232,9 +238,11 @@
     }
     else
     {
-        MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
-        [myPageView.myWebView updateFontSize];
-        [_myViewPager refreshAdjacentPages];
+        [self.helperForPageCount startPageCounting:self];
+        
+//        MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
+//        [myPageView.myWebView updateFontSize];
+//        [_myViewPager refreshAdjacentPages];
     }
 }
 
@@ -247,60 +255,70 @@
     }
     else
     {
-        MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
-        [myPageView.myWebView updateFontSize];
-        [_myViewPager refreshAdjacentPages];
+        [self.helperForPageCount startPageCounting:self];
+//        MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
+//        [myPageView.myWebView updateFontSize];
+//        [_myViewPager refreshAdjacentPages];
     }
 }
 
 - (void)didSliderValueChange:(UISlider *)sender
 {
-    int indexOfChapter = -1;
-    int indexOfPage = -1;
-    
-    int arrLength = [[BookModelFactory sharedInstance] chaptersColl].count;
-    int tempPageCount = 0;
-    for (int i=0; i<arrLength; i++)
+    int pageNo = [NSNumber numberWithFloat:roundf(sender.value)].intValue;
+    if(pageNo<1)
     {
-        ChapterVO *tempCVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:i];
-        tempPageCount+= tempCVO.pageCountInChapter;
-        if(sender.value<tempPageCount)
-        {
-            indexOfChapter = i;
-            indexOfPage =tempPageCount- [NSNumber numberWithFloat:roundf(sender.value)].intValue;
-            break;
-        }
+        pageNo = 1;
     }
-    [self.pageNoLable setText:[NSString stringWithFormat:@"%d / %d",[NSNumber numberWithFloat: sender.value ].intValue, [BookModelFactory sharedInstance].pageCountInBook]];
-    if(indexOfPage != -1 && indexOfChapter != -1)
+    if(pageNo != currentPageNo)
     {
-        CGRect parentFrame = [self.view frame];
-        MyPageView *pageView = [[MyPageView alloc] initWithFrame:parentFrame];
+        currentPageNo = pageNo;
+        
+        [self.pageNoLable setText:[NSString stringWithFormat:@"%d / %d",pageNo, [BookModelFactory sharedInstance].pageCountInBook]];
+        WebViewDAO *dao = [self getPageWebViewDAO:pageNo];
+        if(dao)
+        {
+            CGRect rect = CGRectMake(0, 0, _myViewPager.frame.size.width, _myViewPager.frame.size.height);
+            MyPageView *pageView = [[MyPageView alloc] initWithFrame:rect];
 
-        WebViewDAO *webDAO = [WebViewDAO new];
-        webDAO.chapterVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:indexOfChapter];
-        [webDAO setIndexOfPage:indexOfPage];
-        [webDAO setIndexOfChapter:indexOfChapter];
+            WebViewDAO *webDAO = [WebViewDAO new];
+            webDAO.chapterVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:[dao getIndexOfChapter]];
+            [webDAO setIndexOfPage:[dao getIndexOfPage]];
+            [webDAO setIndexOfChapter:[dao getIndexOfChapter]];
+            [webDAO setPageCount:webDAO.chapterVO.pageCountInChapter];
+            [pageView loadViewWithData:webDAO];
 
-        [pageView loadViewWithData:webDAO];
-
-        [_myViewPager initWithPageView:pageView];
+            [_myViewPager initWithPageView:pageView];
+        }
     }
 }
 
 - (void) didCompletePageCounting:(int) count
 {
     [self.pageNoLable setText:[NSString stringWithFormat:@"%d / %d",1, [BookModelFactory sharedInstance].pageCountInBook]];
+    CGRect rect = CGRectMake(0, 0, _myViewPager.frame.size.width, _myViewPager.frame.size.height);
+    MyPageView *pageView = [[MyPageView alloc] initWithFrame:rect];
     
-    CGRect parentFrame = [self.view frame];
-    MyPageView *pageView = [[MyPageView alloc] initWithFrame:parentFrame];
     
-    WebViewDAO *webDAO = [WebViewDAO new];
-    webDAO.chapterVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:0];
-    [webDAO setIndexOfPage:0];
-    [webDAO setIndexOfChapter:0];
-    [webDAO setPageCount:webDAO.chapterVO.pageCountInChapter];
-    [pageView loadViewWithData:webDAO];
+    if(currentPageWebViewDAO)
+    {
+        ChapterVO *vo = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:[currentPageWebViewDAO getIndexOfChapter]];
+        if([currentPageWebViewDAO getIndexOfPage]>=[vo pageCountInChapter])
+        {
+            [currentPageWebViewDAO setIndexOfPage:vo.pageCountInChapter-1];
+        }
+        
+        [pageView loadViewWithData:currentPageWebViewDAO];
+    }
+    else
+    {
+        currentPageWebViewDAO = [WebViewDAO new];
+        NSArray *arr = [[BookModelFactory sharedInstance] chaptersColl];
+        currentPageWebViewDAO.chapterVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:0];
+        [currentPageWebViewDAO setIndexOfPage:0];
+        [currentPageWebViewDAO setIndexOfChapter:0];
+        [currentPageWebViewDAO setPageCount:currentPageWebViewDAO.chapterVO.pageCountInChapter];
+        [pageView loadViewWithData:currentPageWebViewDAO];
+    }
     
     [_myViewPager initWithPageView:pageView];
     [self.bookLoadActInd stopAnimating];
@@ -311,26 +329,54 @@
 - (void) updatePageNavSliderValue:(int)value
 {
     self.pageNavSlider.value = value;
-    [self.pageNoLable setText:[NSString stringWithFormat:@"%d / %d",value+1, [BookModelFactory sharedInstance].pageCountInBook]];
+    currentPageNo = value;
+    [self.pageNoLable setText:[NSString stringWithFormat:@"%d / %d",value, [BookModelFactory sharedInstance].pageCountInBook]];
 }
 
 - (void) didPageChange:(MyPageView *) currentPageView
 {
+    currentPageWebViewDAO =currentPageView.myWebView.webViewDAO;
+    int pageNo =[self getPageNoFromPageWebViewDAO: currentPageWebViewDAO];
+    if(pageNo != -1)
+    {
+        [self updatePageNavSliderValue:pageNo];
+    }
+}
+
+- (WebViewDAO *) getPageWebViewDAO:(int) pageNo
+{
     int arrLength = [[BookModelFactory sharedInstance] chaptersColl].count;
     int tempPageCount = 0;
-    int pageNavSliderValue = 0;
     for (int i=0; i<arrLength; i++)
     {
         ChapterVO *tempCVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:i];
         tempPageCount+= tempCVO.pageCountInChapter;
-        if(i == [currentPageView.myWebView.webViewDAO getIndexOfChapter])
+        if(pageNo<=tempPageCount)
         {
-            pageNavSliderValue = tempPageCount-tempCVO.pageCountInChapter+[currentPageView.myWebView.webViewDAO getIndexOfPage];
-            
-            break;
+            WebViewDAO *dao = [WebViewDAO new];
+            [dao setIndexOfChapter:i];
+            [dao setIndexOfPage:(pageNo - (tempPageCount-tempCVO.pageCountInChapter))-1];
+            return dao;
         }
     }
-    [self updatePageNavSliderValue:pageNavSliderValue];
+    
+    return Nil;
+}
+
+- (int) getPageNoFromPageWebViewDAO:(WebViewDAO *) dao
+{
+    int arrLength = [[BookModelFactory sharedInstance] chaptersColl].count;
+    int tempPageCount = 0;
+    for (int i=0; i<arrLength; i++)
+    {
+        ChapterVO *tempCVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:i];
+        tempPageCount+= tempCVO.pageCountInChapter;
+        if(i == [dao getIndexOfChapter])
+        {
+            return tempPageCount-tempCVO.pageCountInChapter+([dao getIndexOfPage]+1);
+        }
+    }
+    return -1;
 }
 
 @end

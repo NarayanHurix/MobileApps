@@ -67,7 +67,7 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
     
     self.currenPageView = view;
     [self removeAllSubViews:self];
-    [self addSubview:view];
+    [self addSubview:self.currenPageView];
     pendingPageAnimCompleted = YES;
     
     [self checkAdjacentPagesLoaded];
@@ -122,6 +122,7 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
 {
     self.currenPageView = adjacentPrev;
     adjacentPrev = [_delegate getPreviousPage:self.currenPageView];
+    adjacentPrev.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     [self addSubview: adjacentPrev];
     
     self.currenPageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
