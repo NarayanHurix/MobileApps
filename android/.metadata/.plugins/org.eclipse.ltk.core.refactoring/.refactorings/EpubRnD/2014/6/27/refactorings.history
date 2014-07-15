@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;EpubRnD/assets/JSLibraries/js.objc.utils.js&apos; to &apos;js.java.utils.js&apos;" description="Rename resource &apos;js.objc.utils.js&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="assets/JSLibraries/js.objc.utils.js" name="js.java.utils.js" stamp="1404106591488" updateReferences="true"/>
+</session>

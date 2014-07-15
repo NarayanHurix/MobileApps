@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">EpubRnD</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+<string name="copy">Copy the below text</string>
+<string name="select">Copy the below text</string>
+<string name="bookLoading">Please wait..</string>
+</resources>

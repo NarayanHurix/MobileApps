@@ -1,0 +1,12 @@
+package com.hurix.epubRnD.Views;
+
+import android.content.Context;
+import android.widget.ImageView;
+
+public class StartStickView extends ImageView {
+
+	public StartStickView(Context context) {
+		super(context);
+	}
+
+}

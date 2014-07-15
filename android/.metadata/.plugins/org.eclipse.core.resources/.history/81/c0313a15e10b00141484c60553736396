@@ -1,0 +1,38 @@
+package com.hurix.epubRnD.Views;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.webkit.WebView;
+
+public class HelperViewForPageCount extends WebView {
+	private PageCountListener _listener;
+
+	public HelperViewForPageCount(Context context) {
+		super(context);
+		init(context);
+	}
+
+	public HelperViewForPageCount(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		init(context);
+	}
+
+	public HelperViewForPageCount(Context context, AttributeSet attrs,
+			int defStyle) {
+		super(context, attrs, defStyle);
+		init(context);
+	}
+
+	private void init(Context context) {
+
+	}
+
+	public void startPageCounting(PageCountListener listener) {
+		_listener = listener;
+	}
+
+	public interface PageCountListener {
+		public abstract void onPageCountComplete(int count);
+	}
+
+}

@@ -1,0 +1,7 @@
+package com.hurix.epubRnD.Views;
+
+import android.widget.ImageView;
+
+public class EndStickView extends ImageView {
+
+}

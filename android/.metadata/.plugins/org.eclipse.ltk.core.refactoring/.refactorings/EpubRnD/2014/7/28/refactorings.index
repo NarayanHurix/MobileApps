@@ -1,0 +1,12 @@
+1404713586297	Rename type 'MyViewPager'
+1404718324736	Encapsulate field '_myViewFlipper'
+1404739228895	Rename local variable 'anim'
+1404799308268	Rename local variable 'animNextPage'
+1404801503904	Delete element
+1404803211345	Rename local variable 'callBack'
+1404815109600	Rename field 'PAGE_ADJUST_ANIM_DURATION'
+1404815134788	Rename field '_adjucentPrev'
+1404815200829	Rename local variable 'paramsAdjucentNext'
+1404815205348	Rename local variable 'paramsAdjucentPrev'
+1404821024348	Rename type 'TopMostLayout'
+1404831404492	Rename method 'removeSticks'

@@ -1,15 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
+	<section name="org.eclipse.ui.internal.dialogs.WorkbenchEditorsDialog">
+		<item value="0" key="sort"/>
+		<item value="false" key="allPersp"/>
+		<list key="bounds">
+			<item value="407"/>
+			<item value="51"/>
+			<item value="623"/>
+			<item value="448"/>
+		</list>
+		<list key="columns">
+			<item value="199"/>
+			<item value="400"/>
+		</list>
+	</section>
 	<section name="org.eclipse.ui.internal.QuickAccess">
-		<item value="800" key="dialogWidth"/>
-		<item value="500" key="dialogHeight"/>
+		<item value="900" key="dialogWidth"/>
+		<item value="563" key="dialogHeight"/>
 		<list key="orderedProviders">
+			<item value="org.eclipse.e4.ui.parts"/>
+			<item value="org.eclipse.e4.ui.parts"/>
 		</list>
 		<list key="textArray">
+			<item value="logcat"/>
+			<item value="devices"/>
+			<item value="devi"/>
+			<item value="dev"/>
 		</list>
 		<list key="orderedElements">
+			<item value="com.android.ide.eclipse.ddms.views.LogCatView"/>
+			<item value="com.android.ide.eclipse.ddms.views.DeviceView"/>
 		</list>
 		<list key="textEntries">
+			<item value="1"/>
+			<item value="3"/>
 		</list>
+	</section>
+	<section name="WorkbenchPreferenceDialogSettings">
+		<item value="28" key="DIALOG_Y_ORIGIN"/>
+		<item value="203" key="DIALOG_X_ORIGIN"/>
+	</section>
+	<section name="EditorSelectionDialog">
+		<item value="true" key="EditorSelectionDialog.STORE_ID_INTERNAL_EXTERNAL"/>
 	</section>
 </section>

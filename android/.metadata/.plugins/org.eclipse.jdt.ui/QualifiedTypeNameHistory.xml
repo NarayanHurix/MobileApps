@@ -1,2 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.Constants.GlobalConstants"/>
+<fullyQualifiedTypeName name="android.widget.ToggleButton"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.Settings.GlobalSettings"/>
+<fullyQualifiedTypeName name="android.content.SharedPreferences"/>
+<fullyQualifiedTypeName name="org.json.JSONArray"/>
+<fullyQualifiedTypeName name="java.lang.Object"/>
+<fullyQualifiedTypeName name="android.widget.ViewFlipper"/>
+<fullyQualifiedTypeName name="android.graphics.Point"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.Views.TopMostLayout"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.Views.MyViewFlipper"/>
+<fullyQualifiedTypeName name="android.view.animation.TranslateAnimation"/>
+<fullyQualifiedTypeName name="android.view.animation.Animation.AnimationListener"/>
+<fullyQualifiedTypeName name="android.webkit.JavascriptInterface"/>
+<fullyQualifiedTypeName name="org.json.JSONObject"/>
+<fullyQualifiedTypeName name="org.json.JSONException"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="android.util.Log"/>
+<fullyQualifiedTypeName name="android.os.Handler"/>
+<fullyQualifiedTypeName name="android.os.Handler.Callback"/>
+<fullyQualifiedTypeName name="android.app.Activity"/>
+<fullyQualifiedTypeName name="android.os.Message"/>
+<fullyQualifiedTypeName name="android.view.MotionEvent"/>
+<fullyQualifiedTypeName name="android.widget.RelativeLayout"/>
+<fullyQualifiedTypeName name="android.widget.RelativeLayout.LayoutParams"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.Views.PageView"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.Views.StartStickView"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.Views.EndStickView"/>
+<fullyQualifiedTypeName name="android.graphics.Color"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.R"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.widgets.QuickAction"/>
+<fullyQualifiedTypeName name="android.widget.Button"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.R.layout"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.widgets.QuickAction.OnDismissListener"/>
+<fullyQualifiedTypeName name="android.view.ViewGroup"/>
+<fullyQualifiedTypeName name="java.lang.Exception"/>
+<fullyQualifiedTypeName name="java.lang.Runnable"/>
+<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
+</qualifiedTypeNameHistroy>
