@@ -1,0 +1,53 @@
+
+
+ANDROID & iOS Native ePub Player for Reflowable eBooks
+
+=====================================================================================================
+
+Completed R&D Work:
+
+1. Navigation
+> Navigating page by page in a chapter
+> Navigating page by page through out all chapters
+> Smooth Pagination with next and previous page buffering
+
+2.Highlight
+> Word level highlight
+> Highlight sticks to adjust text selection
+> Saving highlight to native app storage
+
+3. Font
+> Adjusting font size
+> Floating content by adjusting font size
+
+4. Navigating through pages by - Slider/Seek Bar with page numbers (WIP in android)
+
+5. Crash Report Analysis Framework integration
+
+=====================================================================================================
+
+On Going R&D Work:
+
+1. Long press highlight
+2. Search and highlighting the searched word (Book level search)
+3. Bookmarks
+4. Orientation handling (single page,two page mode)
+5. Player Theme (Day/Night mode- background colors and font colors)
+6. Book information Data base
+7. Sticky notes with reference to highlight
+8. Last visited page
+9. Text Copy
+10. ToC
+11. User Generated Data ToC (list of bookmarks and notes)
+
+=====================================================================================================
+
+Advanced Features
+
+1. Text to Speech (Audio Sync)
+2. Text Magnifier
+3. Page curl 3D effects
+4. Pinch zoom
+5. Dictionary
+6. Volume buttons to change page (only Android)
+7. Font styles and alignments 
