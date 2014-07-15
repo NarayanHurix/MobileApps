@@ -21,7 +21,7 @@ function looper($el) {
                           
                           // Text
                           if (this.nodeType === 3 && blnValidNode) {
-                          var arrText = $.trim($(this).text()) === '' ? $(this).text() : $(this).text().replace(/[\r\n]/ig, '<br/>'),
+                          var arrText = $.trim($(this).text()) === '' ? $(this).text() : $(this).text().replace(/[\r\n]/ig, ''),
                           arrText = arrText.replace(/\s+/g,' ').split(' '),
                           lenText = arrText.length,
                           containSpace = false;

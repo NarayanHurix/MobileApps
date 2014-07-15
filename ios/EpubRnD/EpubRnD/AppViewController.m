@@ -77,9 +77,9 @@
     cV1O.chapterURL =@"5-significance";
     [chaptersColl addObject:cV1O];
     
-    ChapterVO *cV11 = [ChapterVO new];
-    cV11.chapterURL =@"nav";
-    [chaptersColl addObject:cV11];
+//    ChapterVO *cV11 = [ChapterVO new];
+//    cV11.chapterURL =@"nav";
+//    [chaptersColl addObject:cV11];
     
 //    [NSArray arrayWithObjects:@"0-intro",@"1a-childhood-text",@"1b-childhood-painting",@"2a-youth-text",@"2b-youth-painting",@"3a-manhood-text",@"3b-manhood-painting",@"4a-oldage-text",@"4b-oldage-painting",@"5-significance",@"nav", nil];
     
