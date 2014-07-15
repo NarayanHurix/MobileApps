@@ -69,9 +69,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 	private EndStickView endStick;
 	public MyWebView(Context context) {
 		super(context);
-	
 		init(context);
-				
 	}
 
 	public MyWebView(Context context, AttributeSet attrs) {
@@ -132,6 +130,11 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 		else
 		{
 			//if(gestureDetector.onTouchEvent(event))
+			//enable it for build in zoom feature of webview
+//			if(event.getPointerCount()>1)
+//			{
+//				return super.onTouchEvent(event);
+//			}
 			if(_viewpager.touch(event))
 			{
 				return true;
@@ -173,7 +176,8 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 		getSettings().setJavaScriptEnabled(true);
 		getSettings().setDefaultFontSize(GlobalSettings.FONT_SIZE);
 		getSettings().setAllowFileAccess(true);
-		
+		//getSettings().setBuiltInZoomControls(true);
+		//getSettings().setDisplayZoomControls(true);
 		//		getSettings().setRenderPriority(RenderPriority.HIGH);
 		//		getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 		setHorizontalScrollBarEnabled(false);
@@ -207,7 +211,10 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 
 		if(GlobalSettings.EPUB_TYPE == GlobalConstants.FIXED)
 		{
-			setFitsSystemWindows(true);
+			if(android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+			{
+				setFitsSystemWindows(true);
+			}
 		}
 		
 		
@@ -243,14 +250,14 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 						+ "px; -webkit-column-gap: 0px; -webkit-column-width: "
 						+ myWebView.getMeasuredWidth() + "px;')";
 
-				String insertRule2 = "addCSSRule('p', 'text-align: justify;')";
+				//String insertRule2 = "addCSSRule('p', 'text-align: justify;')";
 
 				//String setImageRule = "addCSSRule('img', 'max-width: "+  (myWebView.getMeasuredWidth() -200)+"px; height:"+(myWebView.getMeasuredHeight() - 200)+"px')";
 
 				myWebView.loadUrl("javascript:" + varMySheet);
 				myWebView.loadUrl("javascript:" + addCSSRule);
 				myWebView.loadUrl("javascript:" + insertRule1);
-				myWebView.loadUrl("javascript:" + insertRule2);
+//				myWebView.loadUrl("javascript:" + insertRule2);
 				//myWebView.loadUrl("javascript:" + setImageRule);
 				String data = "{\"MethodName\":\"paginationDone\",\"MethodArguments\":{}}";
 				String callBackToNative  = "jsInterface.callNativeMethod('jstoobjc:"+data+"');";
@@ -393,6 +400,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 			//disable default webview text selection feature
 			loadUrl("javascript: document.documentElement.style.webkitUserSelect='none'");
 			addJQueryJS();
+			_mMyWebViewLoadListener.checkPageBuffer();
 		}
 		
 		private void onJQueryJSLoaded()
@@ -412,16 +420,23 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 		
 		private void onWordHighlightManagerJS()
 		{
-			if(GlobalSettings.HIGHLIGHT_SWITCH)
+			try
 			{
-				loadUrl("javascript: bindDocumentTouch()");
+				if(GlobalSettings.HIGHLIGHT_SWITCH)
+				{
+					loadUrl("javascript: bindDocumentTouch()");
+				}
+				else
+				{
+					loadUrl("javascript: unbindDocumentTouch()");
+				}
+				getAllHighlights();
 			}
-			else
+			catch(Exception e)
 			{
-				loadUrl("javascript: unbindDocumentTouch()");
+				//webview has already been destroyed
+				e.printStackTrace();
 			}
-			getAllHighlights();
-			_mMyWebViewLoadListener.checkPageBuffer();
 		}
 		
 		private void saveTextHighlight(String startWordID, String endWordID, String text)
@@ -594,8 +609,9 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 		{
 			int newPageCount = computeHorizontalScrollRange()/getMeasuredWidth();
 			getData().setPageCount(newPageCount);
+			//Log.d("here","total pages in Spine : "+newPageCount+" curr page : "+(getData().getIndexOfPage()+1));
 		}
-//		Log.d("here","total pages in Spine : "+newPageCount+" curr page : "+(getData().getIndexOfPage()+1));
+		
 	}
 
 	@Override
@@ -917,6 +933,5 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 			default:
 				break;
 		}
-		
 	}
 }

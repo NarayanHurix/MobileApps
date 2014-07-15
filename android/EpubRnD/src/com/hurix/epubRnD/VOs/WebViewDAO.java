@@ -5,8 +5,6 @@ public class WebViewDAO
 	private ChapterVO _chapterVO;
 	private int indexOfPage;
 	private int indexOfChapter;
-	private int scrollX;
-	private int maxScrollX;
 	private int pageCount;
 	
 	public ChapterVO getChapterVO() {
@@ -15,22 +13,6 @@ public class WebViewDAO
 
 	public void setChapterVO(ChapterVO _chapterVO) {
 		this._chapterVO = _chapterVO;
-	}
-
-	public int getScrollX() {
-		return scrollX;
-	}
-
-	public void setScrollX(int scrollX) {
-		this.scrollX = scrollX;
-	}
-
-	public int getMaxScrollX() {
-		return maxScrollX;
-	}
-
-	public void setMaxScrollX(int maxScrollX) {
-		this.maxScrollX = maxScrollX;
 	}
 
 	public int getIndexOfPage() {

@@ -14,12 +14,18 @@ public class ViewPagerController implements OnPageChangeListener
 
 	private ArrayList<ChapterVO> chaptersColl;
 	private MyViewFlipper _mViewPager;
+	private ViewPagerControllerCallBacks _callBackListener;
 	
-	
-	public void setData(ArrayList<ChapterVO> chaptersColl,MyViewFlipper viewPager)
+	public void setData(ArrayList<ChapterVO> chaptersColl,MyViewFlipper viewPager,ViewPagerControllerCallBacks callBackListener)
 	{
 		this.chaptersColl = chaptersColl;
 		_mViewPager = viewPager;
+		_callBackListener = callBackListener;
+	}
+	
+	public interface ViewPagerControllerCallBacks
+	{
+		public void onPageChanged(PageView currentPageView); 
 	}
 	/*public void setData(ArrayList<ChapterVO> chaptersColl,MyWebView myView)
 	{
@@ -56,8 +62,6 @@ public class ViewPagerController implements OnPageChangeListener
 				data.setChapterVO(chaptersColl.get(chapterIndex));
 				data.setIndexOfChapter(chapterIndex);
 				data.setIndexOfPage(-2);
-				data.setMaxScrollX(0);
-				data.setScrollX(0);
 				
 				webView.setData(data);
 				return pageView;
@@ -73,8 +77,6 @@ public class ViewPagerController implements OnPageChangeListener
 			data.setChapterVO(chaptersColl.get(chapterIndex));
 			data.setIndexOfChapter(chapterIndex);
 			data.setIndexOfPage(pageIndex);
-			data.setMaxScrollX(0);
-			data.setScrollX(0);
 			
 			webView.setData(data);
 			return pageView;
@@ -110,8 +112,6 @@ public class ViewPagerController implements OnPageChangeListener
 				data.setChapterVO(chaptersColl.get(chapterIndex));
 				data.setIndexOfChapter(chapterIndex);
 				data.setIndexOfPage(pageIndex);
-				data.setMaxScrollX(0);
-				data.setScrollX(0);
 				
 				webView.setData(data);
 				
@@ -129,13 +129,16 @@ public class ViewPagerController implements OnPageChangeListener
 			data.setIndexOfChapter(chapterIndex);
 			data.setIndexOfPage(pageIndex);
 			data.setPageCount(pageCount);
-			data.setMaxScrollX(0);
-			data.setScrollX(0);
 			
 			webView.setData(data);
 			
 			return pageView;
 		}
-		
+	}
+	
+	@Override
+	public void onPageChanged(PageView currentPageView)
+	{
+		_callBackListener.onPageChanged(currentPageView);
 	}
 }

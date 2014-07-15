@@ -14,6 +14,7 @@ public class GlobalConstants
 	public static int MAX_FONT_SIZE = 36;
 	public static int FONT_SIZE_STEP_SIZE = 2;
 
+	public static int PAGE_COUNT = 0;
 	//ePub type
 	public static final int REFLOWABLE = 100;
 	public static final int FIXED = 200;

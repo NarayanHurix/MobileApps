@@ -27,6 +27,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
     {
     	public abstract PageView getPreviousView(PageView oldView);
     	public abstract PageView getNextView(PageView oldView);
+    	public abstract void onPageChanged(PageView currentPageView);
     }
     
 	public MyViewFlipper(Context context) {
@@ -287,6 +288,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 	        }
 	        offsetX = offsetY = 0;
 	        positionPages(0, 0);
+	        _listener.onPageChanged(_currentView);
 	    }
 	    else
 	    {
@@ -321,6 +323,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 	        }
 	        offsetX = offsetY = 0;
         	positionPages(0, 0);
+        	_listener.onPageChanged(_currentView);
 	    }
 	    else
 	    {
@@ -364,6 +367,12 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 
 	public void initWithView(PageView view) 
 	{
+		removeAllViews();
+		removeAllViewsInLayout();
+		_adjacentNext= null;
+		_adjacentPrev = null;
+		_currentView = null;
+		 
 		addView(view,0);
 		_currentView = view;
 	}
@@ -386,11 +395,19 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 			if(_adjacentNext != null)
 			{
 				addView(_adjacentNext);
-				RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(getMeasuredWidth(), getMeasuredHeight());
-				params.leftMargin = getMeasuredWidth();
-				_adjacentNext.setLayoutParams(params);
 			}
 		}
+		if(_adjacentPrev == null)
+		{
+			_adjacentPrev = _listener.getPreviousView(_currentView);
+	        if(_adjacentPrev != null)
+	        {
+	        	addView(_adjacentPrev);
+	        }
+		}
+        offsetX = offsetY = 0;
+    	positionPages(0, 0);
+		
 	}
 	public void refreshAdjacentPages() 
 	{
