@@ -65,8 +65,8 @@
 {
     [self stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitUserSelect='none';"];
     
-//    [self includeJSObjCUtilsJS];
-//    [self addJSLibrariesToHTML];
+    [self includeJSObjCUtilsJS];
+    [self addJSLibrariesToHTML];
     [self updateFontSize];
 }
 

@@ -322,7 +322,8 @@
     
     [_myViewPager initWithPageView:pageView];
     [self.bookLoadActInd stopAnimating];
-    [self.bookLoadingIndicatorView setHidden:YES];
+//    [self.bookLoadingIndicatorView setHidden:YES];
+    [self.bookLoadingIndicatorView removeFromSuperview];
     [self.pageNavSlider setMaximumValue:count];
 }
 

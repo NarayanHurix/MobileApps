@@ -40,6 +40,7 @@
 }
 */
 
+
 - (void) startPageCounting:(id<ComputePageCountInBookDelgate>) delegate
 {
     pageCount = 0;
