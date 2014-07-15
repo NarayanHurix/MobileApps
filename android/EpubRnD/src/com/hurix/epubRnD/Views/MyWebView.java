@@ -217,7 +217,6 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 			}
 		}
 		
-		
 	}
 
 	private class MyWebClient extends WebViewClient
