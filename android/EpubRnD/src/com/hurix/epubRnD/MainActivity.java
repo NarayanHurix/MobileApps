@@ -72,7 +72,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,P
 		_pageNavSeekBar = (SeekBar) findViewById(R.id.seekBar1);
 		_pageNavSeekBar.setOnSeekBarChangeListener(this);
 		_pageNoTV = (TextView) findViewById(R.id.pageNoTV);
-		
+		GlobalSettings.HIGHLIGHT_SWITCH = false;
 		checkForUpdates();
 		File file = new File(Constants.SDCARD+"/epubBook/" );
 		if (file.exists())
@@ -139,33 +139,47 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,P
 
 	public void increaseFontSize(View view)
 	{
-		GlobalSettings.FONT_SIZE=GlobalSettings.FONT_SIZE+GlobalConstants.FONT_SIZE_STEP_SIZE;
-		if(GlobalSettings.FONT_SIZE>GlobalConstants.MAX_FONT_SIZE)
+		if(GlobalSettings.EPUB_LAYOUT_TYPE == GlobalConstants.FIXED)
 		{
-			GlobalSettings.FONT_SIZE = GlobalSettings.FONT_SIZE-GlobalConstants.FONT_SIZE_STEP_SIZE;
+			
 		}
-		else
+		else 
 		{
-			//((PageView)_mViewPager.getCurrentPageView()).updateFontSize();
-			((PageView)_mViewPager.getCurrentPageView()).onLoadStart();
-			_helperViewForPageCount.startPageCounting(this, _chaptersColl);
-
+			GlobalSettings.FONT_SIZE=GlobalSettings.FONT_SIZE+GlobalConstants.FONT_SIZE_STEP_SIZE;
+			if(GlobalSettings.FONT_SIZE>GlobalConstants.MAX_FONT_SIZE)
+			{
+				GlobalSettings.FONT_SIZE = GlobalSettings.FONT_SIZE-GlobalConstants.FONT_SIZE_STEP_SIZE;
+			}
+			else
+			{
+				//((PageView)_mViewPager.getCurrentPageView()).updateFontSize();
+				((PageView)_mViewPager.getCurrentPageView()).onLoadStart();
+				_helperViewForPageCount.startPageCounting(this, _chaptersColl);
+	
+			}
+			_mViewPager.refreshAdjacentPages();
 		}
-		_mViewPager.refreshAdjacentPages();
 	}
 
 	public void decreaseFontSize(View view)
 	{
-		GlobalSettings.FONT_SIZE=GlobalSettings.FONT_SIZE-GlobalConstants.FONT_SIZE_STEP_SIZE;
-		if(GlobalSettings.FONT_SIZE<GlobalConstants.MIN_FONT_SIZE)
+		if(GlobalSettings.EPUB_LAYOUT_TYPE == GlobalConstants.FIXED)
 		{
-			GlobalSettings.FONT_SIZE = GlobalSettings.FONT_SIZE+GlobalConstants.FONT_SIZE_STEP_SIZE;
+			
 		}
-		else
+		else 
 		{
-			//((PageView)_mViewPager.getCurrentPageView()).updateFontSize();
-			((PageView)_mViewPager.getCurrentPageView()).onLoadStart();
-			_helperViewForPageCount.startPageCounting(this, _chaptersColl);
+			GlobalSettings.FONT_SIZE=GlobalSettings.FONT_SIZE-GlobalConstants.FONT_SIZE_STEP_SIZE;
+			if(GlobalSettings.FONT_SIZE<GlobalConstants.MIN_FONT_SIZE)
+			{
+				GlobalSettings.FONT_SIZE = GlobalSettings.FONT_SIZE+GlobalConstants.FONT_SIZE_STEP_SIZE;
+			}
+			else
+			{
+				//((PageView)_mViewPager.getCurrentPageView()).updateFontSize();
+				((PageView)_mViewPager.getCurrentPageView()).onLoadStart();
+				_helperViewForPageCount.startPageCounting(this, _chaptersColl);
+			}
 		}
 	}
 

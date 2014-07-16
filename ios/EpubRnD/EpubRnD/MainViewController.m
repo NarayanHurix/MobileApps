@@ -14,6 +14,7 @@
 {
     int currentPageNo;
     WebViewDAO *currentPageWebViewDAO;
+    
 }
 @end
 
@@ -34,7 +35,7 @@
      _myViewPager.delegate = self;
     _myViewPager.mainController = self;
     self.helperForPageCount.frame = _myViewPager.frame;
-
+    self.highlightBtn.hidden = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -219,8 +220,13 @@
 
 - (IBAction)onTapHighlightBtn:(UIButton *)sender
 {
+    [self toggleHighlightSwitch];
+}
+
+- (void) toggleHighlightSwitch
+{
     HIGHLIGHT_TOOL_SWITCH = HIGHLIGHT_TOOL_SWITCH?NO:YES;
-    [sender setSelected:HIGHLIGHT_TOOL_SWITCH];
+    [self.highlightBtn setSelected:HIGHLIGHT_TOOL_SWITCH];
     MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
     [myPageView.myWebView didHighlightButtonTap];
     
@@ -231,34 +237,48 @@
 
 - (IBAction)decreaseFontSize:(UIButton *)sender
 {
-    CURRENT_FONT_SIZE-=FONT_SIZE_STEP_SIZE;
-    if(CURRENT_FONT_SIZE<MIN_FONT_SIZE)
+    if(EPUB_LAYOUT_TYPE == REFLOWABLE)
     {
-        CURRENT_FONT_SIZE+=FONT_SIZE_STEP_SIZE;
+        CURRENT_FONT_SIZE-=FONT_SIZE_STEP_SIZE;
+        if(CURRENT_FONT_SIZE<MIN_FONT_SIZE)
+        {
+            CURRENT_FONT_SIZE+=FONT_SIZE_STEP_SIZE;
+        }
+        else
+        {
+            [self.helperForPageCount startPageCounting:self];
+            
+    //        MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
+    //        [myPageView.myWebView updateFontSize];
+    //        [_myViewPager refreshAdjacentPages];
+        }
     }
     else
     {
-        [self.helperForPageCount startPageCounting:self];
         
-//        MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
-//        [myPageView.myWebView updateFontSize];
-//        [_myViewPager refreshAdjacentPages];
     }
 }
 
 - (IBAction)increaseFontSize:(UIButton *)sender
 {
-    CURRENT_FONT_SIZE+=FONT_SIZE_STEP_SIZE;
-    if(CURRENT_FONT_SIZE>MAX_FONT_SIZE)
+    if(EPUB_LAYOUT_TYPE == REFLOWABLE)
     {
-        CURRENT_FONT_SIZE-=FONT_SIZE_STEP_SIZE;
+        CURRENT_FONT_SIZE+=FONT_SIZE_STEP_SIZE;
+        if(CURRENT_FONT_SIZE>MAX_FONT_SIZE)
+        {
+            CURRENT_FONT_SIZE-=FONT_SIZE_STEP_SIZE;
+        }
+        else
+        {
+            [self.helperForPageCount startPageCounting:self];
+    //        MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
+    //        [myPageView.myWebView updateFontSize];
+    //        [_myViewPager refreshAdjacentPages];
+        }
     }
     else
     {
-        [self.helperForPageCount startPageCounting:self];
-//        MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
-//        [myPageView.myWebView updateFontSize];
-//        [_myViewPager refreshAdjacentPages];
+        
     }
 }
 

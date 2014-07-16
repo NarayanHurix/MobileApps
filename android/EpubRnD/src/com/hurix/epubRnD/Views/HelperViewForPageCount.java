@@ -87,13 +87,25 @@ public class HelperViewForPageCount extends WebView {
 	
 	private void countPagesInChapter()
 	{
+		
 		if(_currChapterIndex == -1 && _currChapterVO == null)
 		{
 			_currChapterIndex = 0;
 			totalPageCountInBook= 0;
 			_currChapterVO = _chaptersColl.get(_currChapterIndex);
-			getSettings().setDefaultFontSize(GlobalSettings.FONT_SIZE);
-			loadUrl(_currChapterVO.getChapterURL());
+			
+			if(GlobalSettings.EPUB_LAYOUT_TYPE == GlobalConstants.FIXED)
+			{
+				totalPageCountInBook = 1;
+				_currChapterVO.setPageCount(1);
+				countPagesInChapter();
+			}
+			else
+			{
+				getSettings().setDefaultFontSize(GlobalSettings.FONT_SIZE);
+				loadUrl(_currChapterVO.getChapterURL());
+			}
+			
 		}
 		else if(_currChapterIndex == _chaptersColl.size()-1)
 		{
@@ -103,8 +115,17 @@ public class HelperViewForPageCount extends WebView {
 		{
 			_currChapterIndex++;
 			_currChapterVO = _chaptersColl.get(_currChapterIndex);
-			getSettings().setDefaultFontSize(GlobalSettings.FONT_SIZE);
-			loadUrl(_currChapterVO.getChapterURL());
+			if(GlobalSettings.EPUB_LAYOUT_TYPE == GlobalConstants.FIXED)
+			{
+				totalPageCountInBook +=1;
+				_currChapterVO.setPageCount(1);
+				countPagesInChapter();
+			}
+			else
+			{
+				getSettings().setDefaultFontSize(GlobalSettings.FONT_SIZE);
+				loadUrl(_currChapterVO.getChapterURL());
+			}
 		}
 	}
 	
@@ -120,7 +141,11 @@ public class HelperViewForPageCount extends WebView {
 			super.onPageFinished(view, url);
 
 
-			if(GlobalSettings.EPUB_TYPE==GlobalConstants.REFLOWABLE)
+			if(GlobalSettings.EPUB_LAYOUT_TYPE==GlobalConstants.FIXED)
+			{
+				
+			}
+			else
 			{
 				String varMySheet = "var mySheet = document.styleSheets[0];";
 
@@ -158,12 +183,19 @@ public class HelperViewForPageCount extends WebView {
 					@Override
 					public void run() 
 					{
-						if(getMeasuredWidth() != 0)
+						if(GlobalSettings.EPUB_LAYOUT_TYPE==GlobalConstants.FIXED)
 						{
-							int newPageCount = computeHorizontalScrollRange()/getMeasuredWidth();
-							totalPageCountInBook = totalPageCountInBook + newPageCount;
-							_currChapterVO.setPageCount(newPageCount);
-							countPagesInChapter();
+							
+						}
+						else
+						{
+							if(getMeasuredWidth() != 0)
+							{
+								int newPageCount = computeHorizontalScrollRange()/getMeasuredWidth();
+								totalPageCountInBook = totalPageCountInBook + newPageCount;
+								_currChapterVO.setPageCount(newPageCount);
+								countPagesInChapter();
+							}
 						}
 					}
 				},300);

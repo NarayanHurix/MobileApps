@@ -14,6 +14,7 @@
 extern NSInteger CURRENT_FONT_SIZE;
 extern BOOL PEN_TOOL_SWITCH;
 extern BOOL HIGHLIGHT_TOOL_SWITCH;
+extern NSInteger EPUB_LAYOUT_TYPE;
 + (void) initSettings;
 
 @end

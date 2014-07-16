@@ -54,11 +54,18 @@
 }
 - (void) computePagesInChapter
 {
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:currentComputingChapter.chapterURL  ofType:@"xhtml" inDirectory:@"assets/cole-voyage-of-life-20120320/EPUB/xhtml"];
-    
-    NSURL *url = [NSURL fileURLWithPath:filePath];
-    NSURLRequest *urlRqst = [NSURLRequest requestWithURL:url];
-    [self loadRequest:urlRqst];
+    if(EPUB_LAYOUT_TYPE == REFLOWABLE)
+    {
+        NSString *filePath = [[NSBundle mainBundle] pathForResource:currentComputingChapter.chapterURL  ofType:@"xhtml" inDirectory:@"assets/cole-voyage-of-life-20120320/EPUB/xhtml"];
+        
+        NSURL *url = [NSURL fileURLWithPath:filePath];
+        NSURLRequest *urlRqst = [NSURLRequest requestWithURL:url];
+        [self loadRequest:urlRqst];
+    }
+    else
+    {
+        [self webViewDidFinishLoad:self];
+    }
 }
 
 - (void) updateFontSize
@@ -120,7 +127,16 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [self updateFontSize];
+    if(EPUB_LAYOUT_TYPE == REFLOWABLE)
+    {
+        [self updateFontSize];
+    }
+    else
+    {
+        currentComputingChapter.pageCountInChapter = 1;
+        pageCount += currentComputingChapter.pageCountInChapter;
+    }
+    
     indexOfCurrentCumputingChapterVO++;
     if(indexOfCurrentCumputingChapterVO <[BookModelFactory sharedInstance].chaptersColl.count)
     {

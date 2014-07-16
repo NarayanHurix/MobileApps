@@ -12,7 +12,7 @@
 
 + (BookModelFactory *) sharedInstance;
 
-@property (nonatomic,strong) NSMutableArray *chaptersColl;
+@property (nonatomic,weak) NSMutableArray *chaptersColl;
 
 @property (nonatomic,readwrite)  NSInteger pageCountInBook;
 

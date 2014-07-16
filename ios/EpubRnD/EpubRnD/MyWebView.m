@@ -28,6 +28,12 @@
         self.delegate = self;
         self.scrollView.scrollEnabled = NO;
         self.scrollView.bounces = NO;
+        
+        if(EPUB_LAYOUT_TYPE == FIXED)
+        {
+            self.scalesPageToFit = YES;
+        }
+
         stickHeight = 40;
         stickWidth =15;
         SHOULD_DISMISS = NO;
@@ -77,26 +83,31 @@
 
 - (void) updateFontSize
 {
-    [_myDelegate myWebViewBeganLoading];
-    double delayInSeconds = 0.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void)
+    if(EPUB_LAYOUT_TYPE == REFLOWABLE)
     {
-        NSString *jsString = [[NSString alloc] initWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%ld%%'", (long)CURRENT_FONT_SIZE];
-        [self stringByEvaluatingJavaScriptFromString:jsString];
-        [self setPagination:self];
-        
-        NSString *callJSMethod = @"onJqueryLoadedMethod();";
-        NSString *string = [self stringByEvaluatingJavaScriptFromString:callJSMethod];
-        NSLog(@"%@",string);
-    });
-    
+        [_myDelegate myWebViewBeganLoading];
+        double delayInSeconds = 0.0;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void)
+                       {
+                           NSString *jsString = [[NSString alloc] initWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%ld%%'", (long)CURRENT_FONT_SIZE];
+                           [self stringByEvaluatingJavaScriptFromString:jsString];
+                           [self setPagination:self];
+                           
+                           NSString *callJSMethod = @"onJqueryLoadedMethod();";
+                           NSString *string = [self stringByEvaluatingJavaScriptFromString:callJSMethod];
+                           NSLog(@"%@",string);
+                       });
+    }
+    else
+    {
+        [self.webViewDAO setPageCount:1];
+        [_myDelegate myWebViewDidLoadFinish];
+    }
 }
 
 - (void) setPagination:(UIWebView *) webView
 {
-    
-    
     NSString *varMySheet = @"var mySheet = document.styleSheets[0];";
     
     NSString *addCSSRule =  @"function addCSSRule(selector, newRule) {"
@@ -126,7 +137,7 @@
     if([self checkIsPageIndexOutOfRange])
     {
         //after decreasing font size page will be left blank
-        [self.webViewDAO setIndexOfPage:[self.webViewDAO getPageCount]];
+        [self.webViewDAO setIndexOfPage:[self.webViewDAO getPageCount]-1];
         [_myDelegate myWebViewOnPageOutOfRange];
     }
     else
@@ -400,6 +411,10 @@
         SHOULD_DISMISS = YES;
         [highlightPopup dismissPopoverAnimated:NO];
     }
+    if(HIGHLIGHT_TOOL_SWITCH)
+    {
+        [_myDelegate toggleHighlightSwitch];
+    }
 }
 
 - (void) closePopupAndClearHighlight
@@ -420,6 +435,10 @@
     {
         SHOULD_DISMISS = YES;
         [highlightPopup dismissPopoverAnimated:NO];
+    }
+    if(HIGHLIGHT_TOOL_SWITCH)
+    {
+        [_myDelegate toggleHighlightSwitch];
     }
 }
 
@@ -577,6 +596,7 @@ UIPopoverController *highlightPopup;
     }
     SHOULD_DISMISS = NO;
     [highlightPopup presentPopoverFromRect:rect inView:anchorView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    
 }
 
 - (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
@@ -599,6 +619,7 @@ UIPopoverController *highlightPopup;
     }
     SHOULD_DISMISS = NO;
     [self stringByEvaluatingJavaScriptFromString:@"setTouchedStick(false,true)"];
+    
 }
 
 - (void) didTouchOnHighlightStick :(BOOL) isStartStick : (BOOL) isEndStick
@@ -619,6 +640,11 @@ UIPopoverController *highlightPopup;
 //            [highlightPopup dismissPopoverAnimated:NO];
 //        }
 //    }b
+    
+}
+
+-(void) dealloc
+{
     
 }
 

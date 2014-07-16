@@ -27,6 +27,7 @@
 //- (void)onPageOutOfRange;
 - (IBAction)penToolEnable:(UIButton *)sender;
 - (IBAction)onTapHighlightBtn:(UIButton *)sender;
+@property (weak, nonatomic) IBOutlet UIButton *highlightBtn;
 @property (weak, nonatomic) IBOutlet UIButton *btnFontIncrease;
 @property (weak, nonatomic) IBOutlet UIButton *btnFontDecrease;
 - (IBAction)didSliderValueChange:(UISlider *)sender;
@@ -34,7 +35,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *bookLoadActInd;
 - (void) didPageChange:(WebViewDAO *) dao;
 @property (nonatomic,strong) WebViewDAO *currentPageData;
-
+- (void) toggleHighlightSwitch;
 /*!
  * /p
  */

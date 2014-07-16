@@ -15,13 +15,14 @@
 - (MyPageView *) getPreviousPage:(MyPageView*) oldPageView;
 - (MyPageView *) getNextPage:(MyPageView*) oldPageView;
 - (void) didPageChange:(MyPageView *) currentPageView;
+- (void) toggleHighlightSwitch;
 @end
 
 @interface MyViewPager : UIView
 
-@property (nonatomic,strong) UIViewController *mainController;
-@property (nonatomic,strong) id<MyViewPagerDelegate> delegate;
-@property (nonatomic,strong) MyPageView *currenPageView;
+@property (nonatomic,retain) UIViewController *mainController;
+@property (nonatomic,weak) id<MyViewPagerDelegate> delegate;
+@property (nonatomic,retain) MyPageView *currenPageView;
 
 - (void) initWithPageView:(MyPageView *) view;
 - (void) onPageOutOfRange;

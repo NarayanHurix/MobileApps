@@ -45,6 +45,8 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
 //        [self addGestureRecognizer:swipeRight];
 //        self.userInteractionEnabled = YES;
 
+        UILongPressGestureRecognizer *longPressGest= [[UILongPressGestureRecognizer alloc ] initWithTarget:self action:@selector(onLongPress:)];
+        [self addGestureRecognizer:longPressGest];
     }
     return self;
 }
@@ -103,6 +105,24 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
         {
             [self removeAllSubViews:self];
             [self addSubview:previousPage];
+        }
+    }
+}
+
+- (void) onLongPress:(UILongPressGestureRecognizer *) gesture
+{
+    if(!HIGHLIGHT_TOOL_SWITCH)
+    {
+        CGPoint touchLocation = [gesture locationInView:self];
+        [_delegate toggleHighlightSwitch];
+        if(self.currenPageView)
+        {
+            int pageX = touchLocation.x;
+            pageX = pageX + (self.currenPageView.frame.size.width*[self.currenPageView.myWebView.webViewDAO getIndexOfPage]);
+            int pageY = touchLocation.y;
+            NSString *jsFunc = [NSString stringWithFormat:@"triggerHighlight(%d,%d)",pageX,pageY];
+            [self.currenPageView.myWebView stringByEvaluatingJavaScriptFromString:jsFunc];
+            
         }
     }
 }

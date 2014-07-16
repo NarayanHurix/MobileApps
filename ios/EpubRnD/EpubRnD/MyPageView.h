@@ -14,7 +14,7 @@
 @interface MyPageView : UIView<MyWebViewDelegate>
 
 @property (nonatomic,retain) MyWebView *myWebView;
-@property (nonatomic,retain) AssetsContainer *assetsContainer;
+@property (nonatomic,weak) AssetsContainer *assetsContainer;
 
 @property (nonatomic,retain) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic,retain) UIView *touchHelperView ;

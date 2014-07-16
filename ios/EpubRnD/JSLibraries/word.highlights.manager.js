@@ -55,6 +55,35 @@ function setCurrentPageWidth(pageWidth)
     currentPageWidth = pageWidth;
 }
 
+function triggerHighlight(pageX,pageY)
+{
+    var spanIDNumber;
+    var obj = document.elementFromPoint(pageX-window.pageXOffset,pageY-window.pageYOffset);
+    if($(obj).is('span'))
+    {
+        spanIDNumber = obj.id.split('-')[1];
+    }
+    if(spanIDNumber != undefined)
+    {
+        var jsCall1 = '{"MethodName":"onTouchStart","MethodArguments":{}}';
+        callNativeMethod('jstoobjc:'+jsCall1);
+        
+        //initiate highlight vo
+        currHVO = new HighlightVO();
+        currHVO.startWordID =spanIDNumber;
+        currHVO.endWordID =spanIDNumber;
+        lastHoverdWordID = spanIDNumber;
+        
+        $('span').css('background-color','rgba(0, 0, 0, 0)');
+        updateHighlightSticksPositions(currHVO.startWordID,currHVO.endWordID);
+        highlightText(currHVO.startWordID,currHVO.endWordID);
+        drawSavedHighlights();
+        
+        var jsCall2 = '{"MethodName":"onTouchEnd","MethodArguments":{}}';
+        callNativeMethod('jstoobjc:'+jsCall2);
+    }
+}
+
 function onTouchStart(e)
 {
     var jsonSaveHighlight = '{"MethodName":"onTouchStart","MethodArguments":{}}';

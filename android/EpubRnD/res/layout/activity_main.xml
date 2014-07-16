@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/button3"
             android:text="ToggleButton"
+            android:visibility="invisible"
             android:textColor="#006699"
             android:textSize="18sp" />
 

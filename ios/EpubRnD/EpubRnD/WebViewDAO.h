@@ -16,7 +16,7 @@
     NSInteger mPageCount;
 }
 
-@property (nonatomic,strong) ChapterVO *chapterVO;
+@property (nonatomic,weak) ChapterVO *chapterVO;
 
 - (void) setIndexOfPage:(NSInteger) indexOfPage;
 - (NSInteger) getIndexOfPage;

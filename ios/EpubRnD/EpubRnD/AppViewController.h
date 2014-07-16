@@ -13,7 +13,7 @@
 
 @interface AppViewController : UIViewController
 
-@property (strong,nonatomic) MainViewController *myPVC ;
+@property (retain,nonatomic) MainViewController *myPVC ;
 
 - (IBAction)openBook:(id)sender;
 

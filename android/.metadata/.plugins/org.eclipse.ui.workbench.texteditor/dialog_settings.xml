@@ -2,29 +2,30 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="263" key="DIALOG_WIDTH"/>
-		<item value="268" key="DIALOG_Y_ORIGIN"/>
+		<item value="267" key="DIALOG_Y_ORIGIN"/>
+		<item value="73" key="DIALOG_X_ORIGIN"/>
 		<item value="399" key="DIALOG_HEIGHT"/>
-		<item value="75" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="isRegEx"/>
 		<item value="false" key="casesensitive"/>
+		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="closeHighlight" key="selection"/>
+		<item value="Display" key="selection"/>
 		<list key="findhistory">
-			<item value="closeHighlight"/>
-			<item value="unbind"/>
-			<item value="yPos"/>
-			<item value="stickWidth"/>
-			<item value="startStick"/>
-			<item value="StartStick"/>
-			<item value="stickHeight"/>
-			<item value="_mWebView"/>
+			<item value="display"/>
+			<item value="getPreviousView"/>
+			<item value="getNextView"/>
+			<item value="checkPageBuffer"/>
+			<item value="longclick"/>
+			<item value="MyWebView"/>
+			<item value="MyWebClient"/>
+			<item value="calculateNoOfPages"/>
 		</list>
 		<list key="replacehistory">
+			<item value="HelperViewForPageCount"/>
 		</list>
 	</section>
 </section>

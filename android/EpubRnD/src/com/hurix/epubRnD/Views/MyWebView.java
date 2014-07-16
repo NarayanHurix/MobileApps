@@ -1,7 +1,5 @@
 package com.hurix.epubRnD.Views;
 
-import java.lang.reflect.Method;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,7 +14,6 @@ import android.util.Log;
 import android.view.ActionMode;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,7 +29,6 @@ import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.hurix.epubRnD.R;
 import com.hurix.epubRnD.Constants.GlobalConstants;
@@ -170,18 +166,32 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 			getSettings().setAllowContentAccess(true);
 		}
 		
-		setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
-		getSettings().setLayoutAlgorithm(LayoutAlgorithm.NORMAL);
-		getSettings().setMinimumFontSize(GlobalConstants.MIN_FONT_SIZE);
 		getSettings().setJavaScriptEnabled(true);
-		getSettings().setDefaultFontSize(GlobalSettings.FONT_SIZE);
+		if(GlobalSettings.EPUB_LAYOUT_TYPE == GlobalConstants.FIXED)
+		{
+			if(android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+			{
+				//setFitsSystemWindows(true);
+			}
+			getSettings().setUseWideViewPort(true);
+			getSettings().setLoadWithOverviewMode(true);
+//			setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+			getSettings().setLayoutAlgorithm(LayoutAlgorithm.NORMAL);
+		}
+		else
+		{
+			setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+			getSettings().setLayoutAlgorithm(LayoutAlgorithm.NORMAL);
+			getSettings().setMinimumFontSize(GlobalConstants.MIN_FONT_SIZE);
+			getSettings().setDefaultFontSize(GlobalSettings.FONT_SIZE);
+			setHorizontalScrollBarEnabled(false);
+			setVerticalScrollBarEnabled(false);
+		}
+		
 		getSettings().setAllowFileAccess(true);
-		//getSettings().setBuiltInZoomControls(true);
-		//getSettings().setDisplayZoomControls(true);
 		//		getSettings().setRenderPriority(RenderPriority.HIGH);
 		//		getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-		setHorizontalScrollBarEnabled(false);
-		setVerticalScrollBarEnabled(false);
+		
 		//getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 		if(android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.JELLY_BEAN)
 		{
@@ -200,7 +210,14 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 				if(getMeasuredWidth()!=0 && getMeasuredHeight()!=0 && !isURLLoaded)
 				{
 					_mMyWebViewLoadListener.onLoadStart();
-					getSettings().setDefaultFontSize(GlobalSettings.FONT_SIZE);
+					if(GlobalSettings.EPUB_LAYOUT_TYPE == GlobalConstants.FIXED)
+					{
+						
+					}
+					else
+					{
+						getSettings().setDefaultFontSize(GlobalSettings.FONT_SIZE);
+					}
 
 					loadUrl(getData().getChapterVO().getChapterURL());
 					isURLLoaded = true;
@@ -209,15 +226,6 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 			}
 		});
 
-		if(GlobalSettings.EPUB_TYPE == GlobalConstants.FIXED)
-		{
-			if(android.os.Build.VERSION.SDK_INT>=android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-			{
-				setFitsSystemWindows(true);
-			}
-		}
-		
-		
 	}
 
 	private class MyWebClient extends WebViewClient
@@ -235,7 +243,11 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 
 			final MyWebView myWebView = (MyWebView) view;
 
-			if(GlobalSettings.EPUB_TYPE==GlobalConstants.REFLOWABLE)
+			if(GlobalSettings.EPUB_LAYOUT_TYPE == GlobalConstants.FIXED)
+			{
+				
+			}
+			else
 			{
 				String varMySheet = "var mySheet = document.styleSheets[0];";
 
@@ -259,11 +271,12 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 				myWebView.loadUrl("javascript:" + insertRule1);
 //				myWebView.loadUrl("javascript:" + insertRule2);
 				//myWebView.loadUrl("javascript:" + setImageRule);
-				String data = "{\"MethodName\":\"paginationDone\",\"MethodArguments\":{}}";
-				String callBackToNative  = "jsInterface.callNativeMethod('jstoobjc:"+data+"');";
 				
-				myWebView.loadUrl("javascript: "+callBackToNative);
 			}
+			String data = "{\"MethodName\":\"paginationDone\",\"MethodArguments\":{}}";
+			String callBackToNative  = "jsInterface.callNativeMethod('jstoobjc:"+data+"');";
+			
+			myWebView.loadUrl("javascript: "+callBackToNative);
 		}
 	}
 
@@ -281,20 +294,28 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 					@Override
 					public void run() 
 					{
-						calculateNoOfPages();
-						if(getData().getIndexOfPage()==-2)
+						
+						if(GlobalSettings.EPUB_LAYOUT_TYPE == GlobalConstants.FIXED)
 						{
-							getData().setIndexOfPage(getData().getPageCount()-1);
-						}
-						if(getData().getIndexOfPage()>=getData().getPageCount())
-						{
-							getData().setIndexOfPage(getData().getPageCount());
-							_mMyWebViewLoadListener.onPageOutOfRange();
+							_mMyWebViewLoadListener.onLoadFinish();
 						}
 						else
 						{
-							scrollTo(getMeasuredWidth()*getData().getIndexOfPage(), 0);
-							_mMyWebViewLoadListener.onLoadFinish();
+							calculateNoOfPages();
+							if(getData().getIndexOfPage()==-2)
+							{
+								getData().setIndexOfPage(getData().getPageCount()-1);
+							}
+							if(getData().getIndexOfPage()>=getData().getPageCount())
+							{
+								getData().setIndexOfPage(getData().getPageCount());
+								_mMyWebViewLoadListener.onPageOutOfRange();
+							}
+							else
+							{
+								scrollTo(getMeasuredWidth()*getData().getIndexOfPage(), 0);
+								_mMyWebViewLoadListener.onLoadFinish();
+							}
 						}
 					}
 				},300);
@@ -598,20 +619,21 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 	}
 	
 
-	@Override
-	protected void onAttachedToWindow() {
-		super.onAttachedToWindow();
-	}
-
 	private void calculateNoOfPages()
 	{
-		if(getMeasuredWidth() != 0)
+		if(GlobalSettings.EPUB_LAYOUT_TYPE == GlobalConstants.FIXED)
 		{
-			int newPageCount = computeHorizontalScrollRange()/getMeasuredWidth();
-			getData().setPageCount(newPageCount);
-			//Log.d("here","total pages in Spine : "+newPageCount+" curr page : "+(getData().getIndexOfPage()+1));
+			
 		}
-		
+		else
+		{
+			if(getMeasuredWidth() != 0)
+			{
+				int newPageCount = computeHorizontalScrollRange()/getMeasuredWidth();
+				getData().setPageCount(newPageCount);
+				//Log.d("here","total pages in Spine : "+newPageCount+" curr page : "+(getData().getIndexOfPage()+1));
+			}
+		}
 	}
 
 	@Override
@@ -627,35 +649,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 	}
 
 	
-	public void emulateShiftHeld(WebView view)
-	{
-		try
-		{
-			KeyEvent shiftPressEvent = new KeyEvent(0, 0, KeyEvent.ACTION_DOWN,
-					KeyEvent.KEYCODE_SHIFT_LEFT, 0, 0);
-			shiftPressEvent.dispatch(view);
-
-
-			Toast.makeText(getContext(), "select_text_now", Toast.LENGTH_SHORT).show();
-		}
-		catch (Exception e)
-		{
-			Log.e("dd", "Exception in emulateShiftHeld()", e);
-		}
-	}
 	
-	public void selectAndCopyText() {
-		try {
-			Method m = WebView.class.getMethod("emulateShiftHeld", null);
-			m.invoke(this, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-
-			KeyEvent shiftPressEvent = new KeyEvent(0,0,
-					KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_SHIFT_LEFT,0,0);
-			shiftPressEvent.dispatch(this);
-		}
-	}
 
 	public void setOnPageChangeListener(OnPageChangeListener _listener) {
 		this._listener = _listener;
@@ -914,6 +908,10 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 		{
 			((ViewGroup)endStick.getParent()).removeView(endStick);
 			endStick = null;
+		}
+		if(GlobalSettings.HIGHLIGHT_SWITCH)
+		{
+			onClickHighlightSwitch();
 		}
 	}
 

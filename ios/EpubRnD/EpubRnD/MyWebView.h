@@ -17,16 +17,16 @@
 - (void) myWebViewDidLoadFinish;
 - (void) myWebViewBeganLoading;
 - (void) myWebViewOnPageOutOfRange;
-
+- (void) toggleHighlightSwitch;
 @end
 
 @interface MyWebView : UIWebView<UIWebViewDelegate,UIPopoverControllerDelegate>
 
-@property (nonatomic,strong) id<MyWebViewDelegate> myDelegate;
+@property (nonatomic,weak) id<MyWebViewDelegate> myDelegate;
 
-@property (nonatomic,strong ) WebViewDAO *webViewDAO;
-@property (nonatomic,strong ) StartStickView *startStick ;
-@property (nonatomic,strong ) EndStickView *endStick;
+@property (nonatomic,retain ) WebViewDAO *webViewDAO;
+@property (nonatomic,retain ) StartStickView *startStick ;
+@property (nonatomic,retain ) EndStickView *endStick;
 
 - (void) loadViewWithData:(WebViewDAO *) data;
 - (void) updateFontSize;

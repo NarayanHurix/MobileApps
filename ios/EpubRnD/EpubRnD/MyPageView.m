@@ -79,6 +79,12 @@
     [viewPager onPageOutOfRange];
 }
 
+- (void) toggleHighlightSwitch
+{
+    MyViewPager *viewPager = (MyViewPager *)[self superview];
+    [viewPager.delegate toggleHighlightSwitch];
+}
+
 //- (void)drawRect:(CGRect)rect
 //{
 //    // Drawing code
