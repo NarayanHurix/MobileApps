@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="android.widget.ToggleButton"/>
-<fullyQualifiedTypeName name="com.hurix.epubRnD.Settings.GlobalSettings"/>
 <fullyQualifiedTypeName name="android.content.SharedPreferences"/>
 <fullyQualifiedTypeName name="org.json.JSONArray"/>
 <fullyQualifiedTypeName name="java.lang.Object"/>
@@ -36,7 +35,6 @@
 <fullyQualifiedTypeName name="android.widget.RelativeLayout"/>
 <fullyQualifiedTypeName name="android.support.v4.view.ViewPager.PageTransformer"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Views.HelperViewForPageCount.PageCountListener"/>
-<fullyQualifiedTypeName name="android.webkit.WebView"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.MainActivity"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.R.id"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Views.HelperViewForPageCount"/>
@@ -55,5 +53,9 @@
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Views.MyWebView"/>
 <fullyQualifiedTypeName name="android.view.GestureDetector"/>
 <fullyQualifiedTypeName name="android.view.GestureDetector.OnGestureListener"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.Settings.GlobalSettings"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Constants.GlobalConstants"/>
+<fullyQualifiedTypeName name="android.webkit.WebView"/>
+<fullyQualifiedTypeName name="android.webkit.WebViewClient"/>
+<fullyQualifiedTypeName name="android.webkit.WebSettings.ZoomDensity"/>
 </qualifiedTypeNameHistroy>

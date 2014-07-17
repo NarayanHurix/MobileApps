@@ -10,6 +10,8 @@
 #import "WebViewDAO.h"
 #import "StartStickView.h"
 #import "EndStickView.h"
+#import "HighlightVO.h"
+#import "StickyNoteView.h"
 
 @protocol MyWebViewDelegate<NSObject>
 
@@ -28,10 +30,13 @@
 @property (nonatomic,retain ) StartStickView *startStick ;
 @property (nonatomic,retain ) EndStickView *endStick;
 
+@property (nonatomic,strong) HighlightVO *currHighlightVO;
+
 - (void) loadViewWithData:(WebViewDAO *) data;
 - (void) updateFontSize;
 - (void) didHighlightButtonTap;
 - (void) didTouchOnHighlightStick :(BOOL) isStartStick : (BOOL) isEndStick;
 - (void) saveHighlight;
 - (void) closePopupAndClearHighlight;
+- (void) addNoteAndClosePopup;
 @end

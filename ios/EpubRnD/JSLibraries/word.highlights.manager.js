@@ -249,6 +249,7 @@ function saveCurrentHighlight()
     if(currHVO != null || currHVO != undefined)
     {
         highlightText(currHVO.startWordID,currHVO.endWordID);
+        currHVO.selectedText = getSelectedText(currHVO.startWordID,currHVO.endWordID);
         var jsonSaveHighlight = '{"MethodName":"saveTextHighlight","MethodArguments":{"arg1":"'+currHVO.startWordID+'","arg2":"'+currHVO.endWordID+'","arg3":"'+currHVO.selectedText+'"}}';
         callNativeMethod('jstoobjc:'+jsonSaveHighlight);
         
@@ -295,25 +296,65 @@ function getSelectedText(sWordID,eWordID)
     return selectedText;
 }
 
-function updateHighlightSticksPositions(sWordID ,eWordID)
+function addNoteIconToPage(sWordID ,eWordID)
 {
+    var sID = 0;
     var sX = 0;
     var sY = 0;
+    var sW = 0;
+    var sH = 0;
+    
+    var eID = 0;
     var eX = 0;
     var eY = 0;
+    var eW = 0;
+    var eH = 0;
     
+    sID = sWordID;
     sX = $('#wordID-'+sWordID).position().left;
     sY = $('#wordID-'+sWordID).position().top;
     sW = $('#wordID-'+sWordID).width();
     sH = $('#wordID-'+sWordID).height();
     
+    eID = eWordID
     eX = $('#wordID-'+eWordID).position().left + $('#wordID-'+eWordID).width();
     eY = $('#wordID-'+eWordID).position().top + $('#wordID-'+eWordID).height();
     eW = $('#wordID-'+eWordID).width();
     eH = $('#wordID-'+eWordID).height();
     
     
-    var jsonSaveHighlight = '{"MethodName":"updateHighlightSticksPositions","MethodArguments":{"arg1":"'+sX+'","arg2":"'+sY+'","arg3":"'+sW+'","arg4":"'+sH+'","arg5":"'+eX+'","arg6":"'+eY+'","arg7":"'+eW+'","arg8":"'+eH+'"}}';
+    var jsonSaveHighlight = '{"MethodName":"addNoteIconToPage","MethodArguments":{"arg1":"'+sID+'","arg2":"'+sX+'","arg3":"'+sY+'","arg4":"'+sW+'","arg5":"'+sH+'","arg6":"'+eID+'","arg7":"'+eX+'","arg8":"'+eY+'","arg9":"'+eW+'","arg10":"'+eH+'"}}';
+    callNativeMethod('jstoobjc:'+jsonSaveHighlight);
+}
+
+function updateHighlightSticksPositions(sWordID ,eWordID)
+{
+    var sID = 0;
+    var sX = 0;
+    var sY = 0;
+    var sW = 0;
+    var sH = 0;
+    
+    var eID = 0;
+    var eX = 0;
+    var eY = 0;
+    var eW = 0;
+    var eH = 0;
+    
+    sID = sWordID;
+    sX = $('#wordID-'+sWordID).position().left;
+    sY = $('#wordID-'+sWordID).position().top;
+    sW = $('#wordID-'+sWordID).width();
+    sH = $('#wordID-'+sWordID).height();
+    
+    eID = eWordID
+    eX = $('#wordID-'+eWordID).position().left + $('#wordID-'+eWordID).width();
+    eY = $('#wordID-'+eWordID).position().top + $('#wordID-'+eWordID).height();
+    eW = $('#wordID-'+eWordID).width();
+    eH = $('#wordID-'+eWordID).height();
+    
+    
+    var jsonSaveHighlight = '{"MethodName":"updateHighlightSticksPositions","MethodArguments":{"arg1":"'+sID+'","arg2":"'+sX+'","arg3":"'+sY+'","arg4":"'+sW+'","arg5":"'+sH+'","arg6":"'+eID+'","arg7":"'+eX+'","arg8":"'+eY+'","arg9":"'+eW+'","arg10":"'+eH+'"}}';
     callNativeMethod('jstoobjc:'+jsonSaveHighlight);
 }
 
@@ -326,6 +367,7 @@ function drawSavedHighlights()
             var spanIdToHighlight = 'wordID-'+i;
             $('#'+spanIdToHighlight).css('background-color','rgba(0,0,255,0.3)');
         }
+        addNoteIconToPage(highlightVOColl[j].startWordID ,highlightVOColl[j].endWordID);
     }
 }
 

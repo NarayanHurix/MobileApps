@@ -46,6 +46,11 @@
 		5AC1F8BC19505E910088B1A7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8BB19505E910088B1A7 /* Security.framework */; };
 		5AC1F8BE19505E9E0088B1A7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8BD19505E9E0088B1A7 /* SystemConfiguration.framework */; };
 		5AD494A6194F27260059C0E9 /* AssetsContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD494A5194F27260059C0E9 /* AssetsContainer.m */; };
+		5AE098471977F72700B5A75D /* StickyNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AE098461977F72700B5A75D /* StickyNoteView.m */; };
+		5AE0984A1977F77A00B5A75D /* HighlightVO.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AE098491977F77A00B5A75D /* HighlightVO.m */; };
+		5AE0984E1977FB3600B5A75D /* StickyNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AE0984C1977FB3600B5A75D /* StickyNoteViewController.m */; };
+		5AE0984F1977FB3600B5A75D /* StickyNoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5AE0984D1977FB3600B5A75D /* StickyNoteViewController.xib */; };
+		5AE09852197815EB00B5A75D /* sticky_note.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AE09851197815EB00B5A75D /* sticky_note.png */; };
 		5AE76630196E88CA002BE2DE /* BookModelFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AE7662F196E88CA002BE2DE /* BookModelFactory.m */; };
 /* End PBXBuildFile section */
 
@@ -116,6 +121,14 @@
 		5AC1F8BD19505E9E0088B1A7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		5AD494A4194F27260059C0E9 /* AssetsContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetsContainer.h; sourceTree = "<group>"; };
 		5AD494A5194F27260059C0E9 /* AssetsContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetsContainer.m; sourceTree = "<group>"; };
+		5AE098451977F72700B5A75D /* StickyNoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickyNoteView.h; sourceTree = "<group>"; };
+		5AE098461977F72700B5A75D /* StickyNoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyNoteView.m; sourceTree = "<group>"; };
+		5AE098481977F77A00B5A75D /* HighlightVO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightVO.h; sourceTree = "<group>"; };
+		5AE098491977F77A00B5A75D /* HighlightVO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighlightVO.m; sourceTree = "<group>"; };
+		5AE0984B1977FB3600B5A75D /* StickyNoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickyNoteViewController.h; sourceTree = "<group>"; };
+		5AE0984C1977FB3600B5A75D /* StickyNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyNoteViewController.m; sourceTree = "<group>"; };
+		5AE0984D1977FB3600B5A75D /* StickyNoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StickyNoteViewController.xib; sourceTree = "<group>"; };
+		5AE09851197815EB00B5A75D /* sticky_note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sticky_note.png; sourceTree = "<group>"; };
 		5AE7662E196E88CA002BE2DE /* BookModelFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookModelFactory.h; sourceTree = "<group>"; };
 		5AE7662F196E88CA002BE2DE /* BookModelFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookModelFactory.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -179,6 +192,7 @@
 		5A45B65219472E52003FA663 = {
 			isa = PBXGroup;
 			children = (
+				5AE09850197815D800B5A75D /* Resources */,
 				5A01669C1951987B00A5FA59 /* JSLibraries */,
 				5AC1F8B419505D680088B1A7 /* Vendor */,
 				5AAEED331949AE9F00F01F48 /* assets */,
@@ -268,6 +282,8 @@
 				5A45B6A819473D11003FA663 /* ChapterVO.m */,
 				5AE7662E196E88CA002BE2DE /* BookModelFactory.h */,
 				5AE7662F196E88CA002BE2DE /* BookModelFactory.m */,
+				5AE098481977F77A00B5A75D /* HighlightVO.h */,
+				5AE098491977F77A00B5A75D /* HighlightVO.m */,
 			);
 			name = ModelClasses;
 			sourceTree = "<group>";
@@ -275,6 +291,7 @@
 		5A45B6AB19473D4E003FA663 /* ViewClasses */ = {
 			isa = PBXGroup;
 			children = (
+				5AE098441977F70900B5A75D /* StickyNotes */,
 				5A7EF3D4196D613400C8AF45 /* ViewPager */,
 				5A51EBFE1962C1310065A595 /* TextHighlight */,
 				5A45B69E19473AB0003FA663 /* MyWebView.h */,
@@ -359,6 +376,26 @@
 			name = Vendor;
 			sourceTree = "<group>";
 		};
+		5AE098441977F70900B5A75D /* StickyNotes */ = {
+			isa = PBXGroup;
+			children = (
+				5AE098451977F72700B5A75D /* StickyNoteView.h */,
+				5AE098461977F72700B5A75D /* StickyNoteView.m */,
+				5AE0984B1977FB3600B5A75D /* StickyNoteViewController.h */,
+				5AE0984C1977FB3600B5A75D /* StickyNoteViewController.m */,
+				5AE0984D1977FB3600B5A75D /* StickyNoteViewController.xib */,
+			);
+			name = StickyNotes;
+			sourceTree = "<group>";
+		};
+		5AE09850197815D800B5A75D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5AE09851197815EB00B5A75D /* sticky_note.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -435,10 +472,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A51EC031962C1630065A595 /* HighlightPopupViewController.xib in Resources */,
+				5AE0984F1977FB3600B5A75D /* StickyNoteViewController.xib in Resources */,
 				5AAEED341949AE9F00F01F48 /* assets in Resources */,
 				5A01669D1951987B00A5FA59 /* JSLibraries in Resources */,
 				5A45B66B19472E52003FA663 /* InfoPlist.strings in Resources */,
 				5A45B69719472FEC003FA663 /* MainViewController.xib in Resources */,
+				5AE09852197815EB00B5A75D /* sticky_note.png in Resources */,
 				5A26000E194840E400F472CE /* AppViewController.xib in Resources */,
 				5A45B67619472E52003FA663 /* Images.xcassets in Resources */,
 			);
@@ -460,12 +499,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AD494A6194F27260059C0E9 /* AssetsContainer.m in Sources */,
+				5AE0984A1977F77A00B5A75D /* HighlightVO.m in Sources */,
 				5A26001219485A9800F472CE /* GlobalConstants.m in Sources */,
 				5A26000D194840E400F472CE /* AppViewController.m in Sources */,
 				5A45B67119472E52003FA663 /* AppDelegate.m in Sources */,
 				5A45B67419472E52003FA663 /* EpubRnD.xcdatamodeld in Sources */,
 				5A45B69A19473A2D003FA663 /* MyViewPager.m in Sources */,
+				5AE0984E1977FB3600B5A75D /* StickyNoteViewController.m in Sources */,
 				5A3E309919488FC4001080F6 /* GlobalSettings.m in Sources */,
+				5AE098471977F72700B5A75D /* StickyNoteView.m in Sources */,
 				5A45B6A319473B8F003FA663 /* MyPageView.m in Sources */,
 				5A45B6A619473CB0003FA663 /* WebViewDAO.m in Sources */,
 				5A51EC091962D1E70065A595 /* EndStickView.m in Sources */,

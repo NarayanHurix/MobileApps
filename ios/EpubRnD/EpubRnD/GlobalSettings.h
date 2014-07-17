@@ -17,4 +17,7 @@ extern BOOL HIGHLIGHT_TOOL_SWITCH;
 extern NSInteger EPUB_LAYOUT_TYPE;
 + (void) initSettings;
 
+extern NSInteger STICKY_NOTE_ICON_WIDTH;
+extern NSInteger STICKY_NOTE_ICON_HEIGHT;
+
 @end

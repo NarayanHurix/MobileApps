@@ -14,5 +14,6 @@
 
 @property (nonatomic,retain) MyWebView *myWebView;
 - (IBAction)Close:(id)sender;
+- (IBAction)addStickyNote:(UIButton *)sender;
 
 @end

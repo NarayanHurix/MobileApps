@@ -17,4 +17,7 @@ extern NSInteger const FONT_SIZE_STEP_SIZE ;
 extern NSInteger const REFLOWABLE ;
 extern NSInteger const FIXED;
 
+extern NSInteger const DEFAULT_STICKYNOTE_WIDTH;
+extern NSInteger const DEFAULT_STICKYNOTE_HEIGHT;
+
 @end

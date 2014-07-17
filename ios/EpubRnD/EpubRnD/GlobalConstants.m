@@ -20,4 +20,7 @@ NSInteger const FONT_SIZE_STEP_SIZE = 4;
 NSInteger const REFLOWABLE = 100;
 NSInteger const FIXED = 200;
 
+NSInteger const DEFAULT_STICKYNOTE_WIDTH = 40;
+NSInteger const DEFAULT_STICKYNOTE_HEIGHT = 40;
+
 @end

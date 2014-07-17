@@ -16,6 +16,7 @@
     
     int stickHeight ,stickWidth;
     BOOL SHOULD_DISMISS;
+    BOOL isAddingNote;
 }
 @synthesize startStick,endStick;
 
@@ -342,18 +343,22 @@
         NSString *arg6 =[methodArgs objectForKey:@"arg6"];
         NSString *arg7 =[methodArgs objectForKey:@"arg7"];
         NSString *arg8 =[methodArgs objectForKey:@"arg8"];
+        NSString *arg9 =[methodArgs objectForKey:@"arg9"];
+        NSString *arg10 =[methodArgs objectForKey:@"arg10"];
         
-        int sX =  [arg1 intValue];
-        int sY =  [arg2 intValue];
-        int sW =  [arg3 intValue];
-        int sH =  [arg4 intValue];
+        int sID = [arg1 intValue];
+        int sX =  [arg2 intValue];
+        int sY =  [arg3 intValue];
+        int sW =  [arg4 intValue];
+        int sH =  [arg5 intValue];
         
-        int eX =  [arg5 intValue];
-        int eY =  [arg6 intValue];
-        int eW =  [arg7 intValue];
-        int eH =  [arg8 intValue];
+        int eID = [arg6 intValue];
+        int eX =  [arg7 intValue];
+        int eY =  [arg8 intValue];
+        int eW =  [arg9 intValue];
+        int eH =  [arg10 intValue];
         
-        [self updateHighlightSticksPositions:sX :sY :sW :sH :eX : eY :eW :eH];
+        [self updateHighlightSticksPositions:sID :sX :sY :sW :sH :eID :eX : eY :eW :eH];
     }
     else if([methodName isEqualToString:@"onTouchStart"])
     {
@@ -366,6 +371,33 @@
         {
             [self showHighlightContextMenu:startStick];
         }
+    }
+    else if([methodName isEqualToString:@"addNoteIconToPage"])
+    {
+        NSString *arg1 =[methodArgs objectForKey:@"arg1"];
+        NSString *arg2 =[methodArgs objectForKey:@"arg2"];
+        NSString *arg3 =[methodArgs objectForKey:@"arg3"];
+        NSString *arg4 =[methodArgs objectForKey:@"arg4"];
+        NSString *arg5 =[methodArgs objectForKey:@"arg5"];
+        NSString *arg6 =[methodArgs objectForKey:@"arg6"];
+        NSString *arg7 =[methodArgs objectForKey:@"arg7"];
+        NSString *arg8 =[methodArgs objectForKey:@"arg8"];
+        NSString *arg9 =[methodArgs objectForKey:@"arg9"];
+        NSString *arg10 =[methodArgs objectForKey:@"arg10"];
+        
+        int sID = [arg1 intValue];
+        int sX =  [arg2 intValue];
+        int sY =  [arg3 intValue];
+        int sW =  [arg4 intValue];
+        int sH =  [arg5 intValue];
+        
+        int eID = [arg6 intValue];
+        int eX =  [arg7 intValue];
+        int eY =  [arg8 intValue];
+        int eW =  [arg9 intValue];
+        int eH =  [arg10 intValue];
+        
+        [self addNoteIconToPage:sID :sX :sY :sW :sH :eID :eX : eY :eW :eH];
     }
 }
 
@@ -460,9 +492,39 @@
         NSLog(@"save highlight to sqlite failed with error : %@",[error localizedDescription]);
     }
     
+    self.currHighlightVO.selectedText = text;
+    if(isAddingNote)
+    {
+        NSString *jsMethod = [NSString stringWithFormat:@"addNoteIconToPage(%@,%@)",startWordId,endWordID];
+        [self stringByEvaluatingJavaScriptFromString:jsMethod];
+    }
     NSLog(@"saving text highlight sID: %@  eID: %@  text: %@",startWordId,endWordID,text);
 }
 
+- (void) addNoteIconToPage:(int) sID :(int) sX  :(int) sY  :(int) sW :(int) sH :(int) eID :(int)eX  :(int) eY :(int) eW :(int) eH
+{
+    if(!self.currHighlightVO)
+    {
+        self.currHighlightVO = [HighlightVO new];
+    }
+    
+    [self.currHighlightVO setChapterPath:self.webViewDAO.chapterVO.chapterURL];
+    [self.currHighlightVO setChapterIndex:[self.webViewDAO getIndexOfChapter]];
+    [self.currHighlightVO setStartWordID:sID];
+    [self.currHighlightVO setEndWordID:eID];
+    [self.currHighlightVO setNoOfPagesInChapter:self.webViewDAO.chapterVO.pageCountInChapter];
+    
+    if(self.currHighlightVO)
+    {
+        StickyNoteView *noteView = [[StickyNoteView alloc] init];
+        noteView.highlightVO = self.currHighlightVO ;
+        
+        //int modifiedX = sX-(self.frame.size.width*[self.webViewDAO getIndexOfPage]);
+        noteView.frame = CGRectMake(20, sY, STICKY_NOTE_ICON_WIDTH , STICKY_NOTE_ICON_HEIGHT);
+        [[self superview] addSubview:noteView];
+        [[self superview] bringSubviewToFront:noteView];
+    }
+}
 - (void) didHighlightButtonTap
 {
     NSString *switchDocTouch = @"";
@@ -541,8 +603,11 @@
 }
 
 
-- (void) updateHighlightSticksPositions:(int) sX  :(int) sY  :(int) sW :(int) sH :(int) eX  :(int) eY :(int) eW :(int) eH
+- (void) updateHighlightSticksPositions:(int) sID :(int) sX  :(int) sY  :(int) sW :(int) sH :(int) eID :(int)eX  :(int) eY :(int) eW :(int) eH
 {
+    isAddingNote = NO;
+    
+    
     stickHeight = sH;
     
     if(!startStick)
@@ -641,6 +706,12 @@ UIPopoverController *highlightPopup;
 //        }
 //    }b
     
+}
+
+- (void) addNoteAndClosePopup
+{
+    isAddingNote = YES;
+    [self saveHighlight];
 }
 
 -(void) dealloc
