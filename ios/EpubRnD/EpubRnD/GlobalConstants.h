@@ -20,4 +20,5 @@ extern NSInteger const FIXED;
 extern NSInteger const DEFAULT_STICKYNOTE_WIDTH;
 extern NSInteger const DEFAULT_STICKYNOTE_HEIGHT;
 
+extern NSString *const CHAPTERS_FOLDER_PATH;
 @end

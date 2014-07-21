@@ -36,6 +36,11 @@
 - (void) didPageChange:(WebViewDAO *) dao;
 @property (nonatomic,strong) WebViewDAO *currentPageData;
 - (void) toggleHighlightSwitch;
+
+
+- (void) didOpenNoteEditor;
+- (void) didCloseNoteEditor;
+
 /*!
  * /p
  */

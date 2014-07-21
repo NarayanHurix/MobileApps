@@ -35,4 +35,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)closeNoteEditor:(id)sender
+{
+    [self.myDelegate didCloseStickyNoteWindow];
+    [self.view removeFromSuperview];
+    NSLog(@"no problem here");
+}
+
 @end

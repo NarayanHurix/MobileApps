@@ -9,6 +9,9 @@
 #import "StickyNoteView.h"
 
 @implementation StickyNoteView
+{
+    StickyNoteViewController *contrller;
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -17,30 +20,45 @@
     {
         // Initialization code
         self.userInteractionEnabled = YES;
+        
         UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSingleTap:)];
-        singleTapGesture.numberOfTapsRequired =1 ;
+
+        [singleTapGesture setNumberOfTapsRequired:1];
+        [singleTapGesture setNumberOfTouchesRequired:1];
         [self addGestureRecognizer:singleTapGesture];
         
         UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDoubleTap:)];
-        doubleTapGesture.numberOfTapsRequired =1 ;
+        
+        [doubleTapGesture setNumberOfTapsRequired:2];
+        [doubleTapGesture setNumberOfTouchesRequired:2];
         [self addGestureRecognizer:doubleTapGesture];
-        [self setImage:[UIImage imageNamed:@"sticky_note.png"]];
+        
+        [self setBackgroundColor:[UIColor brownColor ]];
+        //[self setImage:[UIImage imageNamed:@"sticky_note.png"]];
         
     }
     return self;
 }
 
-
-
 - (void) onSingleTap:(UIGestureRecognizer *) recognizer
 {
-    StickyNoteViewController *contrller = [[StickyNoteViewController alloc] init];
+    [self.myDelegate didOpenNoteEditor];
+    
+    
+    contrller = [[StickyNoteViewController alloc] init];
+    contrller.myDelegate = self;
     [self.superview addSubview:contrller.view];
 }
 
 - (void) onDoubleTap:(UIGestureRecognizer *) recognizer
 {
     
+}
+
+- (void)didCloseStickyNoteWindow
+{
+    [self.myDelegate didCloseNoteEditor];
+   
 }
 
 /*

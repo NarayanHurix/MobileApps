@@ -24,21 +24,23 @@ Completed R&D Work:
 
 5. Crash Report Analysis Framework integration
 
+6. Long press highlight
+
+7. Sticky notes with reference to highlight
+
 =====================================================================================================
 
 On Going R&D Work:
 
-1. Long press highlight
-2. Search and highlighting the searched word (Book level search)
-3. Bookmarks
-4. Orientation handling (single page,two page mode)
-5. Player Theme (Day/Night mode- background colors and font colors)
-6. Book information Data base
-7. Sticky notes with reference to highlight
-8. Last visited page
-9. Text Copy
-10. ToC
-11. User Generated Data ToC (list of bookmarks and notes)
+1. Search and highlighting the searched word (Book level search)
+2. Bookmarks
+3. Orientation handling (single page,two page mode)
+4. Player Theme (Day/Night mode- background colors and font colors)
+5. Book information Data base
+6. Last visited page
+7. Text Copy
+8. ToC
+9. User Generated Data ToC (list of bookmarks and notes)
 
 =====================================================================================================
 

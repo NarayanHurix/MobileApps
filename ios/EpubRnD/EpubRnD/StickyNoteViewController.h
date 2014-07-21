@@ -9,8 +9,25 @@
 #import <UIKit/UIKit.h>
 #import "HighlightVO.h"
 
+@class StickyNoteView;
+
+@protocol StickyNoteViewControllerDelegate <NSObject>
+
+@required
+
+- (void) didCloseStickyNoteWindow;
+
+@end
+
 @interface StickyNoteViewController : UIViewController
 
+
+
+- (IBAction)closeee:(id)sender;
+
 @property (nonatomic,strong) HighlightVO *highlightVO;
+
+@property (nonatomic,weak) id<StickyNoteViewControllerDelegate>  myDelegate;
+- (IBAction)closeNoteEditor:(id)sender;
 
 @end

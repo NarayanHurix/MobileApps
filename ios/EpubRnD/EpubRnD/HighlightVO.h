@@ -14,6 +14,7 @@
     NSInteger _noOfPagesInChapter;
     NSInteger _startWordID;
     NSInteger _endWordID;
+    NSInteger _id;
     
 }
 

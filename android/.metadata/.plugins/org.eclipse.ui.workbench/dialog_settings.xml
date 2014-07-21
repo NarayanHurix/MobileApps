@@ -20,18 +20,22 @@
 		<list key="orderedProviders">
 			<item value="org.eclipse.e4.ui.parts"/>
 			<item value="org.eclipse.e4.ui.parts"/>
+			<item value="org.eclipse.e4.ui.parts"/>
 		</list>
 		<list key="textArray">
+			<item value="file"/>
 			<item value="logcat"/>
 			<item value="devices"/>
 			<item value="devi"/>
 			<item value="dev"/>
 		</list>
 		<list key="orderedElements">
+			<item value="com.android.ide.eclipse.ddms.views.FileExplorerView"/>
 			<item value="com.android.ide.eclipse.ddms.views.LogCatView"/>
 			<item value="com.android.ide.eclipse.ddms.views.DeviceView"/>
 		</list>
 		<list key="textEntries">
+			<item value="1"/>
 			<item value="1"/>
 			<item value="3"/>
 		</list>

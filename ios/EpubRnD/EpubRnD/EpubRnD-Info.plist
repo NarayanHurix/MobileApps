@@ -8,6 +8,20 @@
 	<string>EpubRnD</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIcons~ipad</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>ic_launcher_144</string>
+				<string>ic_launcher_152</string>
+				<string>ic_launcher_76</string>
+				<string>ic_launcher_72</string>
+				<string>ic_launcher</string>
+			</array>
+		</dict>
+	</dict>
 	<key>CFBundleIdentifier</key>
 	<string>kitaboojune3</string>
 	<key>CFBundleInfoDictionaryVersion</key>

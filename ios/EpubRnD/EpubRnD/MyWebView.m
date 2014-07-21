@@ -17,6 +17,9 @@
     int stickHeight ,stickWidth;
     BOOL SHOULD_DISMISS;
     BOOL isAddingNote;
+    BOOL contentFit;
+    float contentHeightBeforeFitPage,contentHeightAfterFitPage;
+    float scaleFactorPageFit;
 }
 @synthesize startStick,endStick;
 
@@ -30,11 +33,12 @@
         self.scrollView.scrollEnabled = NO;
         self.scrollView.bounces = NO;
         
-        if(EPUB_LAYOUT_TYPE == FIXED)
-        {
-            self.scalesPageToFit = YES;
-        }
-
+        contentFit = NO;
+        
+        contentHeightBeforeFitPage = 0.0f;
+        contentHeightAfterFitPage = 0.0f;
+        scaleFactorPageFit = 1.0f;
+        
         stickHeight = 40;
         stickWidth =15;
         SHOULD_DISMISS = NO;
@@ -60,7 +64,18 @@
 
 - (void) loadWebData
 {
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:_webViewDAO.chapterVO.chapterURL  ofType:@"xhtml" inDirectory:@"assets/cole-voyage-of-life-20120320/EPUB/xhtml"];
+    startStick = [[StartStickView alloc] init];
+    startStick.myWebView = self;
+    startStick.hidden = YES;
+    [[self superview] addSubview:startStick];
+    
+    endStick = [[EndStickView alloc] init];
+    endStick.myWebView = self;
+    endStick.hidden = YES;
+    [[self superview] addSubview:endStick];
+    
+    
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:_webViewDAO.chapterVO.chapterURL  ofType:@"xhtml" inDirectory:CHAPTERS_FOLDER_PATH];
     
     NSURL *url = [NSURL fileURLWithPath:filePath];
     NSURLRequest *urlRqst = [NSURLRequest requestWithURL:url];
@@ -70,11 +85,35 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    
+    if(EPUB_LAYOUT_TYPE == FIXED && !contentFit)
+    {
+        self.scalesPageToFit = YES;
+        contentHeightBeforeFitPage = webView.scrollView.contentSize.height;
+        contentFit = YES;
+        [self reload];
+        return;
+    }
+    else
+    {
+        contentHeightAfterFitPage = webView.scrollView.contentSize.height;
+        if(EPUB_LAYOUT_TYPE == FIXED)
+        {
+            scaleFactorPageFit = contentHeightAfterFitPage / contentHeightBeforeFitPage;
+        }
+    }
+    
+    
     [self stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitUserSelect='none';"];
     
     [self includeJSObjCUtilsJS];
     [self addJSLibrariesToHTML];
     [self updateFontSize];
+}
+
+- (float) getScaleFactorOfPageFit
+{
+    return scaleFactorPageFit;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView
@@ -326,12 +365,12 @@
         NSString *logMsg =[methodArgs objectForKey:@"arg1"];
         NSLog(@"From JS : %@",logMsg);
     }
-    else if([methodName isEqualToString:@"saveTextHighlight"])
+    else if([methodName isEqualToString:@"saveTextHighlightToPersistantStorage"])
     {
-        NSString *startWordId =[methodArgs objectForKey:@"arg1"];
-        NSString *endWordId =[methodArgs objectForKey:@"arg2"];
+//        NSString *startWordId =[methodArgs objectForKey:@"arg1"];
+//        NSString *endWordId =[methodArgs objectForKey:@"arg2"];
         NSString *text =[methodArgs objectForKey:@"arg3"];
-        [self saveTextHighlight:startWordId :endWordId highlightedText:text];
+        [self saveTextHighlightToPersistantStorage:text];
     }
     else if([methodName isEqualToString:@"updateHighlightSticksPositions"])
     {
@@ -346,6 +385,7 @@
         NSString *arg9 =[methodArgs objectForKey:@"arg9"];
         NSString *arg10 =[methodArgs objectForKey:@"arg10"];
         
+        
         int sID = [arg1 intValue];
         int sX =  [arg2 intValue];
         int sY =  [arg3 intValue];
@@ -358,7 +398,7 @@
         int eW =  [arg9 intValue];
         int eH =  [arg10 intValue];
         
-        [self updateHighlightSticksPositions:sID :sX :sY :sW :sH :eID :eX : eY :eW :eH];
+        [self updateHighlightSticksPositions:sID :sX :sY :sW :sH :eID :eX : eY :eW :eH ];
     }
     else if([methodName isEqualToString:@"onTouchStart"])
     {
@@ -399,6 +439,11 @@
         
         [self addNoteIconToPage:sID :sX :sY :sW :sH :eID :eX : eY :eW :eH];
     }
+    else if([methodName isEqualToString:@"noWordFoundToHighlightOnLongPress"])
+    {
+        [_myDelegate toggleHighlightSwitch];
+    }
+    
 }
 
 - (void) didWrappingWordsToSpans
@@ -429,14 +474,14 @@
     [self stringByEvaluatingJavaScriptFromString:@"saveCurrentHighlight()"];
     if(startStick)
     {
-        [startStick removeFromSuperview];
-        startStick = nil;
+        //[startStick removeFromSuperview];
+        startStick.hidden = YES;
     }
     
     if(endStick)
     {
-        [endStick removeFromSuperview];
-        endStick = nil;
+        //[endStick removeFromSuperview];
+        endStick.hidden = YES;
     }
     if(highlightPopup)
     {
@@ -446,6 +491,11 @@
     if(HIGHLIGHT_TOOL_SWITCH)
     {
         [_myDelegate toggleHighlightSwitch];
+    }
+    
+    if(!isAddingNote)
+    {
+        self.currHighlightVO = nil;
     }
 }
 
@@ -454,14 +504,14 @@
     [self stringByEvaluatingJavaScriptFromString:@"clearCurrentHighlight()"];
     if(startStick)
     {
-        [startStick removeFromSuperview];
-        startStick = nil;
+        //[startStick removeFromSuperview];
+        startStick.hidden = YES;
     }
     
     if(endStick)
     {
-        [endStick removeFromSuperview];
-        endStick = nil;
+        //[endStick removeFromSuperview];
+        endStick.hidden = YES;
     }
     if(highlightPopup)
     {
@@ -472,52 +522,53 @@
     {
         [_myDelegate toggleHighlightSwitch];
     }
+    self.currHighlightVO = Nil;
 }
 
-- (void) saveTextHighlight:(NSString *) startWordId :(NSString *) endWordID highlightedText:(NSString *) text
+- (void) saveTextHighlightToPersistantStorage:(NSString *) selectedText
 {
-    NSManagedObjectContext *context = [self managedObjectContext];
-    
-    NSManagedObject *oneRecord = [NSEntityDescription insertNewObjectForEntityForName:@"Highlights" inManagedObjectContext:context];
-    [oneRecord setValue:startWordId forKey:@"startWordID"];
-    [oneRecord setValue:endWordID forKey:@"endWordID"];
-    //NSNumber *cIndex = [NSNumber numberWithInteger:[self.webViewDAO getIndexOfChapter]];
-    NSString *chIn =[NSString stringWithFormat:@"%d",[self.webViewDAO getIndexOfChapter]] ;
-    [oneRecord setValue:chIn forKey:@"chapterIndex"];
-    [oneRecord setValue:text forKey:@"highlightedText"];
-    NSError *error;
-    
-    if(![context save:&error])
+    if(self.currHighlightVO)
     {
-        NSLog(@"save highlight to sqlite failed with error : %@",[error localizedDescription]);
+        self.currHighlightVO.selectedText = selectedText;
+        NSManagedObjectContext *context = [self managedObjectContext];
+        
+        NSManagedObject *oneRecord = [NSEntityDescription insertNewObjectForEntityForName:@"Highlights" inManagedObjectContext:context];
+        [oneRecord setValue:[NSNumber numberWithInt:[self.currHighlightVO getStartWordID]]  forKey:@"startWordID"];
+        [oneRecord setValue:[NSNumber numberWithInt:[self.currHighlightVO getEndWordID]] forKey:@"endWordID"];
+        [oneRecord setValue:[NSNumber numberWithInteger:[self.webViewDAO getIndexOfChapter]] forKey:@"chapterIndex"];
+        [oneRecord setValue:self.currHighlightVO.selectedText forKey:@"highlightedText"];
+        [oneRecord setValue:[NSNumber numberWithBool:isAddingNote] forKey:@"hasNote"];
+        
+        NSError *error;
+        
+        if(![context save:&error])
+        {
+            NSLog(@"save highlight to sqlite failed with error : %@",[error localizedDescription]);
+        }
+        if(isAddingNote)
+        {
+            NSString *jsMethod = [NSString stringWithFormat:@"addNoteIconToPage(%d,%d)",[self.currHighlightVO getStartWordID],[self.currHighlightVO getEndWordID]];
+            [self stringByEvaluatingJavaScriptFromString:jsMethod];
+        }
+        NSLog(@"saving text highlight sID: %d  eID: %d  text: %@",[self.currHighlightVO getStartWordID],[self.currHighlightVO getEndWordID],self.currHighlightVO.selectedText);
     }
-    
-    self.currHighlightVO.selectedText = text;
-    if(isAddingNote)
-    {
-        NSString *jsMethod = [NSString stringWithFormat:@"addNoteIconToPage(%@,%@)",startWordId,endWordID];
-        [self stringByEvaluatingJavaScriptFromString:jsMethod];
-    }
-    NSLog(@"saving text highlight sID: %@  eID: %@  text: %@",startWordId,endWordID,text);
 }
 
 - (void) addNoteIconToPage:(int) sID :(int) sX  :(int) sY  :(int) sW :(int) sH :(int) eID :(int)eX  :(int) eY :(int) eW :(int) eH
 {
-    if(!self.currHighlightVO)
-    {
-        self.currHighlightVO = [HighlightVO new];
-    }
+    HighlightVO  *hVO = [HighlightVO new];
     
-    [self.currHighlightVO setChapterPath:self.webViewDAO.chapterVO.chapterURL];
-    [self.currHighlightVO setChapterIndex:[self.webViewDAO getIndexOfChapter]];
-    [self.currHighlightVO setStartWordID:sID];
-    [self.currHighlightVO setEndWordID:eID];
-    [self.currHighlightVO setNoOfPagesInChapter:self.webViewDAO.chapterVO.pageCountInChapter];
+    [hVO setChapterPath:self.webViewDAO.chapterVO.chapterURL];
+    [hVO setChapterIndex:[self.webViewDAO getIndexOfChapter]];
+    [hVO setStartWordID:sID];
+    [hVO setEndWordID:eID];
+    [hVO setNoOfPagesInChapter:self.webViewDAO.chapterVO.pageCountInChapter];
     
-    if(self.currHighlightVO)
+    if(hVO)
     {
         StickyNoteView *noteView = [[StickyNoteView alloc] init];
-        noteView.highlightVO = self.currHighlightVO ;
+        noteView.myDelegate = self;
+        noteView.highlightVO = hVO ;
         
         //int modifiedX = sX-(self.frame.size.width*[self.webViewDAO getIndexOfPage]);
         noteView.frame = CGRectMake(20, sY, STICKY_NOTE_ICON_WIDTH , STICKY_NOTE_ICON_HEIGHT);
@@ -537,14 +588,14 @@
         switchDocTouch = @"unbindDocumentTouch()";
         if(startStick)
         {
-            [startStick removeFromSuperview];
-            startStick = nil;
+            //[startStick removeFromSuperview];
+            startStick.hidden = YES;
         }
         
         if(endStick)
         {
-            [endStick removeFromSuperview];
-            endStick = nil;
+            //[endStick removeFromSuperview];
+            endStick.hidden = YES;
         }
     }
     [self stringByEvaluatingJavaScriptFromString:switchDocTouch];
@@ -603,41 +654,69 @@
 }
 
 
-- (void) updateHighlightSticksPositions:(int) sID :(int) sX  :(int) sY  :(int) sW :(int) sH :(int) eID :(int)eX  :(int) eY :(int) eW :(int) eH
+- (void) noWordFoundToHighlightOnLongPress
+{
+    
+}
+
+- (void) updateHighlightSticksPositions:(float) sID :(float) sX  :(float) sY  :(float) sW :(float) sH :(float) eID :(float)eX  :(float) eY :(float) eW :(float) eH
 {
     isAddingNote = NO;
     
     
+    
+    sX = sX * scaleFactorPageFit;
+    sY = sY * scaleFactorPageFit;
+    sW = sW * scaleFactorPageFit;
+    sH = sH * scaleFactorPageFit;
+    eX = eX * scaleFactorPageFit;
+    eY = eY * scaleFactorPageFit;
+    eW = eW * scaleFactorPageFit;
+    eH = eH * scaleFactorPageFit;
+    
+    if(!self.currHighlightVO)
+    {
+        self.currHighlightVO = [HighlightVO new];
+    }
+    
+    [self.currHighlightVO setChapterPath:self.webViewDAO.chapterVO.chapterURL];
+    [self.currHighlightVO setChapterIndex:[self.webViewDAO getIndexOfChapter]];
+    [self.currHighlightVO setStartWordID:sID];
+    [self.currHighlightVO setEndWordID:eID];
+    [self.currHighlightVO setNoOfPagesInChapter:self.webViewDAO.chapterVO.pageCountInChapter];
+    
     stickHeight = sH;
     
-    if(!startStick)
+//    if(!startStick)
+//    {
+//        int modifiedX = sX-stickWidth - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
+//        int modifiedY = sY-stickHeight/2;
+//        CGRect sRect = CGRectMake(modifiedX+3, modifiedY, stickWidth, stickHeight);
+//        startStick = [[StartStickView alloc] initWithFrame:sRect];
+//        startStick.myWebView = self;
+//        [[self superview] addSubview:startStick];
+//    }
+//    else
     {
-        int modifiedX = sX-stickWidth - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
-        int modifiedY = sY-stickHeight/2;
-        CGRect sRect = CGRectMake(modifiedX+3, modifiedY, stickWidth, stickHeight);
-        startStick = [[StartStickView alloc] initWithFrame:sRect];
-        startStick.myWebView = self;
-        [[self superview] addSubview:startStick];
-    }
-    else
-    {
+        startStick.hidden = NO;
         int modifiedX = sX-stickWidth - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
         int modifiedY = sY-stickHeight/2;
         CGRect sRect = CGRectMake(modifiedX+3, modifiedY, stickWidth, stickHeight);
         startStick.frame = sRect;
     }
     stickHeight = eH;
-    if(!endStick)
+//    if(!endStick)
+//    {
+//        int modifiedX = eX - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
+//        int modifiedY = eY-stickHeight/2;
+//        CGRect eRect = CGRectMake(modifiedX-3, modifiedY, stickWidth, stickHeight);
+//        endStick = [[EndStickView alloc] initWithFrame:eRect];
+//        endStick.myWebView = self;
+//        [[self superview] addSubview:endStick];
+//    }
+//    else
     {
-        int modifiedX = eX - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
-        int modifiedY = eY-stickHeight/2;
-        CGRect eRect = CGRectMake(modifiedX-3, modifiedY, stickWidth, stickHeight);
-        endStick = [[EndStickView alloc] initWithFrame:eRect];
-        endStick.myWebView = self;
-        [[self superview] addSubview:endStick];
-    }
-    else
-    {
+        endStick.hidden = NO;
         int modifiedX = eX - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
         int modifiedY = eY-stickHeight/2;
         CGRect eRect = CGRectMake(modifiedX-3, modifiedY, stickWidth, stickHeight);
@@ -673,14 +752,14 @@ UIPopoverController *highlightPopup;
 {
     if(startStick)
     {
-        [startStick removeFromSuperview];
-        startStick = nil;
+        //[startStick removeFromSuperview];
+        startStick.hidden = YES;
     }
     
     if(endStick)
     {
-        [endStick removeFromSuperview];
-        endStick = nil;
+        //[endStick removeFromSuperview];
+        endStick.hidden = YES;
     }
     SHOULD_DISMISS = NO;
     [self stringByEvaluatingJavaScriptFromString:@"setTouchedStick(false,true)"];
@@ -717,6 +796,23 @@ UIPopoverController *highlightPopup;
 -(void) dealloc
 {
     
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"touch comes here");
+}
+
+- (void)didOpenNoteEditor
+{
+    [self.myDelegate didOpenNoteEditor];
+   
+}
+
+- (void)didCloseNoteEditor
+{
+    [self.myDelegate didCloseNoteEditor];
+   
 }
 
 @end

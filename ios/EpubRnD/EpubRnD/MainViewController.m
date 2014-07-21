@@ -235,6 +235,22 @@
     self.btnFontIncrease.userInteractionEnabled = !HIGHLIGHT_TOOL_SWITCH;
 }
 
+- (void) didOpenNoteEditor
+{
+    MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
+    myPageView.touchHelperView.userInteractionEnabled = NO;
+    self.btnFontDecrease.userInteractionEnabled = NO;
+    self.btnFontIncrease.userInteractionEnabled = NO;
+}
+
+- (void) didCloseNoteEditor
+{
+    MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
+    myPageView.touchHelperView.userInteractionEnabled = YES;
+    self.btnFontDecrease.userInteractionEnabled = YES;
+    self.btnFontIncrease.userInteractionEnabled = YES;
+}
+
 - (IBAction)decreaseFontSize:(UIButton *)sender
 {
     if(EPUB_LAYOUT_TYPE == REFLOWABLE)

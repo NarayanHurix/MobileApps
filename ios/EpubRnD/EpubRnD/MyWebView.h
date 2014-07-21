@@ -13,7 +13,7 @@
 #import "HighlightVO.h"
 #import "StickyNoteView.h"
 
-@protocol MyWebViewDelegate<NSObject>
+@protocol MyWebViewDelegate<StickyNoteViewDelegate>
 
 @required
 - (void) myWebViewDidLoadFinish;
@@ -22,7 +22,7 @@
 - (void) toggleHighlightSwitch;
 @end
 
-@interface MyWebView : UIWebView<UIWebViewDelegate,UIPopoverControllerDelegate>
+@interface MyWebView : UIWebView<UIWebViewDelegate,UIPopoverControllerDelegate,StickyNoteViewDelegate>
 
 @property (nonatomic,weak) id<MyWebViewDelegate> myDelegate;
 
@@ -39,4 +39,5 @@
 - (void) saveHighlight;
 - (void) closePopupAndClearHighlight;
 - (void) addNoteAndClosePopup;
+- (float) getScaleFactorOfPageFit;
 @end

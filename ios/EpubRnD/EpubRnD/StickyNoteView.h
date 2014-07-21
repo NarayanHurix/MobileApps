@@ -10,8 +10,18 @@
 #import "HighlightVO.h"
 #import "StickyNoteViewController.h"
 
-@interface StickyNoteView : UIImageView
+
+@protocol StickyNoteViewDelegate <NSObject>
+
+- (void) didOpenNoteEditor;
+- (void) didCloseNoteEditor;
+
+@end
+
+@interface StickyNoteView : UIView<StickyNoteViewControllerDelegate>
 
 @property (nonatomic,strong) HighlightVO *highlightVO;
+
+@property (nonatomic, weak) id<StickyNoteViewDelegate> myDelegate;
 
 @end

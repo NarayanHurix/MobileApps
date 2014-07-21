@@ -96,7 +96,9 @@
 //{
 //    UITouch *touch = [touches anyObject];
 //    CGPoint p = [touch locationInView:self];
-//    [path moveToPoint:p];
+//    
+////    [path moveToPoint:p];
+//    UIView *view = [self hitTest:p withEvent:event];
 //    
 //}
 //
@@ -104,18 +106,41 @@
 //{
 //    UITouch *touch = [touches anyObject];
 //    CGPoint p = [touch locationInView:self];
-//    [path addLineToPoint:p]; // (4)
-//    [self setNeedsDisplay];
+////    [path addLineToPoint:p]; // (4)
+////    [self setNeedsDisplay];
+//    [self hitTest:p withEvent:event];
 //}
 //
 //- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 //{
-//    [self touchesMoved:touches withEvent:event];
+////    [self touchesMoved:touches withEvent:event];
+//    UITouch *touch = [touches anyObject];
+//    CGPoint p = [touch locationInView:self];
+//    
+//    [self hitTest:p withEvent:event];
 //}
 //
 //- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 //{
-//    [self touchesEnded:touches withEvent:event];
+////    [self touchesEnded:touches withEvent:event];
+//    UITouch *touch = [touches anyObject];
+//    CGPoint p = [touch locationInView:self];
+//    
+//    [self hitTest:p withEvent:event];
 //}
+
+- (void)didOpenNoteEditor
+{
+    MyViewPager *viewPager = (MyViewPager *)[self superview];
+    MainViewController *controller = (MainViewController *)viewPager.mainController;
+    [controller didOpenNoteEditor];
+}
+
+- (void)didCloseNoteEditor
+{
+    MyViewPager *viewPager = (MyViewPager *)[self superview];
+    MainViewController *controller = (MainViewController *)viewPager.mainController;
+    [controller didCloseNoteEditor];
+}
 
 @end

@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		5A01669D1951987B00A5FA59 /* JSLibraries in Resources */ = {isa = PBXBuildFile; fileRef = 5A01669C1951987B00A5FA59 /* JSLibraries */; };
+		5A0DCF6F1978F83800BE36B2 /* ic_launcher_72.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A0DCF6A1978F83800BE36B2 /* ic_launcher_72.png */; };
+		5A0DCF701978F83800BE36B2 /* ic_launcher_76.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A0DCF6B1978F83800BE36B2 /* ic_launcher_76.png */; };
+		5A0DCF711978F83800BE36B2 /* ic_launcher_144.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A0DCF6C1978F83800BE36B2 /* ic_launcher_144.png */; };
+		5A0DCF721978F83800BE36B2 /* ic_launcher_152.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A0DCF6D1978F83800BE36B2 /* ic_launcher_152.png */; };
+		5A0DCF731978F83800BE36B2 /* ic_launcher_512.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A0DCF6E1978F83800BE36B2 /* ic_launcher_512.png */; };
 		5A26000D194840E400F472CE /* AppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A26000B194840E400F472CE /* AppViewController.m */; };
 		5A26000E194840E400F472CE /* AppViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A26000C194840E400F472CE /* AppViewController.xib */; };
 		5A26001219485A9800F472CE /* GlobalConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A26001119485A9800F472CE /* GlobalConstants.m */; };
@@ -66,6 +71,11 @@
 
 /* Begin PBXFileReference section */
 		5A01669C1951987B00A5FA59 /* JSLibraries */ = {isa = PBXFileReference; lastKnownFileType = folder; path = JSLibraries; sourceTree = "<group>"; };
+		5A0DCF6A1978F83800BE36B2 /* ic_launcher_72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_launcher_72.png; sourceTree = "<group>"; };
+		5A0DCF6B1978F83800BE36B2 /* ic_launcher_76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_launcher_76.png; sourceTree = "<group>"; };
+		5A0DCF6C1978F83800BE36B2 /* ic_launcher_144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_launcher_144.png; sourceTree = "<group>"; };
+		5A0DCF6D1978F83800BE36B2 /* ic_launcher_152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_launcher_152.png; sourceTree = "<group>"; };
+		5A0DCF6E1978F83800BE36B2 /* ic_launcher_512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_launcher_512.png; sourceTree = "<group>"; };
 		5A26000A194840E400F472CE /* AppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppViewController.h; sourceTree = "<group>"; };
 		5A26000B194840E400F472CE /* AppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppViewController.m; sourceTree = "<group>"; };
 		5A26000C194840E400F472CE /* AppViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AppViewController.xib; path = /UdaySravanK/git_workspace/MobileApps/ios/EpubRnD/EpubRnD/AppViewController.xib; sourceTree = "<absolute>"; };
@@ -391,6 +401,11 @@
 		5AE09850197815D800B5A75D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				5A0DCF6A1978F83800BE36B2 /* ic_launcher_72.png */,
+				5A0DCF6B1978F83800BE36B2 /* ic_launcher_76.png */,
+				5A0DCF6C1978F83800BE36B2 /* ic_launcher_144.png */,
+				5A0DCF6D1978F83800BE36B2 /* ic_launcher_152.png */,
+				5A0DCF6E1978F83800BE36B2 /* ic_launcher_512.png */,
 				5AE09851197815EB00B5A75D /* sticky_note.png */,
 			);
 			name = Resources;
@@ -471,11 +486,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A0DCF6F1978F83800BE36B2 /* ic_launcher_72.png in Resources */,
 				5A51EC031962C1630065A595 /* HighlightPopupViewController.xib in Resources */,
+				5A0DCF701978F83800BE36B2 /* ic_launcher_76.png in Resources */,
 				5AE0984F1977FB3600B5A75D /* StickyNoteViewController.xib in Resources */,
+				5A0DCF731978F83800BE36B2 /* ic_launcher_512.png in Resources */,
 				5AAEED341949AE9F00F01F48 /* assets in Resources */,
 				5A01669D1951987B00A5FA59 /* JSLibraries in Resources */,
+				5A0DCF721978F83800BE36B2 /* ic_launcher_152.png in Resources */,
 				5A45B66B19472E52003FA663 /* InfoPlist.strings in Resources */,
+				5A0DCF711978F83800BE36B2 /* ic_launcher_144.png in Resources */,
 				5A45B69719472FEC003FA663 /* MainViewController.xib in Resources */,
 				5AE09852197815EB00B5A75D /* sticky_note.png in Resources */,
 				5A26000E194840E400F472CE /* AppViewController.xib in Resources */,
@@ -643,7 +663,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -663,7 +682,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (

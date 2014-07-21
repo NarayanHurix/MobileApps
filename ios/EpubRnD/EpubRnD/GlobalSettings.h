@@ -19,5 +19,4 @@ extern NSInteger EPUB_LAYOUT_TYPE;
 
 extern NSInteger STICKY_NOTE_ICON_WIDTH;
 extern NSInteger STICKY_NOTE_ICON_HEIGHT;
-
 @end

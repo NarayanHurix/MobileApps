@@ -57,6 +57,8 @@ function setCurrentPageWidth(pageWidth)
 
 function triggerHighlight(pageX,pageY)
 {
+    NSLog('came here a '+pageX+'  '+pageY);
+    NSLog('came here a1 '+window.pageXOffset+'  '+window.pageYOffset);
     var spanIDNumber;
     var obj = document.elementFromPoint(pageX-window.pageXOffset,pageY-window.pageYOffset);
     if($(obj).is('span'))
@@ -65,6 +67,7 @@ function triggerHighlight(pageX,pageY)
     }
     if(spanIDNumber != undefined)
     {
+        NSLog('came here b '+spanIDNumber);
         var jsCall1 = '{"MethodName":"onTouchStart","MethodArguments":{}}';
         callNativeMethod('jstoobjc:'+jsCall1);
         
@@ -75,11 +78,19 @@ function triggerHighlight(pageX,pageY)
         lastHoverdWordID = spanIDNumber;
         
         $('span').css('background-color','rgba(0, 0, 0, 0)');
+        NSLog('came here c ');
         updateHighlightSticksPositions(currHVO.startWordID,currHVO.endWordID);
+        NSLog('came here d ');
         highlightText(currHVO.startWordID,currHVO.endWordID);
+        NSLog('came here e ');
         drawSavedHighlights();
-        
+        NSLog('came here f ');
         var jsCall2 = '{"MethodName":"onTouchEnd","MethodArguments":{}}';
+        callNativeMethod('jstoobjc:'+jsCall2);noWordFoundToHighlightOnLongPress
+    }
+    else
+    {
+        var jsCall2 = '{"MethodName":"noWordFoundToHighlightOnLongPress","MethodArguments":{}}';
         callNativeMethod('jstoobjc:'+jsCall2);
     }
 }
@@ -250,7 +261,7 @@ function saveCurrentHighlight()
     {
         highlightText(currHVO.startWordID,currHVO.endWordID);
         currHVO.selectedText = getSelectedText(currHVO.startWordID,currHVO.endWordID);
-        var jsonSaveHighlight = '{"MethodName":"saveTextHighlight","MethodArguments":{"arg1":"'+currHVO.startWordID+'","arg2":"'+currHVO.endWordID+'","arg3":"'+currHVO.selectedText+'"}}';
+        var jsonSaveHighlight = '{"MethodName":"saveTextHighlightToPersistantStorage","MethodArguments":{"arg1":"'+currHVO.startWordID+'","arg2":"'+currHVO.endWordID+'","arg3":"'+currHVO.selectedText+'"}}';
         callNativeMethod('jstoobjc:'+jsonSaveHighlight);
         
 //        var currHighlightVO = {};
@@ -278,6 +289,7 @@ function clearCurrentHighlight()
 
 function highlightText(sWordID,eWordID)
 {
+    NSLog('came here d1 ');
     for(var i=Number(sWordID);i<=Number(eWordID);i++)
     {
         var spanIdToHighlight = 'wordID-'+i;
@@ -353,13 +365,14 @@ function updateHighlightSticksPositions(sWordID ,eWordID)
     eW = $('#wordID-'+eWordID).width();
     eH = $('#wordID-'+eWordID).height();
     
-    
+    NSLog('came here c1 ');
     var jsonSaveHighlight = '{"MethodName":"updateHighlightSticksPositions","MethodArguments":{"arg1":"'+sID+'","arg2":"'+sX+'","arg3":"'+sY+'","arg4":"'+sW+'","arg5":"'+sH+'","arg6":"'+eID+'","arg7":"'+eX+'","arg8":"'+eY+'","arg9":"'+eW+'","arg10":"'+eH+'"}}';
     callNativeMethod('jstoobjc:'+jsonSaveHighlight);
 }
 
 function drawSavedHighlights()
 {
+    NSLog('came here e1 ');
     for(j in highlightVOColl)
     {
         for(var i=Number(highlightVOColl[j].startWordID);i<=Number(highlightVOColl[j].endWordID);i++)

@@ -117,12 +117,12 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
         [_delegate toggleHighlightSwitch];
         if(self.currenPageView)
         {
-            int pageX = touchLocation.x;
+            float scale = [self.currenPageView.myWebView getScaleFactorOfPageFit];
+            int pageX = touchLocation.x / scale;
             pageX = pageX + (self.currenPageView.frame.size.width*[self.currenPageView.myWebView.webViewDAO getIndexOfPage]);
-            int pageY = touchLocation.y;
+            int pageY = touchLocation.y ;
             NSString *jsFunc = [NSString stringWithFormat:@"triggerHighlight(%d,%d)",pageX,pageY];
             [self.currenPageView.myWebView stringByEvaluatingJavaScriptFromString:jsFunc];
-            
         }
     }
 }
