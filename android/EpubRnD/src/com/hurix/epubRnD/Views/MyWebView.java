@@ -387,9 +387,9 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 								updateHighlightSticksPosition(sX,sY,sW,sH,eX,eY,eW,eH);
 								
 							}
-							else if(methodName.equals(""))
+							else if(methodName.equals("noWordFoundToHighlightOnLongPress"))
 							{
-								
+								onClickHighlightSwitch();
 							}
 							else if(methodName.equals(""))
 							{
@@ -409,6 +409,8 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 				e.printStackTrace();
 			}
 		}
+		
+		
 		
 		@JavascriptInterface
 		public void log(String msg)
@@ -486,6 +488,8 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 		}
 		
 	}
+	
+	
 	
 	private void getAllHighlights() 
 	{
