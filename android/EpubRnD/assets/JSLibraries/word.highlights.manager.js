@@ -82,6 +82,11 @@ function triggerHighlight(pageX,pageY)
         var jsCall2 = '{"MethodName":"onTouchEnd","MethodArguments":{}}';
         jsInterface.callNativeMethod('jstoobjc:'+jsCall2);
     }
+    else
+    {
+        var jsCall2 = '{"MethodName":"noWordFoundToHighlightOnLongPress","MethodArguments":{}}';
+        jsInterface.callNativeMethod('jstoobjc:'+jsCall2);
+    }
 }
 
 function onTouchStart(e)
