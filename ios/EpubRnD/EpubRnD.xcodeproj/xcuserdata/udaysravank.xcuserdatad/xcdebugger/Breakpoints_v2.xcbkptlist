@@ -25,7 +25,7 @@
                   symbolName = "-[StickyNoteViewController highlightVO]"
                   moduleName = "kitaboojune3"
                   urlString = "file:///UdaySravanK/git_workspace/MobileApps/ios/EpubRnD/EpubRnD/StickyNoteViewController.h"
-                  timestampString = "427642434.594616"
+                  timestampString = "427700268.846702"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "28"
@@ -39,7 +39,7 @@
                   symbolName = "-[StickyNoteViewController setHighlightVO:]"
                   moduleName = "kitaboojune3"
                   urlString = "file:///UdaySravanK/git_workspace/MobileApps/ios/EpubRnD/EpubRnD/StickyNoteViewController.h"
-                  timestampString = "427642434.595011"
+                  timestampString = "427700268.847322"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "28"
@@ -47,22 +47,6 @@
                   offsetFromSymbolStart = "31">
                </Location>
             </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "EpubRnD/MyWebView.m"
-            timestampString = "427637468.406933"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "474"
-            endingLineNumber = "474"
-            landmarkName = "-saveHighlight"
-            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

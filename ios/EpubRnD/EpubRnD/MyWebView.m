@@ -20,6 +20,8 @@
     BOOL contentFit;
     float contentHeightBeforeFitPage,contentHeightAfterFitPage;
     float scaleFactorPageFit;
+    HighlightPopupViewController *hContr;
+    UIPopoverController *highlightPopup;
 }
 @synthesize startStick,endStick;
 
@@ -723,21 +725,20 @@
         endStick.frame = eRect;
     }
 }
-UIPopoverController *highlightPopup;
+
 -(void) showHighlightContextMenu:(UIView *) anchorView
 {
     CGRect rect = CGRectMake(anchorView.frame.size.width/2, 0, 0, 0);
     if(!highlightPopup)
     {
-        HighlightPopupViewController *hContr = [[HighlightPopupViewController alloc ] init];
+        hContr = [[HighlightPopupViewController alloc ] init];
         highlightPopup= [[UIPopoverController alloc] initWithContentViewController:hContr];
         CGSize popoverContentSize = CGSizeMake(180, 60);
         highlightPopup.popoverContentSize =popoverContentSize;
-        [highlightPopup setDelegate:self];
-        hContr.myWebView = self;
-        highlightPopup.passthroughViews = [NSArray arrayWithObjects:self,startStick,endStick, nil];
-        
     }
+    [highlightPopup setDelegate:self];
+    hContr.myWebView = self;
+    highlightPopup.passthroughViews = [NSArray arrayWithObjects:self,startStick,endStick, nil];
     SHOULD_DISMISS = NO;
     [highlightPopup presentPopoverFromRect:rect inView:anchorView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
