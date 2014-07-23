@@ -2,6 +2,8 @@ var highlightVOColl = [];
 var touchendStartStick = false ,touchendEndStick = false;
 
 var currHVO = null;
+var firstWordId = -1;
+var lastWordId = -1;
 
 function HighlightVO()
 {
@@ -252,7 +254,7 @@ function saveCurrentHighlight()
     if(currHVO != null || currHVO != undefined)
     {
         highlightText(currHVO.startWordID,currHVO.endWordID);
-        var jsonSaveHighlight = '{"MethodName":"saveTextHighlight","MethodArguments":{"arg1":"'+currHVO.startWordID+'","arg2":"'+currHVO.endWordID+'","arg3":"'+currHVO.selectedText+'"}}';
+        var jsonSaveHighlight = '{"MethodName":"saveTextHighlightToPersistantStorage","MethodArguments":{"arg1":"'+currHVO.startWordID+'","arg2":"'+currHVO.endWordID+'","arg3":"'+currHVO.selectedText+'"}}';
         jsInterface.callNativeMethod('jstoobjc:'+jsonSaveHighlight);
         
 //        var currHighlightVO = {};
@@ -298,26 +300,66 @@ function getSelectedText(sWordID,eWordID)
     return selectedText;
 }
 
-function updateHighlightSticksPositions(sWordID ,eWordID)
+function addNoteIconToPage(sWordID ,eWordID)
 {
+    var sID = 0;
     var sX = 0;
     var sY = 0;
+    var sW = 0;
+    var sH = 0;
+    
+    var eID = 0;
     var eX = 0;
     var eY = 0;
+    var eW = 0;
+    var eH = 0;
     
+    sID = sWordID;
     sX = $('#wordID-'+sWordID).position().left;
     sY = $('#wordID-'+sWordID).position().top;
     sW = $('#wordID-'+sWordID).width();
     sH = $('#wordID-'+sWordID).height();
     
+    eID = eWordID
     eX = $('#wordID-'+eWordID).position().left + $('#wordID-'+eWordID).width();
     eY = $('#wordID-'+eWordID).position().top + $('#wordID-'+eWordID).height();
     eW = $('#wordID-'+eWordID).width();
     eH = $('#wordID-'+eWordID).height();
     
-    
-    var jsonSaveHighlight = '{"MethodName":"updateHighlightSticksPositions","MethodArguments":{"arg1":"'+sX+'","arg2":"'+sY+'","arg3":"'+sW+'","arg4":"'+sH+'","arg5":"'+eX+'","arg6":"'+eY+'","arg7":"'+eW+'","arg8":"'+eH+'"}}';
+    var text = getSelectedText(sWordID,eWordID);
+    var jsonSaveHighlight = '{"MethodName":"addNoteIconToPage","MethodArguments":{"arg1":"'+sID+'","arg2":"'+sX+'","arg3":"'+sY+'","arg4":"'+sW+'","arg5":"'+sH+'","arg6":"'+eID+'","arg7":"'+eX+'","arg8":"'+eY+'","arg9":"'+eW+'","arg10":"'+eH+'","arg11":"'+text+'"}}';
     jsInterface.callNativeMethod('jstoobjc:'+jsonSaveHighlight);
+}
+
+function updateHighlightSticksPositions(sWordID ,eWordID)
+{
+    var sID = 0;
+    var sX = 0;
+    var sY = 0;
+    var sW = 0;
+    var sH = 0;
+    
+    var eID = 0;
+    var eX = 0;
+    var eY = 0;
+    var eW = 0;
+    var eH = 0;
+    
+    sID = sWordID;
+    sX = $('#wordID-'+sWordID).position().left;
+    sY = $('#wordID-'+sWordID).position().top;
+    sW = $('#wordID-'+sWordID).width();
+    sH = $('#wordID-'+sWordID).height();
+    
+    eID = eWordID
+    eX = $('#wordID-'+eWordID).position().left + $('#wordID-'+eWordID).width();
+    eY = $('#wordID-'+eWordID).position().top + $('#wordID-'+eWordID).height();
+    eW = $('#wordID-'+eWordID).width();
+    eH = $('#wordID-'+eWordID).height();
+    
+    var jsonSaveHighlight = '{"MethodName":"updateHighlightSticksPositions","MethodArguments":{"arg1":"'+sID+'","arg2":"'+sX+'","arg3":"'+sY+'","arg4":"'+sW+'","arg5":"'+sH+'","arg6":"'+eID+'","arg7":"'+eX+'","arg8":"'+eY+'","arg9":"'+eW+'","arg10":"'+eH+'"}}';
+    jsInterface.callNativeMethod('jstoobjc:'+jsonSaveHighlight);
+    
 }
 
 function drawSavedHighlights()
@@ -329,6 +371,7 @@ function drawSavedHighlights()
             var spanIdToHighlight = 'wordID-'+i;
             $('#'+spanIdToHighlight).css('background-color','rgba(0,0,255,0.3)');
         }
+        addNoteIconToPage(Number(highlightVOColl[j].startWordID), Number(highlightVOColl[j].endWordID));
     }
 }
 
@@ -363,6 +406,74 @@ function setTouchedStick(isStartStick,isEndStick)
     {
         touchendStartStick = false;
         touchendEndStick = false;
+    }
+}
+
+function findFirstAndLastWordsOfPage(columnWidth,indexOfCurrPage,indexOfNextPage)
+{
+    jsInterface.log('Curr Page Index : '+indexOfCurrPage +' nextPageIndex :'+indexOfNextPage);
+    firstWordId = -1;
+    lastWordId = -1;
+    var arrOfSpans =  $('span');
+    $.each(arrOfSpans,function(i,obj)
+           {
+               var spanID = obj.id;
+               if(spanID != undefined)
+               {
+                    var spanIDNumber = obj.id.split('-')[1];
+                    var leftMargin = $(obj).position().left;
+                    if(firstWordId == -1)
+                    {
+                        if(Number(indexOfCurrPage) == 0)
+                        {
+                            firstWordId = spanIDNumber;
+                        }
+                        else if(Number(leftMargin)> (Number(columnWidth)*Number(indexOfCurrPage)))
+                        {
+                            firstWordId = spanIDNumber;
+                        }
+           
+                        if(firstWordId != -1)
+                        {
+                           jsInterface.log('    firstWID: '+firstWordId);
+//                           var fw = 'wordID-'+firstWordId;
+//                           $('#'+fw).css('background-color','rgba(255,0,0,0.4)');
+                        }
+                    }
+                                
+                    if(lastWordId == -1 && firstWordId != -1)
+                    {
+                        if(indexOfNextPage == -1 && firstWordId != -1)
+                        {
+                           lastWordId = arrOfSpans[arrOfSpans.length-1].id.split('-')[1];
+                        }
+                        else if(Number(leftMargin)> (Number(columnWidth)*Number(indexOfNextPage)) && i!= 0)
+                        {
+                            lastWordId = arrOfSpans[i-1].id.split('-')[1];
+                        }
+           
+                        if(lastWordId != -1)
+                        {
+                            jsInterface.log('    lastWID: '+lastWordId);
+//                            var lw = 'wordID-'+lastWordId;
+//                            $('#'+lw).css('background-color','rgba(0,255,0,0.4)');
+           
+                            var callNatMethod = '{"MethodName":"didFindFirstAndLastWordsOfPage","MethodArguments":{"arg1":"'+Number(firstWordId)+'","arg2":"'+Number(lastWordId)+'"}}';
+                            jsInterface.callNativeMethod('jstoobjc:'+callNatMethod);
+                            return;
+                        }
+                    }
+               }
+           });
+}
+
+function copySelectedTextToPasteBoard()
+{
+    if(currHVO != null || currHVO != undefined)
+    {
+        var text = getSelectedText(currHVO.startWordID,currHVO.endWordID);
+        var callNatMethod = '{"MethodName":"copySelectedTextToPasteBoard","MethodArguments":{"arg1":"'+text+'"}}';
+        jsInterface.callNativeMethod('jstoobjc:'+callNatMethod);
     }
 }
 

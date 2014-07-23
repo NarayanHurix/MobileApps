@@ -1,6 +1,7 @@
 package com.hurix.epubRnD.Views;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -52,13 +53,10 @@ public class FixedTopMostLayout extends RelativeLayout implements OnGestureListe
 		return true;
 	}
 	
-	
-	
 	public void setMyViewFlipper(MyViewFlipper _myViewFlipper) 
 	{
 		this._myViewFlipper = _myViewFlipper;
 	}
-
 
 	@Override
 	public boolean onDown(MotionEvent e) {
@@ -102,7 +100,7 @@ public class FixedTopMostLayout extends RelativeLayout implements OnGestureListe
 
 	@Override
 	public boolean onSingleTapUp(MotionEvent e) {
-		// TODO Auto-generated method stub
+		((PageView)this._myViewFlipper.getCurrentPageView()).validateSingleTap(e);
 		return false;
 	}
 	

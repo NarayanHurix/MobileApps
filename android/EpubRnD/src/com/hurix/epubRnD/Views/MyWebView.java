@@ -6,6 +6,9 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -29,23 +32,25 @@ import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.hurix.epubRnD.R;
 import com.hurix.epubRnD.Constants.GlobalConstants;
 import com.hurix.epubRnD.Settings.GlobalSettings;
+import com.hurix.epubRnD.VOs.HighlightVO;
 import com.hurix.epubRnD.VOs.WebViewDAO;
+import com.hurix.epubRnD.Views.StickyNoteIconView.StickyNoteIconViewListener;
 import com.hurix.epubRnD.widgets.QuickAction;
 import com.hurix.epubRnD.widgets.QuickAction.OnDismissListener;
 
 @SuppressLint("NewApi")
-public class MyWebView extends WebView implements OnDismissListener,OnClickListener
+public class MyWebView extends WebView implements OnDismissListener,OnClickListener,StickyNoteIconViewListener
 {
 	
 	private WebViewDAO _data;
 	private boolean isURLLoaded = false;
 	private MyWebViewLoadListener _mMyWebViewLoadListener;
 	
-
 	private static final int SWIPE_THRESHOLD = 100;
 	private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 	private OnPageChangeListener _listener;
@@ -63,6 +68,10 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 	GestureDetector gestureDetector = new GestureDetector(new MyGestureDetector());
 	private StartStickView startStick;
 	private EndStickView endStick;
+	private int firstWordID, lastWordID;
+	private HighlightVO _currHighlightVO;
+	private boolean isAddingNote;
+	
 	public MyWebView(Context context) {
 		super(context);
 		init(context);
@@ -360,11 +369,24 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 							}
 							else if(methodName.equals("onWordHighlightManagerJS"))
 							{
-								onWordHighlightManagerJS();
+								int indexOfNextPage = -1;
+								if(_data.getIndexOfPage()<_data.getPageCount()-1)
+								{
+									indexOfNextPage = _data.getIndexOfPage()+1;
+								}
+							    
+								loadUrl("javascript: findFirstAndLastWordsOfPage("+getMeasuredWidth()+","+_data.getIndexOfPage()+","+indexOfNextPage+")");
 							}
-							else if(methodName.equals("saveTextHighlight"))
+							else if(methodName.equals("didFindFirstAndLastWordsOfPage"))
 							{
-								saveTextHighlight(argsJsonObj.getString("arg1"),argsJsonObj.getString("arg2"),argsJsonObj.getString("arg3"));
+								int arg1 = Integer.parseInt(argsJsonObj.getString("arg1"));
+						        int arg2 = Integer.parseInt(argsJsonObj.getString("arg2"));
+						        didFindFirstAndLastWordsOfPage(arg1,arg2);
+						        onWordHighlightManagerJS();
+							}
+							else if(methodName.equals("saveTextHighlightToPersistantStorage"))
+							{
+								saveTextHighlightToPersistantStorage(argsJsonObj.getString("arg3"));
 							}
 							else if(methodName.equals("onTouchStart"))
 							{
@@ -376,24 +398,56 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 							}
 							else if(methodName.equals("updateHighlightSticksPositions"))
 							{
-								float sX = Float.parseFloat(argsJsonObj.getString("arg1"));
-								float sY = Float.parseFloat(argsJsonObj.getString("arg2"));
-								float sW = Float.parseFloat(argsJsonObj.getString("arg3"));
-								float sH = Float.parseFloat(argsJsonObj.getString("arg4"));
-								float eX = Float.parseFloat(argsJsonObj.getString("arg5"));
-								float eY = Float.parseFloat(argsJsonObj.getString("arg6"));
-								float eW = Float.parseFloat(argsJsonObj.getString("arg7"));
-								float eH = Float.parseFloat(argsJsonObj.getString("arg8"));
-								updateHighlightSticksPosition(sX,sY,sW,sH,eX,eY,eW,eH);
+								int sID = Integer.parseInt(argsJsonObj.getString("arg1"));
+								float sX = Float.parseFloat(argsJsonObj.getString("arg2"));
+								float sY = Float.parseFloat(argsJsonObj.getString("arg3"));
+								float sW = Float.parseFloat(argsJsonObj.getString("arg4"));
+								float sH = Float.parseFloat(argsJsonObj.getString("arg5"));
+								int eID = Integer.parseInt(argsJsonObj.getString("arg6"));
+								float eX = Float.parseFloat(argsJsonObj.getString("arg7"));
+								float eY = Float.parseFloat(argsJsonObj.getString("arg8"));
+								float eW = Float.parseFloat(argsJsonObj.getString("arg9"));
+								float eH = Float.parseFloat(argsJsonObj.getString("arg10"));
+								updateHighlightSticksPosition(sID,sX,sY,sW,sH,eID,eX,eY,eW,eH);
 								
 							}
+							else if(methodName.equals("addNoteIconToPage"))
+						    {
+						        String arg1 =argsJsonObj.getString("arg1");
+						        String arg2 =argsJsonObj.getString("arg2");
+						        String arg3 =argsJsonObj.getString("arg3");
+						        String arg4 =argsJsonObj.getString("arg4");
+						        String arg5 =argsJsonObj.getString("arg5");
+						        String arg6 =argsJsonObj.getString("arg6");
+						        String arg7 =argsJsonObj.getString("arg7");
+						        String arg8 =argsJsonObj.getString("arg8");
+						        String arg9 =argsJsonObj.getString("arg9");
+						        String arg10 =argsJsonObj.getString("arg10");
+						        String arg11 =argsJsonObj.getString("arg11");
+						        
+						        int sID = Integer.parseInt(arg1);
+						        float sX =  Float.parseFloat(arg2);
+						        float sY =  Float.parseFloat(arg3);
+						        float sW =  Float.parseFloat(arg4);
+						        float sH =  Float.parseFloat(arg5);
+						        
+						        int eID = Integer.parseInt(arg6);
+						        float eX =  Float.parseFloat(arg7);
+						        float eY =  Float.parseFloat(arg8);
+						        float eW =  Float.parseFloat(arg9);
+						        float eH =  Float.parseFloat(arg10);
+						        
+						        
+						        addNoteIconToPage(sID, sX, sY, sW, sH, eID, eX, eY,eW, eH,arg11);
+						    }
 							else if(methodName.equals("noWordFoundToHighlightOnLongPress"))
 							{
 								onClickHighlightSwitch();
 							}
-							else if(methodName.equals(""))
+							else if(methodName.equals("copySelectedTextToPasteBoard"))
 							{
-								
+								String arg1 =argsJsonObj.getString("arg1");
+								copySelectedTextToPasteBoard(arg1);
 							}
 							
 						}
@@ -402,6 +456,8 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 							e.printStackTrace();
 						}
 					}
+
+					
 				});
 			}
 			catch(JSONException e)
@@ -462,34 +518,40 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 			}
 		}
 		
-		private void saveTextHighlight(String startWordID, String endWordID, String text)
+		private void saveTextHighlightToPersistantStorage(String text)
 		{
+			_currHighlightVO.setSelectedText(text);
 			SharedPreferences pref =  getContext().getSharedPreferences("UGCData", Context.MODE_PRIVATE);
 			String jsonArrStr = pref.getString("Highlights", "[]");
 			try {
 				JSONArray allHighlightsArray = new JSONArray(jsonArrStr);
 				
 				JSONObject hRecord = new JSONObject();
-				hRecord.put("startWordID", startWordID);
-				hRecord.put("endWordID",endWordID);
+				hRecord.put("startWordID", _currHighlightVO.getStartWordID());
+				hRecord.put("endWordID",_currHighlightVO.getEndWordID());
 				hRecord.put("chapterIndex", ""+_data.getIndexOfChapter());
 				hRecord.put("highlightedText", text);
+				hRecord.put("hasNote",isAddingNote);
 				allHighlightsArray.put(hRecord);
 				
 				SharedPreferences.Editor editor = pref.edit();
 				editor.putString("Highlights", allHighlightsArray.toString());
 				editor.commit();
 				
+				if(isAddingNote)
+		        {
+		            String jsMethod = "addNoteIconToPage("+_currHighlightVO.getStartWordID()+","+_currHighlightVO.getEndWordID()+")";
+		            loadUrl("javascript:"+jsMethod);
+		        }
+				
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Log.d("save highlight :  ","swid : "+startWordID +" ewid : "+endWordID +" text : "+text);
+			Log.d("save highlight :  ","swid : "+_currHighlightVO.getStartWordID() +" ewid : "+_currHighlightVO.getEndWordID() +" text : "+text);
 		}
 		
 	}
-	
-	
 	
 	private void getAllHighlights() 
 	{
@@ -801,8 +863,10 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 	}
 	private QuickAction _popUp;
 	
-	private void updateHighlightSticksPosition(float sX, float sY, float sW, float sH, float eX, float eY, float eW, float eH)
+	private void updateHighlightSticksPosition(int sID,float sX, float sY, float sW, float sH, int eID, float eX, float eY, float eW, float eH)
 	{
+		isAddingNote = false;
+		
 		stickHeight = sH;
 		sX = sX * getContext().getResources().getDisplayMetrics().density;
 		sY = sY * getContext().getResources().getDisplayMetrics().density;
@@ -813,6 +877,18 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 		eW = eW * getContext().getResources().getDisplayMetrics().density;
 		eH = eH * getContext().getResources().getDisplayMetrics().density;
 		float modifiedX, modifiedY;
+		
+		
+		if(_currHighlightVO == null)
+		{
+			_currHighlightVO = new HighlightVO();
+		}
+		
+		_currHighlightVO.setChapterIndex(_data.getIndexOfChapter());
+		_currHighlightVO.setChapterPath(_data.getChapterVO().getChapterURL());
+		_currHighlightVO.setStartWordID(sID);
+		_currHighlightVO.setEndWordID(eID);
+		_currHighlightVO.setNumOfPagesInChapter(_data.getPageCount());
 		
 	    if(startStick == null)
 	    {
@@ -853,12 +929,43 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 	        window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 	        
 	        _popUp.findViewById(R.id.highlightSaveBtn).setOnClickListener(this);
+	        _popUp.findViewById(R.id.highlightNoteBtn).setOnClickListener(this);
+	        _popUp.findViewById(R.id.highlightCopyBtn).setOnClickListener(this);
 	        _popUp.findViewById(R.id.highlightClearBtn).setOnClickListener(this);
 	    }
 	}
 	
 	
 
+	private void addNoteIconToPage(int sID, float sX, float sY, float sW, float sH, int eID, float eX, float eY, float eW, float eH, String arg11) 
+	{
+		if(sID>=firstWordID && sID<=lastWordID)
+		{
+			HighlightVO	hVO = new HighlightVO();
+			
+			hVO.setChapterIndex(_data.getIndexOfChapter());
+			hVO.setChapterPath(_data.getChapterVO().getChapterURL());
+			hVO.setStartWordID(sID);
+			hVO.setEndWordID(eID);
+			hVO.setNumOfPagesInChapter(_data.getPageCount());
+			hVO.setSelectedText(arg11);
+			
+			StickyNoteIconView icon= new StickyNoteIconView(getContext(),this);
+			float density = getContext().getResources().getDisplayMetrics().density;
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((int)(GlobalConstants.NOTE_ICON_WIDTH * density),(int)( GlobalConstants.NOTE_ICON_HEIGHT * density));
+			params.leftMargin = 20;
+			params.topMargin = (int)sY;
+			icon.setData(hVO);
+			icon.setLayoutParams(params);
+			((PageView)getParent().getParent()).addView(icon);
+			if(isAddingNote)
+			{
+				isAddingNote = false;
+				openNoteEditor(icon);
+			}
+		}
+	}
+	
 	private void highlightActionDown()
 	{
 		if(_popUp != null)
@@ -917,6 +1024,10 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 		{
 			onClickHighlightSwitch();
 		}
+		if(!isAddingNote)
+	    {
+			_currHighlightVO = null;
+	    }
 	}
 
 	@Override
@@ -928,12 +1039,59 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 				loadUrl("javascript: saveCurrentHighlight()");
 				closeHighlight();
 				break;
+			case R.id.highlightNoteBtn:
+				isAddingNote = true;
+				loadUrl("javascript: saveCurrentHighlight()");
+				closeHighlight();
+				break;
+			case R.id.highlightCopyBtn:
+				loadUrl("javascript: copySelectedTextToPasteBoard()");
+				break;
 			case R.id.highlightClearBtn:
 				loadUrl("javascript: clearCurrentHighlight()");
 				closeHighlight();
 				break;
+			case R.id.button1:
+				if(dlg != null)
+				{
+					dlg.dismiss();
+				}
+				break;
 			default:
 				break;
 		}
+	}
+	
+	private void didFindFirstAndLastWordsOfPage(int firstWordID,int lastWordID)
+	{
+		this.firstWordID = firstWordID;
+		this.lastWordID = lastWordID;
+		
+	}
+	
+	private void copySelectedTextToPasteBoard(String text)
+	{
+		loadUrl("javascript: clearCurrentHighlight()");
+		closeHighlight();
+		ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE); 
+		ClipData clip = ClipData.newPlainText("EpubPlayer", text);
+		clipboard.setPrimaryClip(clip);
+	}
+	
+	private Dialog dlg;
+	
+	@Override
+	public void openNoteEditor(StickyNoteIconView noteIconView) 
+	{
+		if(dlg != null)
+		{
+			dlg.dismiss();
+		}
+		dlg = new Dialog(getContext(),android.R.style.Theme_Dialog);
+		dlg.setContentView(R.layout.sticky_note_editor);
+		dlg.setTitle("Sticky Note Editor");
+		((TextView)dlg.findViewById(R.id.textView1)).setText(noteIconView.getData().getSelectedText());
+		dlg.findViewById(R.id.button1).setOnClickListener(this);
+		dlg.show();
 	}
 }

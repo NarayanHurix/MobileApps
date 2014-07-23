@@ -22,8 +22,7 @@
 @interface StickyNoteViewController : UIViewController
 
 
-
-- (IBAction)closeee:(id)sender;
+@property (weak, nonatomic) IBOutlet UITextView *labelSelectedText;
 
 @property (nonatomic,strong) HighlightVO *highlightVO;
 

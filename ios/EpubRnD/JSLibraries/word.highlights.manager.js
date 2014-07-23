@@ -2,6 +2,8 @@ var highlightVOColl = [];
 var touchendStartStick = false ,touchendEndStick = false;
 
 var currHVO = null;
+var firstWordId = -1;
+var lastWordId = -1;
 
 function HighlightVO()
 {
@@ -57,8 +59,6 @@ function setCurrentPageWidth(pageWidth)
 
 function triggerHighlight(pageX,pageY)
 {
-    NSLog('came here a '+pageX+'  '+pageY);
-    NSLog('came here a1 '+window.pageXOffset+'  '+window.pageYOffset);
     var spanIDNumber;
     var obj = document.elementFromPoint(pageX-window.pageXOffset,pageY-window.pageYOffset);
     if($(obj).is('span'))
@@ -67,7 +67,6 @@ function triggerHighlight(pageX,pageY)
     }
     if(spanIDNumber != undefined)
     {
-        NSLog('came here b '+spanIDNumber);
         var jsCall1 = '{"MethodName":"onTouchStart","MethodArguments":{}}';
         callNativeMethod('jstoobjc:'+jsCall1);
         
@@ -78,13 +77,9 @@ function triggerHighlight(pageX,pageY)
         lastHoverdWordID = spanIDNumber;
         
         $('span').css('background-color','rgba(0, 0, 0, 0)');
-        NSLog('came here c ');
         updateHighlightSticksPositions(currHVO.startWordID,currHVO.endWordID);
-        NSLog('came here d ');
         highlightText(currHVO.startWordID,currHVO.endWordID);
-        NSLog('came here e ');
         drawSavedHighlights();
-        NSLog('came here f ');
         var jsCall2 = '{"MethodName":"onTouchEnd","MethodArguments":{}}';
         callNativeMethod('jstoobjc:'+jsCall2);noWordFoundToHighlightOnLongPress
     }
@@ -114,7 +109,6 @@ function onTouchStart(e)
         {
             if(currHVO == null || currHVO == undefined)
             {
-                NSLog('came here 000 ');
                 //initiate highlight vo
                 currHVO = new HighlightVO();
                 //check for existed highlight
@@ -122,7 +116,6 @@ function onTouchStart(e)
                 if(seletedHVO)
                 {
                     currHVO = seletedHVO;
-                    NSLog('came here selcting hvo');
                     $('span').css('background-color','rgba(0, 0, 0, 0)');
                     updateHighlightSticksPositions(currHVO.startWordID,currHVO.endWordID);
                     highlightText(currHVO.startWordID,currHVO.endWordID);
@@ -289,7 +282,6 @@ function clearCurrentHighlight()
 
 function highlightText(sWordID,eWordID)
 {
-    NSLog('came here d1 ');
     for(var i=Number(sWordID);i<=Number(eWordID);i++)
     {
         var spanIdToHighlight = 'wordID-'+i;
@@ -334,8 +326,8 @@ function addNoteIconToPage(sWordID ,eWordID)
     eW = $('#wordID-'+eWordID).width();
     eH = $('#wordID-'+eWordID).height();
     
-    
-    var jsonSaveHighlight = '{"MethodName":"addNoteIconToPage","MethodArguments":{"arg1":"'+sID+'","arg2":"'+sX+'","arg3":"'+sY+'","arg4":"'+sW+'","arg5":"'+sH+'","arg6":"'+eID+'","arg7":"'+eX+'","arg8":"'+eY+'","arg9":"'+eW+'","arg10":"'+eH+'"}}';
+    var text = getSelectedText(sWordID,eWordID);
+    var jsonSaveHighlight = '{"MethodName":"addNoteIconToPage","MethodArguments":{"arg1":"'+sID+'","arg2":"'+sX+'","arg3":"'+sY+'","arg4":"'+sW+'","arg5":"'+sH+'","arg6":"'+eID+'","arg7":"'+eX+'","arg8":"'+eY+'","arg9":"'+eW+'","arg10":"'+eH+'","arg11":"'+text+'"}}';
     callNativeMethod('jstoobjc:'+jsonSaveHighlight);
 }
 
@@ -365,22 +357,25 @@ function updateHighlightSticksPositions(sWordID ,eWordID)
     eW = $('#wordID-'+eWordID).width();
     eH = $('#wordID-'+eWordID).height();
     
-    NSLog('came here c1 ');
     var jsonSaveHighlight = '{"MethodName":"updateHighlightSticksPositions","MethodArguments":{"arg1":"'+sID+'","arg2":"'+sX+'","arg3":"'+sY+'","arg4":"'+sW+'","arg5":"'+sH+'","arg6":"'+eID+'","arg7":"'+eX+'","arg8":"'+eY+'","arg9":"'+eW+'","arg10":"'+eH+'"}}';
     callNativeMethod('jstoobjc:'+jsonSaveHighlight);
 }
 
 function drawSavedHighlights()
 {
-    NSLog('came here e1 ');
     for(j in highlightVOColl)
     {
-        for(var i=Number(highlightVOColl[j].startWordID);i<=Number(highlightVOColl[j].endWordID);i++)
+        var sid = Number(highlightVOColl[j].startWordID);
+        var eid = Number(highlightVOColl[j].endWordID);
+        
+        for(var i=sid;i<=eid;i++)
         {
             var spanIdToHighlight = 'wordID-'+i;
             $('#'+spanIdToHighlight).css('background-color','rgba(0,0,255,0.3)');
         }
+        
         addNoteIconToPage(highlightVOColl[j].startWordID ,highlightVOColl[j].endWordID);
+        
     }
 }
 
@@ -418,3 +413,70 @@ function setTouchedStick(isStartStick,isEndStick)
     }
 }
 
+function findFirstAndLastWordsOfPage(columnWidth,indexOfCurrPage,indexOfNextPage)
+{
+    NSLog('Curr Page Index : '+indexOfCurrPage +' nextPageIndex :'+indexOfNextPage);
+    firstWordId = -1;
+    lastWordId = -1;
+    var arrOfSpans =  $('span');
+    $.each(arrOfSpans,function(i,obj)
+           {
+               var spanID = obj.id;
+               if(spanID != undefined)
+               {
+                    var spanIDNumber = obj.id.split('-')[1];
+                    var leftMargin = $(obj).position().left;
+                    if(firstWordId == -1)
+                    {
+                        if(Number(indexOfCurrPage) == 0)
+                        {
+                            firstWordId = spanIDNumber;
+                        }
+                        else if(Number(leftMargin)> (Number(columnWidth)*Number(indexOfCurrPage)))
+                        {
+                            firstWordId = spanIDNumber;
+                        }
+           
+                        if(firstWordId != -1)
+                        {
+                           NSLog('    firstWID: '+firstWordId);
+//                           var fw = 'wordID-'+firstWordId;
+//                           $('#'+fw).css('background-color','rgba(255,0,0,0.4)');
+                        }
+                    }
+                                
+                    if(lastWordId == -1 && firstWordId != -1)
+                    {
+                        if(indexOfNextPage == -1 && firstWordId != -1)
+                        {
+                           lastWordId = arrOfSpans[arrOfSpans.length-1].id.split('-')[1];
+                        }
+                        else if(Number(leftMargin)> (Number(columnWidth)*Number(indexOfNextPage)) && i!= 0)
+                        {
+                            lastWordId = arrOfSpans[i-1].id.split('-')[1];
+                        }
+           
+                        if(lastWordId != -1)
+                        {
+                            NSLog('    lastWID: '+lastWordId);
+//                            var lw = 'wordID-'+lastWordId;
+//                            $('#'+lw).css('background-color','rgba(0,255,0,0.4)');
+           
+                            var callNatMethod = '{"MethodName":"didFindFirstAndLastWordsOfPage","MethodArguments":{"arg1":"'+Number(firstWordId)+'","arg2":"'+Number(lastWordId)+'"}}';
+                            callNativeMethod('jstoobjc:'+callNatMethod);
+                            return;
+                        }
+                    }
+               }
+           });
+}
+
+function copySelectedTextToPasteBoard()
+{
+    if(currHVO != null || currHVO != undefined)
+    {
+        var text = getSelectedText(currHVO.startWordID,currHVO.endWordID);
+        var callNatMethod = '{"MethodName":"copySelectedTextToPasteBoard","MethodArguments":{"arg1":"'+text+'"}}';
+        callNativeMethod('jstoobjc:'+callNatMethod);
+    }
+}

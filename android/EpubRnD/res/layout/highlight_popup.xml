@@ -15,12 +15,30 @@
         android:text="Save" />
 
     <Button
+        android:id="@+id/highlightNoteBtn"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="#ffffff"
+        android:text="Note" />
+
+    <Button
+        android:id="@+id/highlightCopyBtn"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="#ffffff"
+        android:text="Copy" />
+
+    <Button
         android:id="@+id/highlightClearBtn"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:background="#ffffff"
-        android:layout_height="wrap_content"
         android:text="Clear" />
 
 </LinearLayout>

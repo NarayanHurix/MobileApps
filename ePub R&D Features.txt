@@ -28,6 +28,8 @@ Completed R&D Work:
 
 7. Sticky notes with reference to highlight
 
+8. Text Copy
+
 =====================================================================================================
 
 On Going R&D Work:
@@ -38,9 +40,8 @@ On Going R&D Work:
 4. Player Theme (Day/Night mode- background colors and font colors)
 5. Book information Data base
 6. Last visited page
-7. Text Copy
-8. ToC
-9. User Generated Data ToC (list of bookmarks and notes)
+7. ToC
+8. User Generated Data ToC (list of bookmarks and notes)
 
 =====================================================================================================
 

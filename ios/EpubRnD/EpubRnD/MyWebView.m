@@ -22,6 +22,7 @@
     float scaleFactorPageFit;
     HighlightPopupViewController *hContr;
     UIPopoverController *highlightPopup;
+    int firstWordID,lastWordID;
 }
 @synthesize startStick,endStick;
 
@@ -174,7 +175,7 @@
                                     [[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight;"] floatValue]);
     [self.webViewDAO setPageCount:contentSize.width/webView.frame.size.width];
     
-    NSLog(@"content width : %f ,frame width : %f ,my page count : %f",contentSize.width,webView.frame.size.width,contentSize.width/webView.frame.size.width);
+//    NSLog(@"content width : %f ,frame width : %f ,my page count : %f",contentSize.width,webView.frame.size.width,contentSize.width/webView.frame.size.width);
     CGPoint point = CGPointMake(0, 0);
     if([self checkIsPageIndexOutOfRange])
     {
@@ -362,6 +363,12 @@
     {
         [self didHighlightManagerJSadded];
     }
+    else if([methodName isEqualToString:@"didFindFirstAndLastWordsOfPage"])
+    {
+        NSString *arg1 =[methodArgs objectForKey:@"arg1"];
+        NSString *arg2 =[methodArgs objectForKey:@"arg2"];
+       [self didFindFirstAndLastWordsOfPage:[arg1 intValue] :[arg2 intValue]];
+    }
     else if([methodName isEqualToString:@"NSLog"])
     {
         NSString *logMsg =[methodArgs objectForKey:@"arg1"];
@@ -426,6 +433,7 @@
         NSString *arg8 =[methodArgs objectForKey:@"arg8"];
         NSString *arg9 =[methodArgs objectForKey:@"arg9"];
         NSString *arg10 =[methodArgs objectForKey:@"arg10"];
+        NSString *arg11 =[methodArgs objectForKey:@"arg11"];
         
         int sID = [arg1 intValue];
         int sX =  [arg2 intValue];
@@ -439,12 +447,19 @@
         int eW =  [arg9 intValue];
         int eH =  [arg10 intValue];
         
-        [self addNoteIconToPage:sID :sX :sY :sW :sH :eID :eX : eY :eW :eH];
+        
+        [self addNoteIconToPage:sID :sX :sY :sW :sH :eID :eX : eY :eW :eH :arg11];
     }
     else if([methodName isEqualToString:@"noWordFoundToHighlightOnLongPress"])
     {
         [_myDelegate toggleHighlightSwitch];
     }
+    else if([methodName isEqualToString:@"copySelectedTextToPasteBoard"])
+    {
+        NSString *arg1 =[methodArgs objectForKey:@"arg1"];
+        [self copySelectedTextToPasteBoard:arg1];
+    }
+    
     
 }
 
@@ -455,9 +470,21 @@
 
 - (void) didHighlightManagerJSadded
 {
-    [self getAllHighlights];
+    int indexOfNextPage = -1;
+    if([self.webViewDAO getIndexOfPage]<[self.webViewDAO getPageCount]-1)
+    {
+        indexOfNextPage = [self.webViewDAO getIndexOfPage]+1;
+    }
+    NSString *str = [NSString stringWithFormat:@"findFirstAndLastWordsOfPage(%f,%d,%d)",self.frame.size.width,[self.webViewDAO getIndexOfPage],indexOfNextPage];
+    [self stringByEvaluatingJavaScriptFromString:str];
 }
 
+- (void) didFindFirstAndLastWordsOfPage:(int) firstWordIdInCurrPage :(int) lastWordIdInCurrPage
+{
+    firstWordID = firstWordIdInCurrPage;
+    lastWordID = lastWordIdInCurrPage;
+    [self getAllHighlights];
+}
 - (NSManagedObjectContext *) managedObjectContext
 {
     NSManagedObjectContext *context = Nil;
@@ -556,26 +583,30 @@
     }
 }
 
-- (void) addNoteIconToPage:(int) sID :(int) sX  :(int) sY  :(int) sW :(int) sH :(int) eID :(int)eX  :(int) eY :(int) eW :(int) eH
+- (void) addNoteIconToPage:(int) sID :(int) sX  :(int) sY  :(int) sW :(int) sH :(int) eID :(int)eX  :(int) eY :(int) eW :(int) eH :(NSString *) text
 {
-    HighlightVO  *hVO = [HighlightVO new];
-    
-    [hVO setChapterPath:self.webViewDAO.chapterVO.chapterURL];
-    [hVO setChapterIndex:[self.webViewDAO getIndexOfChapter]];
-    [hVO setStartWordID:sID];
-    [hVO setEndWordID:eID];
-    [hVO setNoOfPagesInChapter:self.webViewDAO.chapterVO.pageCountInChapter];
-    
-    if(hVO)
+    if(sID>=firstWordID && sID<=lastWordID)
     {
-        StickyNoteView *noteView = [[StickyNoteView alloc] init];
-        noteView.myDelegate = self;
-        noteView.highlightVO = hVO ;
+        HighlightVO  *hVO = [HighlightVO new];
         
-        //int modifiedX = sX-(self.frame.size.width*[self.webViewDAO getIndexOfPage]);
-        noteView.frame = CGRectMake(20, sY, STICKY_NOTE_ICON_WIDTH , STICKY_NOTE_ICON_HEIGHT);
-        [[self superview] addSubview:noteView];
-        [[self superview] bringSubviewToFront:noteView];
+        [hVO setChapterPath:self.webViewDAO.chapterVO.chapterURL];
+        [hVO setChapterIndex:[self.webViewDAO getIndexOfChapter]];
+        [hVO setStartWordID:sID];
+        [hVO setEndWordID:eID];
+        [hVO setNoOfPagesInChapter:self.webViewDAO.chapterVO.pageCountInChapter];
+        [hVO setSelectedText:text];
+        
+        if(hVO)
+        {
+            StickyNoteView *noteView = [[StickyNoteView alloc] init];
+            noteView.myDelegate = self;
+            noteView.highlightVO = hVO ;
+            
+            //int modifiedX = sX-(self.frame.size.width*[self.webViewDAO getIndexOfPage]);
+            noteView.frame = CGRectMake(20, sY, STICKY_NOTE_ICON_WIDTH , STICKY_NOTE_ICON_HEIGHT);
+            [[self superview] addSubview:noteView];
+            [[self superview] bringSubviewToFront:noteView];
+        }
     }
 }
 - (void) didHighlightButtonTap
@@ -733,7 +764,7 @@
     {
         hContr = [[HighlightPopupViewController alloc ] init];
         highlightPopup= [[UIPopoverController alloc] initWithContentViewController:hContr];
-        CGSize popoverContentSize = CGSizeMake(180, 60);
+        CGSize popoverContentSize = CGSizeMake(220, 60);
         highlightPopup.popoverContentSize =popoverContentSize;
     }
     [highlightPopup setDelegate:self];
@@ -814,6 +845,14 @@
 {
     [self.myDelegate didCloseNoteEditor];
    
+}
+
+- (void) copySelectedTextToPasteBoard:(NSString *) text
+{
+    [self closePopupAndClearHighlight];
+    self.currHighlightVO.selectedText = text;
+    UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
+    pasteBoard.string = self.currHighlightVO.selectedText;
 }
 
 @end

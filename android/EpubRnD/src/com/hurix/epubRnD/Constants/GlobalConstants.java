@@ -22,5 +22,6 @@ public class GlobalConstants
 	public static boolean ENABLE_WEB_VIEW_TOUCH = false;
 	
 	
-
+	public static int NOTE_ICON_WIDTH = 40; //assuming base dpi as 160
+	public static int NOTE_ICON_HEIGHT = 40; //assuming base dpi as 160
 }

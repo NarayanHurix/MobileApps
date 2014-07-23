@@ -47,6 +47,7 @@
     
     contrller = [[StickyNoteViewController alloc] init];
     contrller.myDelegate = self;
+    contrller.highlightVO = self.highlightVO;
     [self.superview addSubview:contrller.view];
 }
 

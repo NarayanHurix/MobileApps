@@ -2,9 +2,12 @@ package com.hurix.epubRnD.Views;
 
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -86,5 +89,22 @@ public class PageView extends RelativeLayout implements MyWebViewLoadListener
 	public void checkPageBuffer()
 	{
 		_mMyViewPager.checkPageBuffer();
+	}
+
+	public void validateSingleTap(MotionEvent e) 
+	{
+		for(int i=0;i<getChildCount();i++)
+		{
+			View v = getChildAt(i);
+			Rect r = new Rect(v.getLeft(),v.getTop(),v.getRight(),v.getBottom());
+			if(r.contains((int)e.getX(),(int) e.getY()))
+			{
+				if(v.getClass() == StickyNoteIconView.class)
+				{
+					((StickyNoteIconView)v).onSingleTapConfirmed(e);
+					break;
+				}
+			}
+		}
 	}
 }

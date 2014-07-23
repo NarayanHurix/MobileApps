@@ -12,7 +12,7 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view autoresizesSubviews="NO" contentMode="scaleToFill" id="1">
-            <rect key="frame" x="0.0" y="0.0" width="180" height="60"/>
+            <rect key="frame" x="0.0" y="0.0" width="220" height="64"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="dnP-8y-kjA">
@@ -29,20 +29,20 @@
                     </connections>
                 </button>
                 <button autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="L1r-KT-iDJ">
-                    <rect key="frame" x="126" y="16" width="45" height="30"/>
+                    <rect key="frame" x="111" y="15" width="45" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                    <state key="normal" title="Close">
+                    <state key="normal" title="Copy">
                         <color key="titleColor" red="0.044040186680000003" green="0.37476084180000002" blue="0.036732863730000002" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="Close:" destination="-1" eventType="touchUpInside" id="muU-U0-1IL"/>
+                        <action selector="copySelectedText:" destination="-1" eventType="touchUpInside" id="QzY-0i-XGJ"/>
                     </connections>
                 </button>
                 <button autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9pe-Is-Hip">
-                    <rect key="frame" x="70" y="16" width="45" height="30"/>
+                    <rect key="frame" x="63" y="16" width="45" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
@@ -52,6 +52,19 @@
                     </state>
                     <connections>
                         <action selector="addStickyNote:" destination="-1" eventType="touchUpInside" id="YPl-CS-AmH"/>
+                    </connections>
+                </button>
+                <button autoresizesSubviews="NO" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="HfV-hE-1Nu">
+                    <rect key="frame" x="159" y="16" width="45" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                    <state key="normal" title="Close">
+                        <color key="titleColor" red="0.044040186680000003" green="0.37476084180000002" blue="0.036732863730000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="Close:" destination="-1" eventType="touchUpInside" id="fp6-sy-mkJ"/>
                     </connections>
                 </button>
             </subviews>

@@ -49,4 +49,9 @@
 {
     [myWebView addNoteAndClosePopup];
 }
+
+- (IBAction)copySelectedText:(id)sender
+{
+    [myWebView stringByEvaluatingJavaScriptFromString:@"copySelectedTextToPasteBoard()"];
+}
 @end

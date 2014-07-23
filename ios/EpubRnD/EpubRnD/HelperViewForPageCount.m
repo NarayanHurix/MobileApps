@@ -119,8 +119,8 @@
     }
     
     pageCount += currentComputingChapter.pageCountInChapter;
-    NSLog(@"content width : %f ,frame width : %f ,my page count : %f",contentSize.width,webView.frame.size.width,contentSize.width/webView.frame.size.width);
-    NSLog(@"Page Count updated : %d",pageCount);
+//    NSLog(@"content width : %f ,frame width : %f ,my page count : %f",contentSize.width,webView.frame.size.width,contentSize.width/webView.frame.size.width);
+//    NSLog(@"Page Count updated : %d",pageCount);
     
 }
 
