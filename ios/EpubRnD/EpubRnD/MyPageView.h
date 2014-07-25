@@ -10,6 +10,8 @@
 #import "MyWebView.h"
 #import "WebViewDAO.h"
 #import "AssetsContainer.h"
+#import "BookmarkView.h"
+#import "GlobalConstants.h"
 
 @interface MyPageView : UIView<MyWebViewDelegate>
 
@@ -20,4 +22,8 @@
 @property (nonatomic,retain) UIView *touchHelperView ;
 
 - (void) loadViewWithData:(WebViewDAO *) data;
+
+@property (nonatomic,retain) BookmarkView *bookmarkView;
+
+
 @end

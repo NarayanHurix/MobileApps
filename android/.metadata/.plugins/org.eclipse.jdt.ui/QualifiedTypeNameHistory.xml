@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.lang.Object"/>
-<fullyQualifiedTypeName name="android.widget.ViewFlipper"/>
-<fullyQualifiedTypeName name="android.graphics.Point"/>
-<fullyQualifiedTypeName name="com.hurix.epubRnD.Views.TopMostLayout"/>
-<fullyQualifiedTypeName name="com.hurix.epubRnD.Views.MyViewFlipper"/>
-<fullyQualifiedTypeName name="android.view.animation.TranslateAnimation"/>
-<fullyQualifiedTypeName name="android.view.animation.Animation.AnimationListener"/>
 <fullyQualifiedTypeName name="android.webkit.JavascriptInterface"/>
 <fullyQualifiedTypeName name="org.json.JSONObject"/>
 <fullyQualifiedTypeName name="org.json.JSONException"/>
@@ -24,18 +17,15 @@
 <fullyQualifiedTypeName name="android.widget.Button"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.R.layout"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.widgets.QuickAction.OnDismissListener"/>
-<fullyQualifiedTypeName name="android.view.ViewGroup"/>
 <fullyQualifiedTypeName name="java.lang.Runnable"/>
 <fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="android.support.v4.view.ViewPager.PageTransformer"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Views.HelperViewForPageCount.PageCountListener"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.MainActivity"/>
-<fullyQualifiedTypeName name="com.hurix.epubRnD.R.id"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Views.HelperViewForPageCount"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Views.PageView"/>
 <fullyQualifiedTypeName name="android.widget.SeekBar"/>
 <fullyQualifiedTypeName name="android.widget.SeekBar.OnSeekBarChangeListener"/>
-<fullyQualifiedTypeName name="android.widget.TextView"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.VOs.ChapterVO"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Utils.Utils"/>
@@ -45,8 +35,6 @@
 <fullyQualifiedTypeName name="java.lang.Exception"/>
 <fullyQualifiedTypeName name="android.view.View.OnLongClickListener"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Views.MyWebView"/>
-<fullyQualifiedTypeName name="android.view.GestureDetector"/>
-<fullyQualifiedTypeName name="android.view.GestureDetector.OnGestureListener"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Settings.GlobalSettings"/>
 <fullyQualifiedTypeName name="android.webkit.WebView"/>
 <fullyQualifiedTypeName name="android.webkit.WebViewClient"/>
@@ -54,10 +42,22 @@
 <fullyQualifiedTypeName name="android.text.ClipboardManager"/>
 <fullyQualifiedTypeName name="android.content.ClipboardManager"/>
 <fullyQualifiedTypeName name="android.content.ClipData"/>
-<fullyQualifiedTypeName name="android.graphics.Color"/>
-<fullyQualifiedTypeName name="com.hurix.epubRnD.Views.StickyNoteIconView"/>
 <fullyQualifiedTypeName name="android.widget.RelativeLayout"/>
 <fullyQualifiedTypeName name="android.widget.RelativeLayout.LayoutParams"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Constants.GlobalConstants"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.VOs.HighlightVO"/>
+<fullyQualifiedTypeName name="android.view.GestureDetector"/>
+<fullyQualifiedTypeName name="android.view.GestureDetector.OnDoubleTapListener"/>
+<fullyQualifiedTypeName name="android.view.GestureDetector.SimpleOnGestureListener"/>
+<fullyQualifiedTypeName name="android.view.GestureDetector.OnGestureListener"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.Views.StickyNoteIconView.StickyNoteIconViewListener"/>
+<fullyQualifiedTypeName name="android.app.Dialog"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.R.id"/>
+<fullyQualifiedTypeName name="android.view.ViewGroup"/>
+<fullyQualifiedTypeName name="android.graphics.Rect"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.Views.StickyNoteIconView"/>
+<fullyQualifiedTypeName name="android.graphics.Color"/>
+<fullyQualifiedTypeName name="android.R"/>
+<fullyQualifiedTypeName name="android.R.style"/>
+<fullyQualifiedTypeName name="android.widget.TextView"/>
 </qualifiedTypeNameHistroy>

@@ -23,21 +23,21 @@
 			<item value="org.eclipse.e4.ui.parts"/>
 		</list>
 		<list key="textArray">
-			<item value="file"/>
-			<item value="logcat"/>
 			<item value="devices"/>
 			<item value="devi"/>
 			<item value="dev"/>
+			<item value="file"/>
+			<item value="logcat"/>
 		</list>
 		<list key="orderedElements">
+			<item value="com.android.ide.eclipse.ddms.views.DeviceView"/>
 			<item value="com.android.ide.eclipse.ddms.views.FileExplorerView"/>
 			<item value="com.android.ide.eclipse.ddms.views.LogCatView"/>
-			<item value="com.android.ide.eclipse.ddms.views.DeviceView"/>
 		</list>
 		<list key="textEntries">
-			<item value="1"/>
-			<item value="1"/>
 			<item value="3"/>
+			<item value="1"/>
+			<item value="1"/>
 		</list>
 	</section>
 	<section name="WorkbenchPreferenceDialogSettings">
@@ -52,5 +52,12 @@
 	</section>
 	<section name="EditorSelectionDialog">
 		<item value="true" key="EditorSelectionDialog.STORE_ID_INTERNAL_EXTERNAL"/>
+	</section>
+	<section name="ImportExportAction">
+		<item value="org.eclipse.ui.wizards.import.ExternalProject" key="ImportExportPage.STORE_SELECTED_IMPORT_WIZARD_ID"/>
+		<list key="ImportExportPage.STORE_EXPANDED_IMPORT_CATEGORIES">
+			<item value="org.eclipse.ui.Basic"/>
+			<item value="com.android.ide.eclipse.wizards.category"/>
+		</list>
 	</section>
 </section>

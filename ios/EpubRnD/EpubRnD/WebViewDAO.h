@@ -14,6 +14,9 @@
     NSInteger mIndexOfPage;
     NSInteger mIndexOfChapter;
     NSInteger mPageCount;
+    NSInteger firstWordID;
+    NSInteger lastWordID;
+    BOOL isBookmarked;
 }
 
 @property (nonatomic,weak) ChapterVO *chapterVO;
@@ -24,6 +27,13 @@
 - (NSInteger) getIndexOfChapter;
 - (void) setPageCount:(NSInteger) pageCount;
 - (NSInteger) getPageCount;
+- (void) setFirstWordID:(NSInteger) firstWordIDofPage;
+- (NSInteger) getFirstWordID;
+- (void) setLastWordID:(NSInteger) lastWordIDofPage;
+- (NSInteger) getLastWordID;
+- (void) setBookmarked:(BOOL) status;
+- (BOOL) isBookmarked;
+
 
 
 @end

@@ -40,4 +40,30 @@
     return mPageCount;
 }
 
+- (void) setFirstWordID:(NSInteger) firstWordIDofPage
+{
+    firstWordID = firstWordIDofPage;
+}
+- (NSInteger) getFirstWordID
+{
+    return firstWordID ;
+}
+- (void) setLastWordID:(NSInteger) lastWordIDofPage
+{
+    lastWordID = lastWordIDofPage;
+}
+- (NSInteger) getLastWordID
+{
+    return lastWordID;
+}
+
+- (void) setBookmarked:(BOOL) status
+{
+    isBookmarked = status;
+}
+- (BOOL) isBookmarked
+{
+    return isBookmarked;
+}
+
 @end

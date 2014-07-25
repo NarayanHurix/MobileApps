@@ -22,7 +22,7 @@
     float scaleFactorPageFit;
     HighlightPopupViewController *hContr;
     UIPopoverController *highlightPopup;
-    int firstWordID,lastWordID;
+    
 }
 @synthesize startStick,endStick;
 
@@ -481,8 +481,8 @@
 
 - (void) didFindFirstAndLastWordsOfPage:(int) firstWordIdInCurrPage :(int) lastWordIdInCurrPage
 {
-    firstWordID = firstWordIdInCurrPage;
-    lastWordID = lastWordIdInCurrPage;
+    [self.webViewDAO setFirstWordID:firstWordIdInCurrPage];
+    [self.webViewDAO setLastWordID:lastWordIdInCurrPage];
     [self getAllHighlights];
 }
 - (NSManagedObjectContext *) managedObjectContext
@@ -585,7 +585,7 @@
 
 - (void) addNoteIconToPage:(int) sID :(int) sX  :(int) sY  :(int) sW :(int) sH :(int) eID :(int)eX  :(int) eY :(int) eW :(int) eH :(NSString *) text
 {
-    if(sID>=firstWordID && sID<=lastWordID)
+    if(sID>=[self.webViewDAO getFirstWordID] && sID<=[self.webViewDAO getLastWordID])
     {
         HighlightVO  *hVO = [HighlightVO new];
         
@@ -849,10 +849,16 @@
 
 - (void) copySelectedTextToPasteBoard:(NSString *) text
 {
-    [self closePopupAndClearHighlight];
+    
     self.currHighlightVO.selectedText = text;
     UIPasteboard *pasteBoard = [UIPasteboard generalPasteboard];
-    pasteBoard.string = self.currHighlightVO.selectedText;
+    pasteBoard.string = text;
+    [self closePopupAndClearHighlight];
+}
+
+- (void)didChangeBookmarkStatus:(BOOL)madeBookmark
+{
+    [self.webViewDAO setBookmarked:madeBookmark];
 }
 
 @end

@@ -12,6 +12,7 @@
 #import "EndStickView.h"
 #import "HighlightVO.h"
 #import "StickyNoteView.h"
+#import "BookmarkView.h"
 
 @protocol MyWebViewDelegate<StickyNoteViewDelegate>
 
@@ -22,7 +23,7 @@
 - (void) toggleHighlightSwitch;
 @end
 
-@interface MyWebView : UIWebView<UIWebViewDelegate,UIPopoverControllerDelegate,StickyNoteViewDelegate>
+@interface MyWebView : UIWebView<UIWebViewDelegate,UIPopoverControllerDelegate,StickyNoteViewDelegate,BookmarkViewDelegate>
 
 @property (nonatomic,weak) id<MyWebViewDelegate> myDelegate;
 

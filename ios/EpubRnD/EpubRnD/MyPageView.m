@@ -48,6 +48,11 @@
     activityIndicator.center = self.center;
     [activityIndicator startAnimating];
     
+    CGRect bookmarkFrame = CGRectMake(self.frame.size.width-DEFAULT_BOOKMARK_WIDTH-20, 5, DEFAULT_BOOKMARK_WIDTH, DEFAULT_BOOKMARK_HEIGHT);
+    self.bookmarkView = [[BookmarkView alloc] initWithFrame: bookmarkFrame ];
+    self.bookmarkView.myDelegate = myWebView;
+    [self addSubview:self.bookmarkView];
+    self.bookmarkView.hidden = YES;
     
 }
 /*
@@ -70,6 +75,8 @@
 {
     [activityIndicator stopAnimating];
     myWebView.hidden = NO;
+    self.bookmarkView.hidden = NO;
+    [self bringSubviewToFront:self.bookmarkView];
 }
 
 - (void)myWebViewOnPageOutOfRange

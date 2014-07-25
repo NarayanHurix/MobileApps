@@ -33,7 +33,6 @@
 		5A45B68819472E52003FA663 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5A45B68619472E52003FA663 /* InfoPlist.strings */; };
 		5A45B68A19472E52003FA663 /* EpubRnDTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B68919472E52003FA663 /* EpubRnDTests.m */; };
 		5A45B69619472FEC003FA663 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B69419472FEC003FA663 /* MainViewController.m */; };
-		5A45B69719472FEC003FA663 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A45B69519472FEC003FA663 /* MainViewController.xib */; };
 		5A45B69A19473A2D003FA663 /* MyViewPager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B69919473A2D003FA663 /* MyViewPager.m */; };
 		5A45B6A019473AB0003FA663 /* MyWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B69F19473AB0003FA663 /* MyWebView.m */; };
 		5A45B6A319473B8F003FA663 /* MyPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B6A219473B8F003FA663 /* MyPageView.m */; };
@@ -44,6 +43,8 @@
 		5A51EC061962D1050065A595 /* StartStickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A51EC051962D1050065A595 /* StartStickView.m */; };
 		5A51EC091962D1E70065A595 /* EndStickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A51EC081962D1E70065A595 /* EndStickView.m */; };
 		5A7EF3DE196D6F7200C8AF45 /* HelperViewForPageCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A7EF3DD196D6F7200C8AF45 /* HelperViewForPageCount.m */; };
+		5A9DD28519822B160056C584 /* BookmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9DD28419822B160056C584 /* BookmarkView.m */; };
+		5A9DD28719824C6C0056C584 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A9DD28619824C6C0056C584 /* MainViewController.xib */; };
 		5AAEED341949AE9F00F01F48 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 5AAEED331949AE9F00F01F48 /* assets */; };
 		5AC1F8B619505DA30088B1A7 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8B519505DA30088B1A7 /* HockeySDK.framework */; };
 		5AC1F8B819505E750088B1A7 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8B719505E750088B1A7 /* CoreText.framework */; };
@@ -103,7 +104,6 @@
 		5A45B68919472E52003FA663 /* EpubRnDTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EpubRnDTests.m; sourceTree = "<group>"; };
 		5A45B69319472FEC003FA663 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		5A45B69419472FEC003FA663 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		5A45B69519472FEC003FA663 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainViewController.xib; path = /UdaySravanK/IOS_WorkField/Projects/UIWebViewRnDForEpub/workspace/EpubRnD/EpubRnD/MainViewController.xib; sourceTree = "<absolute>"; };
 		5A45B69819473A2D003FA663 /* MyViewPager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyViewPager.h; sourceTree = "<group>"; };
 		5A45B69919473A2D003FA663 /* MyViewPager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyViewPager.m; sourceTree = "<group>"; };
 		5A45B69E19473AB0003FA663 /* MyWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWebView.h; sourceTree = "<group>"; };
@@ -123,6 +123,9 @@
 		5A51EC081962D1E70065A595 /* EndStickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EndStickView.m; sourceTree = "<group>"; };
 		5A7EF3DC196D6F7200C8AF45 /* HelperViewForPageCount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelperViewForPageCount.h; sourceTree = "<group>"; };
 		5A7EF3DD196D6F7200C8AF45 /* HelperViewForPageCount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelperViewForPageCount.m; sourceTree = "<group>"; };
+		5A9DD28319822B160056C584 /* BookmarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookmarkView.h; sourceTree = "<group>"; };
+		5A9DD28419822B160056C584 /* BookmarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookmarkView.m; sourceTree = "<group>"; };
+		5A9DD28619824C6C0056C584 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		5AAEED331949AE9F00F01F48 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		5AC1F8B519505DA30088B1A7 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HockeySDK.framework; path = "Vendor/HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework"; sourceTree = "<group>"; };
 		5AC1F8B719505E750088B1A7 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -312,6 +315,8 @@
 				5A51EC051962D1050065A595 /* StartStickView.m */,
 				5A51EC071962D1E70065A595 /* EndStickView.h */,
 				5A51EC081962D1E70065A595 /* EndStickView.m */,
+				5A9DD28319822B160056C584 /* BookmarkView.h */,
+				5A9DD28419822B160056C584 /* BookmarkView.m */,
 			);
 			name = ViewClasses;
 			sourceTree = "<group>";
@@ -321,7 +326,7 @@
 			children = (
 				5A45B69319472FEC003FA663 /* MainViewController.h */,
 				5A45B69419472FEC003FA663 /* MainViewController.m */,
-				5A45B69519472FEC003FA663 /* MainViewController.xib */,
+				5A9DD28619824C6C0056C584 /* MainViewController.xib */,
 			);
 			name = ControllerClasses;
 			sourceTree = "<group>";
@@ -493,10 +498,10 @@
 				5A0DCF731978F83800BE36B2 /* ic_launcher_512.png in Resources */,
 				5AAEED341949AE9F00F01F48 /* assets in Resources */,
 				5A01669D1951987B00A5FA59 /* JSLibraries in Resources */,
+				5A9DD28719824C6C0056C584 /* MainViewController.xib in Resources */,
 				5A0DCF721978F83800BE36B2 /* ic_launcher_152.png in Resources */,
 				5A45B66B19472E52003FA663 /* InfoPlist.strings in Resources */,
 				5A0DCF711978F83800BE36B2 /* ic_launcher_144.png in Resources */,
-				5A45B69719472FEC003FA663 /* MainViewController.xib in Resources */,
 				5AE09852197815EB00B5A75D /* sticky_note.png in Resources */,
 				5A26000E194840E400F472CE /* AppViewController.xib in Resources */,
 				5A45B67619472E52003FA663 /* Images.xcassets in Resources */,
@@ -522,6 +527,7 @@
 				5AE0984A1977F77A00B5A75D /* HighlightVO.m in Sources */,
 				5A26001219485A9800F472CE /* GlobalConstants.m in Sources */,
 				5A26000D194840E400F472CE /* AppViewController.m in Sources */,
+				5A9DD28519822B160056C584 /* BookmarkView.m in Sources */,
 				5A45B67119472E52003FA663 /* AppDelegate.m in Sources */,
 				5A45B67419472E52003FA663 /* EpubRnD.xcdatamodeld in Sources */,
 				5A45B69A19473A2D003FA663 /* MyViewPager.m in Sources */,
