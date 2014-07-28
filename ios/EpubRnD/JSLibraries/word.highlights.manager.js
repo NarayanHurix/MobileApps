@@ -19,6 +19,7 @@ function HighlightVO()
     var eW;
     var eH;
     var selectedText;
+    var hasNote;
 };
 
 function bindDocumentTouch()
@@ -301,7 +302,7 @@ function getSelectedText(sWordID,eWordID)
     return selectedText;
 }
 
-function addNoteIconToPage(sWordID ,eWordID)
+function addNoteIconToPage(sWordID ,eWordID,hasNote)
 {
     var sID = 0;
     var sX = 0;
@@ -328,7 +329,7 @@ function addNoteIconToPage(sWordID ,eWordID)
     eH = $('#wordID-'+eWordID).height();
     
     var text = getSelectedText(sWordID,eWordID);
-    var jsonSaveHighlight = '{"MethodName":"addNoteIconToPage","MethodArguments":{"arg1":"'+sID+'","arg2":"'+sX+'","arg3":"'+sY+'","arg4":"'+sW+'","arg5":"'+sH+'","arg6":"'+eID+'","arg7":"'+eX+'","arg8":"'+eY+'","arg9":"'+eW+'","arg10":"'+eH+'","arg11":"'+text+'"}}';
+    var jsonSaveHighlight = '{"MethodName":"addNoteIconToPage","MethodArguments":{"arg1":"'+sID+'","arg2":"'+sX+'","arg3":"'+sY+'","arg4":"'+sW+'","arg5":"'+sH+'","arg6":"'+eID+'","arg7":"'+eX+'","arg8":"'+eY+'","arg9":"'+eW+'","arg10":"'+eH+'","arg11":"'+text+'","arg12":"'+hasNote+'"}}';
     callNativeMethod('jstoobjc:'+jsonSaveHighlight);
 }
 
@@ -375,7 +376,7 @@ function drawSavedHighlights()
             $('#'+spanIdToHighlight).css('background-color','rgba(0,0,255,0.3)');
         }
         
-        addNoteIconToPage(highlightVOColl[j].startWordID ,highlightVOColl[j].endWordID);
+        addNoteIconToPage(highlightVOColl[j].startWordID ,highlightVOColl[j].endWordID ,highlightVOColl[j].hasNote);
         
     }
 }
@@ -385,13 +386,13 @@ function clearHighlightsArray()
     highlightVOColl = [];
 }
 
-function addHightlight(uniqueIdStr,startWID,endWID)
+function addHightlight(uniqueIdStr,startWID,endWID,hasNote)
 {
     var currHighlightVO = new HighlightVO();
     currHighlightVO.uniqueID = uniqueIdStr;
     currHighlightVO.startWordID = startWID;
     currHighlightVO.endWordID = endWID;
-    
+    currHighlightVO.hasNote = hasNote;
     highlightVOColl.push(currHighlightVO);
 }
 
