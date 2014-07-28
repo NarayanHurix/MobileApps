@@ -13,6 +13,7 @@
 @implementation BookmarkView
 {
     BOOL isBookmarked;
+    UIImageView *imageView;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -20,12 +21,14 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        self.backgroundColor = [UIColor grayColor];
         UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSingleTap:)];
         [singleTapGesture setNumberOfTouchesRequired:1];
         [singleTapGesture setNumberOfTapsRequired:1];
         [self addGestureRecognizer:singleTapGesture];
-        
+        CGRect rect = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+        imageView = [[UIImageView alloc] initWithFrame:rect];
+        [self addSubview:imageView];
+        [self changeBookMarkStatus:NO byUser:NO];
     }
     return self;
 }
@@ -47,15 +50,18 @@
 - (void) changeBookMarkStatus:(BOOL) status byUser:(BOOL) byUser
 {
     self->isBookmarked = status;
-    
+    UIImage *image = nil;
     if(self->isBookmarked)
     {
-        self.backgroundColor = [UIColor purpleColor];
+        image = [UIImage imageNamed:@"bookmarkbutton_selected.png"];
+        //self.backgroundColor = [UIColor colorWithRed:0.3 green:0.8 blue:0.9 alpha:1];
     }
     else
     {
-        self.backgroundColor = [UIColor grayColor];
+        image = [UIImage imageNamed:@"bookmark.png"];
+        //self.backgroundColor = [UIColor grayColor];
     }
+    [imageView setImage:image];
     [self.myDelegate didChangeBookmarkStatus:self->isBookmarked :byUser];
 }
 

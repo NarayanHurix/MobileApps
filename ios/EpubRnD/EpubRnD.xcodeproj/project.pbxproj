@@ -16,6 +16,10 @@
 		5A26000D194840E400F472CE /* AppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A26000B194840E400F472CE /* AppViewController.m */; };
 		5A26000E194840E400F472CE /* AppViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A26000C194840E400F472CE /* AppViewController.xib */; };
 		5A26001219485A9800F472CE /* GlobalConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A26001119485A9800F472CE /* GlobalConstants.m */; };
+		5A32C26D198680C6002BC443 /* bookmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A32C269198680C6002BC443 /* bookmark.png */; };
+		5A32C26E198680C6002BC443 /* bookmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A32C26A198680C6002BC443 /* bookmark@2x.png */; };
+		5A32C26F198680C6002BC443 /* bookmarkbutton_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A32C26B198680C6002BC443 /* bookmarkbutton_selected.png */; };
+		5A32C270198680C6002BC443 /* bookmarkbutton_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A32C26C198680C6002BC443 /* bookmarkbutton_selected@2x.png */; };
 		5A3E309919488FC4001080F6 /* GlobalSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E309819488FC4001080F6 /* GlobalSettings.m */; };
 		5A45B65F19472E52003FA663 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A45B65E19472E52003FA663 /* Foundation.framework */; };
 		5A45B66119472E52003FA663 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A45B66019472E52003FA663 /* CoreGraphics.framework */; };
@@ -83,6 +87,10 @@
 		5A26000C194840E400F472CE /* AppViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AppViewController.xib; path = /UdaySravanK/git_workspace/MobileApps/ios/EpubRnD/EpubRnD/AppViewController.xib; sourceTree = "<absolute>"; };
 		5A26001019485A9800F472CE /* GlobalConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalConstants.h; sourceTree = "<group>"; };
 		5A26001119485A9800F472CE /* GlobalConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalConstants.m; sourceTree = "<group>"; };
+		5A32C269198680C6002BC443 /* bookmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookmark.png; sourceTree = "<group>"; };
+		5A32C26A198680C6002BC443 /* bookmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookmark@2x.png"; sourceTree = "<group>"; };
+		5A32C26B198680C6002BC443 /* bookmarkbutton_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookmarkbutton_selected.png; sourceTree = "<group>"; };
+		5A32C26C198680C6002BC443 /* bookmarkbutton_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookmarkbutton_selected@2x.png"; sourceTree = "<group>"; };
 		5A3E309719488FC4001080F6 /* GlobalSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalSettings.h; sourceTree = "<group>"; };
 		5A3E309819488FC4001080F6 /* GlobalSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalSettings.m; sourceTree = "<group>"; };
 		5A45B65B19472E52003FA663 /* kitaboojune3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kitaboojune3.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -411,6 +419,10 @@
 		5AE09850197815D800B5A75D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				5A32C269198680C6002BC443 /* bookmark.png */,
+				5A32C26A198680C6002BC443 /* bookmark@2x.png */,
+				5A32C26B198680C6002BC443 /* bookmarkbutton_selected.png */,
+				5A32C26C198680C6002BC443 /* bookmarkbutton_selected@2x.png */,
 				5A0DCF6A1978F83800BE36B2 /* ic_launcher_72.png */,
 				5A0DCF6B1978F83800BE36B2 /* ic_launcher_76.png */,
 				5A0DCF6C1978F83800BE36B2 /* ic_launcher_144.png */,
@@ -498,6 +510,7 @@
 			files = (
 				5A0DCF6F1978F83800BE36B2 /* ic_launcher_72.png in Resources */,
 				5A51EC031962C1630065A595 /* HighlightPopupViewController.xib in Resources */,
+				5A32C26E198680C6002BC443 /* bookmark@2x.png in Resources */,
 				5A0DCF701978F83800BE36B2 /* ic_launcher_76.png in Resources */,
 				5AE0984F1977FB3600B5A75D /* StickyNoteViewController.xib in Resources */,
 				5A0DCF731978F83800BE36B2 /* ic_launcher_512.png in Resources */,
@@ -508,7 +521,10 @@
 				5A45B66B19472E52003FA663 /* InfoPlist.strings in Resources */,
 				5A0DCF711978F83800BE36B2 /* ic_launcher_144.png in Resources */,
 				5AE09852197815EB00B5A75D /* sticky_note.png in Resources */,
+				5A32C270198680C6002BC443 /* bookmarkbutton_selected@2x.png in Resources */,
+				5A32C26D198680C6002BC443 /* bookmark.png in Resources */,
 				5A26000E194840E400F472CE /* AppViewController.xib in Resources */,
+				5A32C26F198680C6002BC443 /* bookmarkbutton_selected.png in Resources */,
 				5A45B67619472E52003FA663 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
