@@ -12,5 +12,6 @@
 
 @property (nonatomic,strong) NSString *chapterURL;
 @property (nonatomic,readwrite) NSInteger pageCountInChapter;
+@property (nonatomic,retain) NSMutableArray *bookmarksColl;
 
 @end

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ChapterVO.h"
+#import "BookmarkVO.h"
 
 @interface WebViewDAO : NSObject
 {
@@ -16,7 +17,7 @@
     NSInteger mPageCount;
     NSInteger firstWordID;
     NSInteger lastWordID;
-    BOOL isBookmarked;
+//    BOOL isBookmarked;
 }
 
 @property (nonatomic,weak) ChapterVO *chapterVO;
@@ -31,8 +32,10 @@
 - (NSInteger) getFirstWordID;
 - (void) setLastWordID:(NSInteger) lastWordIDofPage;
 - (NSInteger) getLastWordID;
-- (void) setBookmarked:(BOOL) status;
-- (BOOL) isBookmarked;
+//- (void) setBookmarked:(BOOL) status;
+//- (BOOL) isBookmarked;
+
+@property (nonatomic,retain) BookmarkVO *bookmarkVO;
 
 
 

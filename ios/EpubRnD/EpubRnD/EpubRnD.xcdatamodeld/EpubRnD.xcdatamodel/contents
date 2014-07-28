@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Bookmarks" syncable="YES">
+        <attribute name="chapter_index" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="word_id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+    </entity>
     <entity name="Highlights" syncable="YES">
         <attribute name="chapterIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="endWordID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -10,5 +15,6 @@
     </entity>
     <elements>
         <element name="Highlights" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Bookmarks" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

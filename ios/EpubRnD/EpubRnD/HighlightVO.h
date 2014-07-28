@@ -17,6 +17,7 @@
     NSInteger _id;
     
 }
+@property (nonatomic,strong) NSString *moidURIRepresentationString;
 
 @property (nonatomic,strong) NSString *chapterPath;
 @property (nonatomic,strong) NSString *selectedText;

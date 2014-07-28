@@ -57,13 +57,13 @@
     return lastWordID;
 }
 
-- (void) setBookmarked:(BOOL) status
-{
-    isBookmarked = status;
-}
-- (BOOL) isBookmarked
-{
-    return isBookmarked;
-}
+//- (void) setBookmarked:(BOOL) status
+//{
+//    isBookmarked = status;
+//}
+//- (BOOL) isBookmarked
+//{
+//    return isBookmarked;
+//}
 
 @end

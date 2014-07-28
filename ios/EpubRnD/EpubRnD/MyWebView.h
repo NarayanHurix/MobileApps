@@ -21,6 +21,8 @@
 - (void) myWebViewBeganLoading;
 - (void) myWebViewOnPageOutOfRange;
 - (void) toggleHighlightSwitch;
+- (void) changeBookMarkStatus:(BOOL) isBookmarked byUser:(BOOL) byUser;
+- (void) disableBookmark:(BOOL) disable;
 @end
 
 @interface MyWebView : UIWebView<UIWebViewDelegate,UIPopoverControllerDelegate,StickyNoteViewDelegate,BookmarkViewDelegate>

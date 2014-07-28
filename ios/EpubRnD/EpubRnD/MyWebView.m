@@ -260,7 +260,12 @@
                                   "callback();"
                                   "};"
                                   "script.src = url;"
+                                  "if(document.getElementsByTagName('head')[0] || "
+                                  "document.getElementsByTagName('body')[0])"
+                                  "{ "
                                   "(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);"
+                                  "}"
+                                  "else{callback();}"
                                   "}"
                                   "loadScript('%@', function ()"
                                   "{"
@@ -308,7 +313,11 @@
                                "callback();"
                                "};"
                                "script.src = url;"
+                               "if(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0])"
+                               "{"
                                "(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);"
+                               "}"
+                               "else { callback(); }"
                                "}"
                                "loadScript('%@', function ()"
                                "{"
@@ -459,6 +468,11 @@
         NSString *arg1 =[methodArgs objectForKey:@"arg1"];
         [self copySelectedTextToPasteBoard:arg1];
     }
+    else if([methodName isEqualToString:@"bookmarkThisPage"])
+    {
+        NSString *arg1 =[methodArgs objectForKey:@"arg1"];
+        [self bookmarkThisPage:arg1];
+    }
     
     
 }
@@ -484,6 +498,12 @@
     [self.webViewDAO setFirstWordID:firstWordIdInCurrPage];
     [self.webViewDAO setLastWordID:lastWordIdInCurrPage];
     [self getAllHighlights];
+    [self getAllBookmarksOfThisChapter];
+    NSLog(@"cIndex : %d  pageIndex : %d  firstWordID : %d",[self.webViewDAO getIndexOfChapter], [self.webViewDAO getIndexOfPage], firstWordIdInCurrPage);
+    if(firstWordIdInCurrPage ==-1 )
+    {
+        [self.myDelegate disableBookmark:YES];
+    }
 }
 - (NSManagedObjectContext *) managedObjectContext
 {
@@ -568,18 +588,25 @@
         [oneRecord setValue:self.currHighlightVO.selectedText forKey:@"highlightedText"];
         [oneRecord setValue:[NSNumber numberWithBool:isAddingNote] forKey:@"hasNote"];
         
+        
+        
         NSError *error;
         
         if(![context save:&error])
         {
             NSLog(@"save highlight to sqlite failed with error : %@",[error localizedDescription]);
         }
-        if(isAddingNote)
+        else
         {
-            NSString *jsMethod = [NSString stringWithFormat:@"addNoteIconToPage(%d,%d)",[self.currHighlightVO getStartWordID],[self.currHighlightVO getEndWordID]];
-            [self stringByEvaluatingJavaScriptFromString:jsMethod];
+            //NSManagedObjectID *uniqueID = [oneRecord objectID];
+            
+            if(isAddingNote)
+            {
+                NSString *jsMethod = [NSString stringWithFormat:@"addNoteIconToPage(%d,%d)",[self.currHighlightVO getStartWordID],[self.currHighlightVO getEndWordID]];
+                [self stringByEvaluatingJavaScriptFromString:jsMethod];
+            }
+            NSLog(@"saving text highlight sID: %d  eID: %d  text: %@",[self.currHighlightVO getStartWordID],[self.currHighlightVO getEndWordID],self.currHighlightVO.selectedText);
         }
-        NSLog(@"saving text highlight sID: %d  eID: %d  text: %@",[self.currHighlightVO getStartWordID],[self.currHighlightVO getEndWordID],self.currHighlightVO.selectedText);
     }
 }
 
@@ -663,7 +690,8 @@
             //        [highlight setObject:[record valueForKey:@"highlightedText"] forKey:@"highlightedText"];
             NSString *sWID =[record valueForKey:@"startWordID"];
             NSString *eWID =[record valueForKey:@"endWordID"];
-            [self stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"addHightlight('%@','%@')",sWID,eWID]];
+            NSString *moidStr = [[[record objectID] URIRepresentation] absoluteString];
+            [self stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"addHightlight('%@','%@','%@')",moidStr,sWID,eWID]];
             [jsonArray addObject:highlight];
         }
         [self stringByEvaluatingJavaScriptFromString:@"drawSavedHighlights()"];
@@ -856,9 +884,125 @@
     [self closePopupAndClearHighlight];
 }
 
-- (void)didChangeBookmarkStatus:(BOOL)madeBookmark
+- (void)didChangeBookmarkStatus:(BOOL)madeBookmark :(BOOL) byUser
 {
-    [self.webViewDAO setBookmarked:madeBookmark];
+    if(byUser)
+    {
+        //[self.webViewDAO setBookmarked:madeBookmark];
+        if(madeBookmark)
+        {
+            //add bookmark vo to bookmark coll in chapter vo and save to coredata
+            [self stringByEvaluatingJavaScriptFromString:@"bookmarkThisPage()"];
+        }
+        else
+        {
+            //un bookmarked this page
+            //iterate all bookmarks in this chaptervo and remove those bookmarks which falls in between first word and last word id of this page
+            BOOL anyRecordFailedToDelete = NO;
+            if(self.webViewDAO.chapterVO.bookmarksColl)
+            {
+                NSMutableArray *bookmarks = self.webViewDAO.chapterVO.bookmarksColl;
+                NSMutableArray *discardedItems = [NSMutableArray array];
+                for(BookmarkVO *bVO in bookmarks)
+                {
+                    if(bVO->bookmarkedWordID >= [self.webViewDAO getFirstWordID] &&
+                       bVO->bookmarkedWordID <= [self.webViewDAO getLastWordID])
+                    {
+                        
+                        if([self deleteBookmarkFromDB:bVO])
+                        {
+                              [discardedItems addObject:bVO];
+                        }
+                        else
+                        {
+                            anyRecordFailedToDelete = YES;
+                        }
+                    }
+                }
+                [bookmarks removeObjectsInArray:discardedItems];
+            }
+            if(!anyRecordFailedToDelete)
+            {
+                [self.myDelegate changeBookMarkStatus:NO byUser:NO];
+            }
+        }
+    }
+}
+
+- (BOOL) deleteBookmarkFromDB:(BookmarkVO *) vo
+{
+    NSManagedObjectContext *context = [self managedObjectContext];
+//    NSEntityDescription *entitiyDesc = [NSEntityDescription entityForName:@"Bookmarks" inManagedObjectContext:context];
+    NSURL *url = [NSURL URLWithString:[vo bookmarkID]];
+    NSManagedObjectID *moID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation:url];
+    NSManagedObject *mObj = [context objectWithID:moID];
+    NSError *err;
+    [context deleteObject:mObj];
+    [context save:&err];
+    if(err)
+    {
+        //failed to delete record
+        return NO;
+    }
+    return YES;
+    
+}
+- (void) getAllBookmarksOfThisChapter
+{
+    NSManagedObjectContext *context = [self managedObjectContext];
+    NSEntityDescription *entitiyDesc = [NSEntityDescription entityForName:@"Bookmarks" inManagedObjectContext:context];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entitiyDesc];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chapter_index = %d" ,[self.webViewDAO getIndexOfChapter]];
+    [request setPredicate:predicate];
+    NSError *err ;
+    NSArray *records = [context executeFetchRequest:request error:&err];
+    
+    if(!err)
+    {
+        self.webViewDAO.chapterVO.bookmarksColl = nil;
+        self.webViewDAO.chapterVO.bookmarksColl = [[NSMutableArray alloc] init];
+        for (NSManagedObject *mObj in records)
+        {
+            BookmarkVO *bVO = [[BookmarkVO alloc] init];
+            bVO->indexOfChapter = [self.webViewDAO getIndexOfChapter];
+            bVO->bookmarkedWordID = [(NSString *)[mObj valueForKey:@"word_id"] integerValue];
+            [bVO setBookmarkID:[[[mObj objectID] URIRepresentation] absoluteString]];
+            [bVO setBookmarkText:[mObj valueForKey:@"chapter_index"]];
+            [self.webViewDAO.chapterVO.bookmarksColl addObject:bVO];
+            if(bVO->bookmarkedWordID>=[self.webViewDAO getFirstWordID] &&
+               bVO->bookmarkedWordID<=[self.webViewDAO getLastWordID])
+            {
+                [self.myDelegate changeBookMarkStatus:YES byUser:NO];
+            }
+        }
+    }
+    
+}
+
+- (void) bookmarkThisPage:(NSString *) text
+{
+    BookmarkVO *bVO = [[BookmarkVO alloc] init];
+    bVO->indexOfChapter = [self.webViewDAO getIndexOfChapter];
+    bVO->bookmarkedWordID = [self.webViewDAO getFirstWordID];
+    [bVO setBookmarkText:text];
+    NSManagedObjectContext *context = [self managedObjectContext];
+    NSManagedObject *mObj = [NSEntityDescription insertNewObjectForEntityForName:@"Bookmarks" inManagedObjectContext:context];
+    [mObj setPrimitiveValue:[NSNumber numberWithInteger:bVO->indexOfChapter] forKey:@"chapter_index"];
+    [mObj setPrimitiveValue:[NSNumber numberWithInteger:bVO->bookmarkedWordID] forKey:@"word_id"];
+    [mObj setValue:bVO.bookmarkText forKey:@"text"];
+    
+    NSError *err ;
+    if([context save:&err])
+    {
+        [bVO setBookmarkID: [[[mObj objectID] URIRepresentation] absoluteString]];
+        [self.webViewDAO.chapterVO.bookmarksColl addObject:bVO];
+    }
+    else
+    {
+        //failed to bookmark this page
+        [self.myDelegate changeBookMarkStatus:NO byUser:NO];
+    }
 }
 
 @end

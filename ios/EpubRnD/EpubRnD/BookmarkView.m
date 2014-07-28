@@ -7,6 +7,8 @@
 //
 
 #import "BookmarkView.h"
+@class BookmarkVO;
+@class ABC;
 
 @implementation BookmarkView
 {
@@ -23,6 +25,7 @@
         [singleTapGesture setNumberOfTouchesRequired:1];
         [singleTapGesture setNumberOfTapsRequired:1];
         [self addGestureRecognizer:singleTapGesture];
+        
     }
     return self;
 }
@@ -36,22 +39,16 @@
 }
 */
 
-- (void) setBookmarkState:(BOOL) status
-{
-    isBookmarked = status;
-    [self updateView];
-}
-
 - (void) onSingleTap:(UIGestureRecognizer *) recognizer
 {
-    isBookmarked = !isBookmarked;
-    [self.myDelegate didChangeBookmarkStatus:isBookmarked];
-    [self updateView];
+    [self changeBookMarkStatus:!isBookmarked byUser:YES];
 }
 
-- (void) updateView
+- (void) changeBookMarkStatus:(BOOL) status byUser:(BOOL) byUser
 {
-    if(isBookmarked)
+    self->isBookmarked = status;
+    
+    if(self->isBookmarked)
     {
         self.backgroundColor = [UIColor purpleColor];
     }
@@ -59,6 +56,9 @@
     {
         self.backgroundColor = [UIColor grayColor];
     }
+    [self.myDelegate didChangeBookmarkStatus:self->isBookmarked :byUser];
 }
+
+
 
 @end

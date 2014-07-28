@@ -7,6 +7,7 @@ var lastWordId = -1;
 
 function HighlightVO()
 {
+    var uniqueID;
     var startWordID;
     var endWordID;
     var sX;
@@ -384,10 +385,10 @@ function clearHighlightsArray()
     highlightVOColl = [];
 }
 
-function addHightlight(startWID,endWID)
+function addHightlight(uniqueIdStr,startWID,endWID)
 {
     var currHighlightVO = new HighlightVO();
-    
+    currHighlightVO.uniqueID = uniqueIdStr;
     currHighlightVO.startWordID = startWID;
     currHighlightVO.endWordID = endWID;
     
@@ -415,10 +416,16 @@ function setTouchedStick(isStartStick,isEndStick)
 
 function findFirstAndLastWordsOfPage(columnWidth,indexOfCurrPage,indexOfNextPage)
 {
-    NSLog('Curr Page Index : '+indexOfCurrPage +' nextPageIndex :'+indexOfNextPage);
+    //NSLog('Curr Page Index : '+indexOfCurrPage +' nextPageIndex :'+indexOfNextPage);
     firstWordId = -1;
     lastWordId = -1;
     var arrOfSpans =  $('span');
+    if(arrOfSpans.length==0)
+    {
+        var callNatMethod = '{"MethodName":"didFindFirstAndLastWordsOfPage","MethodArguments":{"arg1":"'+Number(firstWordId)+'","arg2":"'+Number(lastWordId)+'"}}';
+        callNativeMethod('jstoobjc:'+callNatMethod);
+        return;
+    }
     $.each(arrOfSpans,function(i,obj)
            {
                var spanID = obj.id;
@@ -439,7 +446,7 @@ function findFirstAndLastWordsOfPage(columnWidth,indexOfCurrPage,indexOfNextPage
            
                         if(firstWordId != -1)
                         {
-                           NSLog('    firstWID: '+firstWordId);
+                           //NSLog('    firstWID: '+firstWordId);
 //                           var fw = 'wordID-'+firstWordId;
 //                           $('#'+fw).css('background-color','rgba(255,0,0,0.4)');
                         }
@@ -458,7 +465,7 @@ function findFirstAndLastWordsOfPage(columnWidth,indexOfCurrPage,indexOfNextPage
            
                         if(lastWordId != -1)
                         {
-                            NSLog('    lastWID: '+lastWordId);
+                            //NSLog('    lastWID: '+lastWordId);
 //                            var lw = 'wordID-'+lastWordId;
 //                            $('#'+lw).css('background-color','rgba(0,255,0,0.4)');
            
@@ -479,4 +486,11 @@ function copySelectedTextToPasteBoard()
         var callNatMethod = '{"MethodName":"copySelectedTextToPasteBoard","MethodArguments":{"arg1":"'+text+'"}}';
         callNativeMethod('jstoobjc:'+callNatMethod);
     }
+}
+
+function bookmarkThisPage()
+{
+    var text = getSelectedText(firstWordId,Number(firstWordId)+4);
+    var callNatMethod = '{"MethodName":"bookmarkThisPage","MethodArguments":{"arg1":"'+text+'"}}';
+    callNativeMethod('jstoobjc:'+callNatMethod);
 }

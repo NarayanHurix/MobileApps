@@ -11,12 +11,11 @@
 @protocol BookmarkViewDelegate <NSObject>
 
 @required
-- (void) didChangeBookmarkStatus:(BOOL) madeBookmark;
-
+- (void) didChangeBookmarkStatus:(BOOL) madeBookmark :(BOOL) byUser;
 @end
 
 @interface BookmarkView : UIView
 
 @property (nonatomic,weak) id<BookmarkViewDelegate> myDelegate;
-- (void) setBookmarkState:(BOOL) status;
+- (void) changeBookMarkStatus:(BOOL) isBookmarked byUser:(BOOL) byUser;
 @end

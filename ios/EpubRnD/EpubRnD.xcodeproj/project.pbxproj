@@ -45,6 +45,7 @@
 		5A7EF3DE196D6F7200C8AF45 /* HelperViewForPageCount.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A7EF3DD196D6F7200C8AF45 /* HelperViewForPageCount.m */; };
 		5A9DD28519822B160056C584 /* BookmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9DD28419822B160056C584 /* BookmarkView.m */; };
 		5A9DD28719824C6C0056C584 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A9DD28619824C6C0056C584 /* MainViewController.xib */; };
+		5A9DD28A19827B310056C584 /* BookmarkVO.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9DD28919827B310056C584 /* BookmarkVO.m */; };
 		5AAEED341949AE9F00F01F48 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 5AAEED331949AE9F00F01F48 /* assets */; };
 		5AC1F8B619505DA30088B1A7 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8B519505DA30088B1A7 /* HockeySDK.framework */; };
 		5AC1F8B819505E750088B1A7 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8B719505E750088B1A7 /* CoreText.framework */; };
@@ -126,6 +127,8 @@
 		5A9DD28319822B160056C584 /* BookmarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookmarkView.h; sourceTree = "<group>"; };
 		5A9DD28419822B160056C584 /* BookmarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookmarkView.m; sourceTree = "<group>"; };
 		5A9DD28619824C6C0056C584 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
+		5A9DD28819827B310056C584 /* BookmarkVO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookmarkVO.h; sourceTree = "<group>"; };
+		5A9DD28919827B310056C584 /* BookmarkVO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookmarkVO.m; sourceTree = "<group>"; };
 		5AAEED331949AE9F00F01F48 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		5AC1F8B519505DA30088B1A7 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HockeySDK.framework; path = "Vendor/HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDK.framework"; sourceTree = "<group>"; };
 		5AC1F8B719505E750088B1A7 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -297,6 +300,8 @@
 				5AE7662F196E88CA002BE2DE /* BookModelFactory.m */,
 				5AE098481977F77A00B5A75D /* HighlightVO.h */,
 				5AE098491977F77A00B5A75D /* HighlightVO.m */,
+				5A9DD28819827B310056C584 /* BookmarkVO.h */,
+				5A9DD28919827B310056C584 /* BookmarkVO.m */,
 			);
 			name = ModelClasses;
 			sourceTree = "<group>";
@@ -538,6 +543,7 @@
 				5A45B6A619473CB0003FA663 /* WebViewDAO.m in Sources */,
 				5A51EC091962D1E70065A595 /* EndStickView.m in Sources */,
 				5A45B6A919473D11003FA663 /* ChapterVO.m in Sources */,
+				5A9DD28A19827B310056C584 /* BookmarkVO.m in Sources */,
 				5AE76630196E88CA002BE2DE /* BookModelFactory.m in Sources */,
 				5A51EC061962D1050065A595 /* StartStickView.m in Sources */,
 				5A51EC021962C1630065A595 /* HighlightPopupViewController.m in Sources */,

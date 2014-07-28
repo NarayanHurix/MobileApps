@@ -150,4 +150,14 @@
     [controller didCloseNoteEditor];
 }
 
+- (void) changeBookMarkStatus:(BOOL) isBookmarked byUser:(BOOL) byUser
+{
+    [self.bookmarkView changeBookMarkStatus:isBookmarked byUser:byUser];
+}
+
+- (void) disableBookmark:(BOOL) disable
+{
+    [self.bookmarkView setHidden:disable];
+}
+
 @end

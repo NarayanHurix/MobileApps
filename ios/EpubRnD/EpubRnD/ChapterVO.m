@@ -10,4 +10,15 @@
 
 @implementation ChapterVO
 
+- (id) init
+{
+    self = [super init];
+    if(self)
+    {
+        //object created successfully
+        self.bookmarksColl = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
 @end
