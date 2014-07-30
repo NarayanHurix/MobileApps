@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -19,6 +18,8 @@ public class PageView extends RelativeLayout implements MyWebViewLoadListener
 	private MyWebView _mWebView;
 	private ProgressBar _mProgressBar;
 	private MyViewFlipper _mMyViewPager;
+	private BookmarkView _bookMarkView;
+	
 	public PageView(Context context,MyViewFlipper myViewPager) {
 		super(context);
 		_mMyViewPager = myViewPager;
@@ -43,7 +44,15 @@ public class PageView extends RelativeLayout implements MyWebViewLoadListener
 		_mWebView.setViewPager(_mMyViewPager);
 		_mWebView.setMyWebViewLoadListener(this);
 		_mProgressBar = (ProgressBar)findViewById(R.id.pageLoadingProgressWheel);
-	
+		_bookMarkView = new BookmarkView(context);
+		_bookMarkView.setListener(_mWebView);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		params.rightMargin = 20;
+		_bookMarkView.setLayoutParams(params);
+		addView(_bookMarkView);
+		_mWebView.setBookmarkView(_bookMarkView);
 	}
 
 	public MyWebView getWebView()
@@ -61,6 +70,7 @@ public class PageView extends RelativeLayout implements MyWebViewLoadListener
 	{
 		_mWebView.setVisibility(View.VISIBLE);
 		_mProgressBar.setVisibility(View.INVISIBLE);
+		_bookMarkView.bringToFront();
 	}
 	
 	public void updateFontSize()
@@ -104,7 +114,16 @@ public class PageView extends RelativeLayout implements MyWebViewLoadListener
 					((StickyNoteIconView)v).onSingleTapConfirmed(e);
 					break;
 				}
+				else if(v.getClass() == BookmarkView.class)
+				{
+					((BookmarkView)v).onSingleTapConfirmed(e);
+				}
 			}
 		}
+	}
+	
+	public BookmarkView getBookmarkView()
+	{
+		return _bookMarkView;
 	}
 }

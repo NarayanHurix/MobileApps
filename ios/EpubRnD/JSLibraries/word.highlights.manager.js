@@ -428,55 +428,55 @@ function findFirstAndLastWordsOfPage(columnWidth,indexOfCurrPage,indexOfNextPage
         return;
     }
     $.each(arrOfSpans,function(i,obj)
-           {
-               var spanID = obj.id;
-               if(spanID != undefined)
-               {
-                    var spanIDNumber = obj.id.split('-')[1];
-                    var leftMargin = $(obj).position().left;
-                    if(firstWordId == -1)
-                    {
-                        if(Number(indexOfCurrPage) == 0)
-                        {
-                            firstWordId = spanIDNumber;
-                        }
-                        else if(Number(leftMargin)> (Number(columnWidth)*Number(indexOfCurrPage)))
-                        {
-                            firstWordId = spanIDNumber;
-                        }
-           
-                        if(firstWordId != -1)
-                        {
-                           //NSLog('    firstWID: '+firstWordId);
-//                           var fw = 'wordID-'+firstWordId;
-//                           $('#'+fw).css('background-color','rgba(255,0,0,0.4)');
-                        }
-                    }
-                                
-                    if(lastWordId == -1 && firstWordId != -1)
-                    {
-                        if(indexOfNextPage == -1 && firstWordId != -1)
-                        {
-                           lastWordId = arrOfSpans[arrOfSpans.length-1].id.split('-')[1];
-                        }
-                        else if(Number(leftMargin)> (Number(columnWidth)*Number(indexOfNextPage)) && i!= 0)
-                        {
-                            lastWordId = arrOfSpans[i-1].id.split('-')[1];
-                        }
-           
-                        if(lastWordId != -1)
-                        {
-                            //NSLog('    lastWID: '+lastWordId);
-//                            var lw = 'wordID-'+lastWordId;
-//                            $('#'+lw).css('background-color','rgba(0,255,0,0.4)');
-           
-                            var callNatMethod = '{"MethodName":"didFindFirstAndLastWordsOfPage","MethodArguments":{"arg1":"'+Number(firstWordId)+'","arg2":"'+Number(lastWordId)+'"}}';
-                            callNativeMethod('jstoobjc:'+callNatMethod);
-                            return;
-                        }
-                    }
-               }
-           });
+    {
+       var spanID = obj.id;
+       if(spanID != undefined)
+       {
+            var spanIDNumber = obj.id.split('-')[1];
+            var leftMargin = $(obj).position().left;
+            if(firstWordId == -1)
+            {
+                if(Number(indexOfCurrPage) == 0)
+                {
+                    firstWordId = spanIDNumber;
+                }
+                else if(Number(leftMargin)> (Number(columnWidth)*Number(indexOfCurrPage)))
+                {
+                    firstWordId = spanIDNumber;
+                }
+
+                if(firstWordId != -1)
+                {
+                   //NSLog('    firstWID: '+firstWordId);
+                               var fw = 'wordID-'+firstWordId;
+                               $('#'+fw).css('background-color','rgba(255,0,0,0.4)');
+                }
+            }
+                        
+            if(lastWordId == -1 && firstWordId != -1)
+            {
+                if(indexOfNextPage == -1 && firstWordId != -1)
+                {
+                   lastWordId = arrOfSpans[arrOfSpans.length-1].id.split('-')[1];
+                }
+                else if(Number(leftMargin)> (Number(columnWidth)*Number(indexOfNextPage)) && i!= 0)
+                {
+                    lastWordId = arrOfSpans[i-1].id.split('-')[1];
+                }
+
+                if(lastWordId != -1)
+                {
+                    //NSLog('    lastWID: '+lastWordId);
+                                var lw = 'wordID-'+lastWordId;
+                                $('#'+lw).css('background-color','rgba(0,255,0,0.4)');
+
+                    var callNatMethod = '{"MethodName":"didFindFirstAndLastWordsOfPage","MethodArguments":{"arg1":"'+Number(firstWordId)+'","arg2":"'+Number(lastWordId)+'"}}';
+                    callNativeMethod('jstoobjc:'+callNatMethod);
+                    return;
+                }
+            }
+       }
+    });
 }
 
 function copySelectedTextToPasteBoard()

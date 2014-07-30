@@ -1,5 +1,7 @@
 package com.hurix.epubRnD.Views;
 
+import java.util.Date;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,14 +39,16 @@ import android.widget.TextView;
 import com.hurix.epubRnD.R;
 import com.hurix.epubRnD.Constants.GlobalConstants;
 import com.hurix.epubRnD.Settings.GlobalSettings;
+import com.hurix.epubRnD.VOs.BookmarkVO;
 import com.hurix.epubRnD.VOs.HighlightVO;
 import com.hurix.epubRnD.VOs.WebViewDAO;
+import com.hurix.epubRnD.Views.BookmarkView.BookmarkViewListener;
 import com.hurix.epubRnD.Views.StickyNoteIconView.StickyNoteIconViewListener;
 import com.hurix.epubRnD.widgets.QuickAction;
 import com.hurix.epubRnD.widgets.QuickAction.OnDismissListener;
 
 @SuppressLint("NewApi")
-public class MyWebView extends WebView implements OnDismissListener,OnClickListener,StickyNoteIconViewListener
+public class MyWebView extends WebView implements OnDismissListener,OnClickListener,StickyNoteIconViewListener,BookmarkViewListener
 {
 	
 	private WebViewDAO _data;
@@ -71,6 +75,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 	private int firstWordID, lastWordID;
 	private HighlightVO _currHighlightVO;
 	private boolean isAddingNote;
+	private BookmarkView _bookmarkView;
 	
 	public MyWebView(Context context) {
 		super(context);
@@ -369,13 +374,23 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 							}
 							else if(methodName.equals("onWordHighlightManagerJS"))
 							{
+								int indexOfPage = -1;
+								if(getData().getIndexOfPage() == -2)
+								{
+									indexOfPage = _data.getChapterVO().getPageCount()-1;
+								}
+								else
+								{
+									indexOfPage = getData().getIndexOfPage();
+								}
+								
 								int indexOfNextPage = -1;
-								if(_data.getIndexOfPage()<_data.getPageCount()-1)
+								if(indexOfPage<_data.getChapterVO().getPageCount()-1)
 								{
 									indexOfNextPage = _data.getIndexOfPage()+1;
 								}
-							    
-								loadUrl("javascript: findFirstAndLastWordsOfPage("+getMeasuredWidth()+","+_data.getIndexOfPage()+","+indexOfNextPage+")");
+//							    Log.d("here","width is : "+getMeasuredWidth()+"  index : "+_data.getIndexOfPage() + "next index : "+indexOfNextPage);
+								loadUrl("javascript: findFirstAndLastWordsOfPage("+getMeasuredWidth()+","+indexOfPage+","+indexOfNextPage+")");
 							}
 							else if(methodName.equals("didFindFirstAndLastWordsOfPage"))
 							{
@@ -383,6 +398,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 						        int arg2 = Integer.parseInt(argsJsonObj.getString("arg2"));
 						        didFindFirstAndLastWordsOfPage(arg1,arg2);
 						        onWordHighlightManagerJS();
+						        //getAllBookmarksOfThisChapter();
 							}
 							else if(methodName.equals("saveTextHighlightToPersistantStorage"))
 							{
@@ -449,6 +465,11 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 								String arg1 =argsJsonObj.getString("arg1");
 								copySelectedTextToPasteBoard(arg1);
 							}
+							else if(methodName.equals("bookmarkThisPage"))
+							{
+								String arg1 =argsJsonObj.getString("arg1");
+								bookmarkThisPage(arg1);
+							}
 							
 						}
 						catch(JSONException e)
@@ -456,7 +477,6 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 							e.printStackTrace();
 						}
 					}
-
 					
 				});
 			}
@@ -597,7 +617,11 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
                                +"callback();"
                                +"};"
                                +"script.src = url;"
+                               +"if(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0])"
+                               +"{"
                                +"(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);"
+                               +"}"
+                               +"else { callback(); }"
                                +"}"
                                +"loadScript('"+path+"', function ()"
                                +"{"
@@ -622,7 +646,11 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
                                +"callback();"
                                +"};"
                                +"script.src = url;"
+                               +"if(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0])"
+                               +"{"
                                +"(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);"
+                               +"}"
+                               +"else { callback(); }"
                                +"}"
                                +"loadScript('"+path+"', function ()"
                                +"{"
@@ -648,7 +676,11 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
                                +"callback();"
                                +"};"
                                +"script.src = url;"
+                               +"if(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0])"
+                               +"{"
                                +"(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);"
+                               +"}"
+                               +"else { callback(); }"
                                +"}"
                                +"loadScript('"+path+"', function ()"
                                +"{"
@@ -674,7 +706,11 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
                                +"callback();"
                                +"};"
                                +"script.src = url;"
+                               +"if(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0])"
+                               +"{"
                                +"(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);"
+                               +"}"
+                               +"else { callback(); }"
                                +"}"
                                +"loadScript('"+path+"', function ()"
                                +"{"
@@ -1066,7 +1102,10 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 	{
 		this.firstWordID = firstWordID;
 		this.lastWordID = lastWordID;
-		
+		if(firstWordID == -1)
+		{
+			getBookmarkView().setVisibility(View.GONE);
+		}
 	}
 	
 	private void copySelectedTextToPasteBoard(String text)
@@ -1093,5 +1132,145 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 		((TextView)dlg.findViewById(R.id.textView1)).setText(noteIconView.getData().getSelectedText());
 		dlg.findViewById(R.id.button1).setOnClickListener(this);
 		dlg.show();
+	}
+
+	@Override
+	public void onBookMarkStatusChanged(boolean status, boolean byUser) {
+		if(byUser)
+		{
+			if(status)
+			{
+				//add bookmark vo to bookmark coll in chapter vo and save to coredata
+				loadUrl("javascript:bookmarkThisPage()");
+			}
+			else
+			{
+				//un bookmarked this page
+	            //iterate all bookmarks in this chaptervo and remove those bookmarks which falls in between first word and last word id of this page
+				SharedPreferences pref =  getContext().getSharedPreferences("UGCData", Context.MODE_PRIVATE);
+				String jsonArrStr = pref.getString("Bookmarks", "[]");
+				try {
+					
+					getData().getChapterVO().getBookmarksColl().clear();
+					JSONArray newAllBookmarksArray = new JSONArray();
+					
+					JSONArray allBookmarksArray = new JSONArray(jsonArrStr);
+					for(int i=0;i<allBookmarksArray.length();i++)
+					{
+						JSONObject bObj = allBookmarksArray.getJSONObject(i);
+						BookmarkVO vo = new BookmarkVO();
+						
+						vo.setIndexOfChapter(bObj.getInt("chapter_index"));
+						vo.setText(bObj.getString("text"));
+						vo.setWordID(bObj.getInt("word_id"));
+						getData().getChapterVO().getBookmarksColl().add(vo);
+						if(vo.getIndexOfChapter()== getData().getIndexOfChapter())
+			            {
+							if(vo.getWordID()>=firstWordID && vo.getWordID()<=lastWordID)
+							{
+								
+							}
+							else
+							{
+								//same chapter but belongs to current page so keep them as it is
+								newAllBookmarksArray.put(bObj);
+								getData().getChapterVO().getBookmarksColl().add(vo);
+							}
+			            }
+						else
+						{
+							//not belongs to same chapter
+							newAllBookmarksArray.put(bObj);
+						}
+						SharedPreferences.Editor editor = pref.edit();
+						editor.putString("Bookmarks", allBookmarksArray.toString());
+						if(editor.commit())
+						{
+							
+						}
+					}
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+	}
+	private void bookmarkThisPage(String refText) 
+	{
+		SharedPreferences pref =  getContext().getSharedPreferences("UGCData", Context.MODE_PRIVATE);
+		String jsonArrStr = pref.getString("Bookmarks", "[]");
+		try {
+			BookmarkVO vo = new BookmarkVO();
+			vo.setIndexOfChapter(getData().getIndexOfChapter());
+			vo.setText(refText);
+			vo.setWordID(firstWordID);
+			
+			JSONArray allBookmarksArray = new JSONArray(jsonArrStr);
+			
+			JSONObject bRecord = new JSONObject();
+			bRecord.put("word_id", vo.getWordID());
+			bRecord.put("chapter_index", vo.getIndexOfChapter());
+			bRecord.put("text", vo.getText());
+			allBookmarksArray.put(bRecord);
+			
+			SharedPreferences.Editor editor = pref.edit();
+			editor.putString("Bookmarks", allBookmarksArray.toString());
+			if(editor.commit())
+			{
+				getData().getChapterVO().getBookmarksColl().add(vo);
+			}
+			else
+			{
+				getBookmarkView().changeBookMarkStatus(false, false);
+			}
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void getAllBookmarksOfThisChapter()
+	{
+ 		SharedPreferences pref =  getContext().getSharedPreferences("UGCData", Context.MODE_PRIVATE);
+		String jsonArrStr = pref.getString("Bookmarks", "[]");
+		try {
+			
+			getData().getChapterVO().getBookmarksColl().clear();
+			
+			JSONArray allBookmarksArray = new JSONArray(jsonArrStr);
+			for(int i=0;i<allBookmarksArray.length();i++)
+			{
+				JSONObject bObj = allBookmarksArray.getJSONObject(i);
+				BookmarkVO vo = new BookmarkVO();
+				vo.setIndexOfChapter(bObj.getInt("chapter_index"));
+				vo.setText(bObj.getString("text"));
+				vo.setWordID(bObj.getInt("word_id"));
+				
+				if(getData().getIndexOfChapter()==vo.getIndexOfChapter())
+	            {
+					getData().getChapterVO().getBookmarksColl().add(vo);
+					if(vo.getWordID() >= firstWordID && vo.getWordID() <= lastWordID)
+					{
+						getBookmarkView().changeBookMarkStatus(true,false);
+					}
+	            }
+			}
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public BookmarkView getBookmarkView() {
+		return _bookmarkView;
+	}
+
+	public void setBookmarkView(BookmarkView _bookmarkView) {
+		this._bookmarkView = _bookmarkView;
 	}
 }

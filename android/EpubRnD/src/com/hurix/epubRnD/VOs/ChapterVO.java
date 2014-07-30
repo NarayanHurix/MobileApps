@@ -1,9 +1,13 @@
 package com.hurix.epubRnD.VOs;
 
+import java.util.ArrayList;
 
-public class ChapterVO {
+
+public class ChapterVO 
+{
 	private String chapterURL;
 	private int pageCount;
+	private ArrayList<BookmarkVO> bookmarksColl;
 	
 	public String getChapterURL() {
 		return chapterURL;
@@ -19,5 +23,14 @@ public class ChapterVO {
 
 	public void setPageCount(int pageCount) {
 		this.pageCount = pageCount;
+	}
+	
+	public ArrayList<BookmarkVO> getBookmarksColl()
+	{
+		if(bookmarksColl == null)
+		{
+			bookmarksColl = new ArrayList<BookmarkVO>();
+		}
+		return bookmarksColl;
 	}
 }
