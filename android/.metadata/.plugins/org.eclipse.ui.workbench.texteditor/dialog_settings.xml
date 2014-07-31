@@ -2,9 +2,9 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="263" key="DIALOG_WIDTH"/>
-		<item value="267" key="DIALOG_Y_ORIGIN"/>
+		<item value="168" key="DIALOG_Y_ORIGIN"/>
 		<item value="399" key="DIALOG_HEIGHT"/>
-		<item value="73" key="DIALOG_X_ORIGIN"/>
+		<item value="6" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="isAddingNote" key="selection"/>
+		<item value="getAllBookmarksOfThisChapter" key="selection"/>
 		<list key="findhistory">
-			<item value="isAddingNote"/>
-			<item value="addNoteIconToPage"/>
-			<item value="_currHighlightVO"/>
-			<item value="StickyNoteIconView"/>
-			<item value="endStick"/>
-			<item value="copySelectedTextToPasteBoard"/>
+			<item value="getAllBookmarksOfThisChapter"/>
+			<item value="indexOfCurrPage"/>
 			<item value="onWordHighlightManagerJS"/>
+			<item value="firstWordID"/>
 			<item value="didFindFirstAndLastWordsOfPage"/>
+			<item value="pageview"/>
+			<item value="javascript"/>
+			<item value="Javascript"/>
 		</list>
 		<list key="replacehistory">
 			<item value="HelperViewForPageCount"/>

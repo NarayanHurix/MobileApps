@@ -81,7 +81,7 @@ public class FixedTopMostLayout extends RelativeLayout implements OnGestureListe
 			int pageX = (int) (e.getX()/getContext().getResources().getDisplayMetrics().density);
 			pageX = pageX + (webView.getMeasuredWidth()*webView.getData().getIndexOfPage());
 			int pageY = (int) (e.getY()/getContext().getResources().getDisplayMetrics().density);
-			webView.loadUrl("javascript: triggerHighlight("+pageX+","+pageY+")");
+			webView.triggerNewHighlight(pageX,pageY);
 		}
 	}
 

@@ -50,7 +50,7 @@ import com.hurix.epubRnD.widgets.QuickAction.OnDismissListener;
 @SuppressLint("NewApi")
 public class MyWebView extends WebView implements OnDismissListener,OnClickListener,StickyNoteIconViewListener,BookmarkViewListener
 {
-	
+	private boolean isDestroyed;
 	private WebViewDAO _data;
 	private boolean isURLLoaded = false;
 	private MyWebViewLoadListener _mMyWebViewLoadListener;
@@ -172,6 +172,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 	@SuppressLint({ "NewApi", "SetJavaScriptEnabled" })
 	private void init(Context context)
 	{
+		isDestroyed = false;
 		isURLLoaded = false;
 		stickWidth = 20 *getContext().getResources().getDisplayMetrics().density;
 		stickHeight = 40*getContext().getResources().getDisplayMetrics().density;
@@ -398,7 +399,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 						        int arg2 = Integer.parseInt(argsJsonObj.getString("arg2"));
 						        didFindFirstAndLastWordsOfPage(arg1,arg2);
 						        onWordHighlightManagerJS();
-						        //getAllBookmarksOfThisChapter();
+						        getAllBookmarksOfThisChapter();
 							}
 							else if(methodName.equals("saveTextHighlightToPersistantStorage"))
 							{
@@ -717,6 +718,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
                                +callBackToNative
                                +"});"
                                +"} ; includeJSFile();";
+		
 		loadUrl("javascript: "+script);
 	}
 	
@@ -1060,10 +1062,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 		{
 			onClickHighlightSwitch();
 		}
-		if(!isAddingNote)
-	    {
-			_currHighlightVO = null;
-	    }
+		
 	}
 
 	@Override
@@ -1272,5 +1271,36 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 
 	public void setBookmarkView(BookmarkView _bookmarkView) {
 		this._bookmarkView = _bookmarkView;
+	}
+	
+	@Override
+	public void destroy() 
+	{
+		isDestroyed = true;
+		super.destroy();
+	}
+	
+	@Override
+	public void loadUrl(String url) 
+	{
+		//calling loadurl after webview destroy leads to NullPointerException
+		if(!isDestroyed)
+		{
+			try
+			{
+				super.loadUrl(url);
+			}
+			catch(NullPointerException e)
+			{
+				Log.e("loadUrl error", "Chapter Index : "+getData().getIndexOfChapter()+" Page Index : "+getData().getIndexOfPage() +" error msg :"+e.getLocalizedMessage());
+			}
+		}
+	}
+
+	public void triggerNewHighlight(int pageX, int pageY) 
+	{
+		isAddingNote = false;
+		_currHighlightVO = null;
+		loadUrl("javascript: triggerHighlight("+pageX+","+pageY+")");
 	}
 }

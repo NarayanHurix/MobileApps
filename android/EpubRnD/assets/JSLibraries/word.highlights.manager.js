@@ -254,7 +254,8 @@ function saveCurrentHighlight()
     if(currHVO != null || currHVO != undefined)
     {
         highlightText(currHVO.startWordID,currHVO.endWordID);
-        var jsonSaveHighlight = '{"MethodName":"saveTextHighlightToPersistantStorage","MethodArguments":{"arg1":"'+currHVO.startWordID+'","arg2":"'+currHVO.endWordID+'","arg3":"'+currHVO.selectedText+'"}}';
+        var formattedText = JSON.stringify(currHVO.selectedText);
+        var jsonSaveHighlight = '{"MethodName":"saveTextHighlightToPersistantStorage","MethodArguments":{"arg1":"'+currHVO.startWordID+'","arg2":"'+currHVO.endWordID+'","arg3":'+formattedText+'}}';
         jsInterface.callNativeMethod('jstoobjc:'+jsonSaveHighlight);
         
 //        var currHighlightVO = {};
@@ -327,7 +328,8 @@ function addNoteIconToPage(sWordID ,eWordID)
     eH = $('#wordID-'+eWordID).height();
     
     var text = getSelectedText(sWordID,eWordID);
-    var jsonSaveHighlight = '{"MethodName":"addNoteIconToPage","MethodArguments":{"arg1":"'+sID+'","arg2":"'+sX+'","arg3":"'+sY+'","arg4":"'+sW+'","arg5":"'+sH+'","arg6":"'+eID+'","arg7":"'+eX+'","arg8":"'+eY+'","arg9":"'+eW+'","arg10":"'+eH+'","arg11":"'+text+'"}}';
+    var formattedText = JSON.stringify(text);
+    var jsonSaveHighlight = '{"MethodName":"addNoteIconToPage","MethodArguments":{"arg1":"'+sID+'","arg2":"'+sX+'","arg3":"'+sY+'","arg4":"'+sW+'","arg5":"'+sH+'","arg6":"'+eID+'","arg7":"'+eX+'","arg8":"'+eY+'","arg9":"'+eW+'","arg10":"'+eH+'","arg11":'+formattedText+'}}';
     jsInterface.callNativeMethod('jstoobjc:'+jsonSaveHighlight);
 }
 
@@ -478,7 +480,8 @@ function copySelectedTextToPasteBoard()
     if(currHVO != null || currHVO != undefined)
     {
         var text = getSelectedText(currHVO.startWordID,currHVO.endWordID);
-        var callNatMethod = '{"MethodName":"copySelectedTextToPasteBoard","MethodArguments":{"arg1":"'+text+'"}}';
+        var formattedText = JSON.stringify(text);
+        var callNatMethod = '{"MethodName":"copySelectedTextToPasteBoard","MethodArguments":{"arg1":'+formattedText+'}}';
         jsInterface.callNativeMethod('jstoobjc:'+callNatMethod);
     }
 }
@@ -486,7 +489,8 @@ function copySelectedTextToPasteBoard()
 function bookmarkThisPage()
 {
     var text = getSelectedText(firstWordId,Number(firstWordId)+4);
-    var callNatMethod = '{"MethodName":"bookmarkThisPage","MethodArguments":{"arg1":"'+text+'"}}';
+    var formattedText = JSON.stringify(text);
+    var callNatMethod = '{"MethodName":"bookmarkThisPage","MethodArguments":{"arg1":'+formattedText+'}}';
     jsInterface.callNativeMethod('jstoobjc:'+callNatMethod);
 }
 
