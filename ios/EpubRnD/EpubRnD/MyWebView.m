@@ -16,7 +16,7 @@
     
     int stickHeight ,stickWidth;
     BOOL SHOULD_DISMISS;
-    BOOL isAddingNote;
+    BOOL shouldOpenNoteEditor;
     BOOL contentFit;
     float contentHeightBeforeFitPage,contentHeightAfterFitPage;
     float scaleFactorPageFit;
@@ -443,7 +443,7 @@
         NSString *arg9 =[methodArgs objectForKey:@"arg9"];
         NSString *arg10 =[methodArgs objectForKey:@"arg10"];
         NSString *arg11 =[methodArgs objectForKey:@"arg11"];
-        NSString *arg12 =[methodArgs objectForKey:@"arg12"];
+        
         
         int sID = [arg1 intValue];
         int sX =  [arg2 intValue];
@@ -457,9 +457,7 @@
         int eW =  [arg9 intValue];
         int eH =  [arg10 intValue];
         
-        BOOL hasNote = [arg12 boolValue];
-        
-        [self addNoteIconToPage:sID :sX :sY :sW :sH :eID :eX : eY :eW :eH :arg11 :hasNote];
+        [self addNoteIconToPage:sID :sX :sY :sW :sH :eID :eX : eY :eW :eH :arg11 ];
     }
     else if([methodName isEqualToString:@"noWordFoundToHighlightOnLongPress"])
     {
@@ -520,9 +518,12 @@
     return context;
 }
 
-- (void) saveHighlight
+- (void) saveHighlight:(BOOL) hasNote
 {
-    [self stringByEvaluatingJavaScriptFromString:@"saveCurrentHighlight()"];
+    shouldOpenNoteEditor = hasNote;
+    [self.currHighlightVO setHasNote:hasNote];
+    NSString *jsCall = [NSString stringWithFormat:@"saveCurrentHighlight(%@)",hasNote?@"true":@"false" ];
+    [self stringByEvaluatingJavaScriptFromString: jsCall];
     if(startStick)
     {
         //[startStick removeFromSuperview];
@@ -542,11 +543,6 @@
     if(HIGHLIGHT_TOOL_SWITCH)
     {
         [_myDelegate toggleHighlightSwitch];
-    }
-    
-    if(!isAddingNote)
-    {
-        self.currHighlightVO = nil;
     }
 }
 
@@ -588,7 +584,7 @@
         [oneRecord setValue:[NSNumber numberWithInt:[self.currHighlightVO getEndWordID]] forKey:@"endWordID"];
         [oneRecord setValue:[NSNumber numberWithInteger:[self.webViewDAO getIndexOfChapter]] forKey:@"chapterIndex"];
         [oneRecord setValue:self.currHighlightVO.selectedText forKey:@"highlightedText"];
-        [oneRecord setValue:[NSNumber numberWithBool:isAddingNote] forKey:@"hasNote"];
+        [oneRecord setValue:[NSNumber numberWithBool:[self.currHighlightVO hasNote]] forKey:@"hasNote"];
         
         
         
@@ -602,9 +598,9 @@
         {
             //NSManagedObjectID *uniqueID = [oneRecord objectID];
             
-            if(isAddingNote)
+            if([self.currHighlightVO hasNote])
             {
-                NSString *jsMethod = [NSString stringWithFormat:@"addNoteIconToPage(%d,%d,'%@')",[self.currHighlightVO getStartWordID],[self.currHighlightVO getEndWordID],isAddingNote? @"true" : @"false"];
+                NSString *jsMethod = [NSString stringWithFormat:@"addNoteIconToPage(%d,%d)",[self.currHighlightVO getStartWordID],[self.currHighlightVO getEndWordID]];
                 [self stringByEvaluatingJavaScriptFromString:jsMethod];
             }
             NSLog(@"saving text highlight sID: %d  eID: %d  text: %@",[self.currHighlightVO getStartWordID],[self.currHighlightVO getEndWordID],self.currHighlightVO.selectedText);
@@ -612,7 +608,7 @@
     }
 }
 
-- (void) addNoteIconToPage:(int) sID :(int) sX  :(int) sY  :(int) sW :(int) sH :(int) eID :(int)eX  :(int) eY :(int) eW :(int) eH :(NSString *) text :(BOOL) hasNote
+- (void) addNoteIconToPage:(int) sID :(int) sX  :(int) sY  :(int) sW :(int) sH :(int) eID :(int)eX  :(int) eY :(int) eW :(int) eH :(NSString *) text
 {
     if(sID>=[self.webViewDAO getFirstWordID] && sID<=[self.webViewDAO getLastWordID])
     {
@@ -624,18 +620,17 @@
         [hVO setEndWordID:eID];
         [hVO setNoOfPagesInChapter:self.webViewDAO.chapterVO.pageCountInChapter];
         [hVO setSelectedText:text];
+        [hVO setHasNote:YES];
         
-        if(hVO && hasNote)
-        {
-            StickyNoteView *noteView = [[StickyNoteView alloc] init];
-            noteView.myDelegate = self;
-            noteView.highlightVO = hVO ;
-            
-            //int modifiedX = sX-(self.frame.size.width*[self.webViewDAO getIndexOfPage]);
-            noteView.frame = CGRectMake(20, sY, STICKY_NOTE_ICON_WIDTH , STICKY_NOTE_ICON_HEIGHT);
-            [[self superview] addSubview:noteView];
-            [[self superview] bringSubviewToFront:noteView];
-        }
+        StickyNoteView *noteView = [[StickyNoteView alloc] init];
+        noteView.myDelegate = self;
+        noteView.highlightVO = hVO ;
+        
+        //int modifiedX = sX-(self.frame.size.width*[self.webViewDAO getIndexOfPage]);
+        noteView.frame = CGRectMake(20, sY, STICKY_NOTE_ICON_WIDTH , STICKY_NOTE_ICON_HEIGHT);
+        [[self superview] addSubview:noteView];
+        [[self superview] bringSubviewToFront:noteView];
+        
     }
 }
 - (void) didHighlightButtonTap
@@ -695,7 +690,7 @@
             NSNumber *hasNoteDBValue = [record valueForKey:@"hasNote"];
             NSString *hasNote =[hasNoteDBValue stringValue];
             NSString *moidStr = [[[record objectID] URIRepresentation] absoluteString];
-            NSString *jsEval = [NSString stringWithFormat:@"addHightlight('%@','%@','%@','%@')",moidStr,sWID,eWID,[hasNote isEqualToString:@"1"]?@"true":@"false"];
+            NSString *jsEval = [NSString stringWithFormat:@"addHightlight('%@',%@,%@,%@)",moidStr,sWID,eWID,[hasNote isEqualToString:@"1"]?@"true":@"false"];
             [self stringByEvaluatingJavaScriptFromString:jsEval];
             [jsonArray addObject:highlight];
         }
@@ -727,10 +722,6 @@
 
 - (void) updateHighlightSticksPositions:(float) sID :(float) sX  :(float) sY  :(float) sW :(float) sH :(float) eID :(float)eX  :(float) eY :(float) eW :(float) eH
 {
-    isAddingNote = NO;
-    
-    
-    
     sX = sX * scaleFactorPageFit;
     sY = sY * scaleFactorPageFit;
     sW = sW * scaleFactorPageFit;
@@ -852,11 +843,6 @@
     
 }
 
-- (void) addNoteAndClosePopup
-{
-    isAddingNote = YES;
-    [self saveHighlight];
-}
 
 -(void) dealloc
 {

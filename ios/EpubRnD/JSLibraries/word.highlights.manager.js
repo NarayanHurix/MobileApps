@@ -250,13 +250,15 @@ function checkIsIntersectingWithExistedHighlights(wordID)
 }
 
 
-function saveCurrentHighlight()
+function saveCurrentHighlight(hasNote)
 {
     if(currHVO != null || currHVO != undefined)
     {
         highlightText(currHVO.startWordID,currHVO.endWordID);
-        currHVO.selectedText = getSelectedText(currHVO.startWordID,currHVO.endWordID);
-        var jsonSaveHighlight = '{"MethodName":"saveTextHighlightToPersistantStorage","MethodArguments":{"arg1":"'+currHVO.startWordID+'","arg2":"'+currHVO.endWordID+'","arg3":"'+currHVO.selectedText+'"}}';
+        
+        var formattedText = JSON.stringify(getSelectedText(currHVO.startWordID,currHVO.endWordID));
+        var jsonSaveHighlight = '{"MethodName":"saveTextHighlightToPersistantStorage","MethodArguments":{"arg1":"'+currHVO.startWordID+'","arg2":"'+currHVO.endWordID+'","arg3":'+formattedText+'}}';
+        
         callNativeMethod('jstoobjc:'+jsonSaveHighlight);
         
 //        var currHighlightVO = {};
@@ -267,7 +269,7 @@ function saveCurrentHighlight()
         var vo = new HighlightVO();
         vo.startWordID = currHVO.startWordID;
         vo.endWordID = currHVO.endWordID;
-        
+        vo.hasNote = hasNote;
         
         highlightVOColl.push(vo);
         currHVO = null;
@@ -297,12 +299,14 @@ function getSelectedText(sWordID,eWordID)
     for(var i=Number(sWordID);i<=Number(eWordID);i++)
     {
         var spanIdToHighlight = 'wordID-'+i;
-        selectedText = selectedText+$('#'+spanIdToHighlight).text();
+        NSLog('mad sheep 1 ');
+        NSLog($($('#'+spanIdToHighlight)).text());
+        selectedText = selectedText+$($('#'+spanIdToHighlight)).text();
     }
     return selectedText;
 }
 
-function addNoteIconToPage(sWordID ,eWordID,hasNote)
+function addNoteIconToPage(sWordID ,eWordID)
 {
     var sID = 0;
     var sX = 0;
@@ -329,7 +333,9 @@ function addNoteIconToPage(sWordID ,eWordID,hasNote)
     eH = $('#wordID-'+eWordID).height();
     
     var text = getSelectedText(sWordID,eWordID);
-    var jsonSaveHighlight = '{"MethodName":"addNoteIconToPage","MethodArguments":{"arg1":"'+sID+'","arg2":"'+sX+'","arg3":"'+sY+'","arg4":"'+sW+'","arg5":"'+sH+'","arg6":"'+eID+'","arg7":"'+eX+'","arg8":"'+eY+'","arg9":"'+eW+'","arg10":"'+eH+'","arg11":"'+text+'","arg12":"'+hasNote+'"}}';
+    var formattedText = JSON.stringify(text);
+    var jsonSaveHighlight = '{"MethodName":"addNoteIconToPage","MethodArguments":{"arg1":"'+sID+'","arg2":"'+sX+'","arg3":"'+sY+'","arg4":"'+sW+'","arg5":"'+sH+'","arg6":"'+eID+'","arg7":"'+eX+'","arg8":"'+eY+'","arg9":"'+eW+'","arg10":"'+eH+'","arg11":'+formattedText+'}}';
+    
     callNativeMethod('jstoobjc:'+jsonSaveHighlight);
 }
 
@@ -375,9 +381,10 @@ function drawSavedHighlights()
             var spanIdToHighlight = 'wordID-'+i;
             $('#'+spanIdToHighlight).css('background-color','rgba(0,0,255,0.3)');
         }
-        
-        addNoteIconToPage(highlightVOColl[j].startWordID ,highlightVOColl[j].endWordID ,highlightVOColl[j].hasNote);
-        
+        if(highlightVOColl[j].hasNote)
+        {
+            addNoteIconToPage(highlightVOColl[j].startWordID ,highlightVOColl[j].endWordID);
+        }
     }
 }
 
@@ -448,8 +455,8 @@ function findFirstAndLastWordsOfPage(columnWidth,indexOfCurrPage,indexOfNextPage
                 if(firstWordId != -1)
                 {
                    //NSLog('    firstWID: '+firstWordId);
-                               var fw = 'wordID-'+firstWordId;
-                               $('#'+fw).css('background-color','rgba(255,0,0,0.4)');
+//                   var fw = 'wordID-'+firstWordId;
+//                   $('#'+fw).css('background-color','rgba(255,0,0,0.4)');
                 }
             }
                         
@@ -467,8 +474,8 @@ function findFirstAndLastWordsOfPage(columnWidth,indexOfCurrPage,indexOfNextPage
                 if(lastWordId != -1)
                 {
                     //NSLog('    lastWID: '+lastWordId);
-                                var lw = 'wordID-'+lastWordId;
-                                $('#'+lw).css('background-color','rgba(0,255,0,0.4)');
+//                    var lw = 'wordID-'+lastWordId;
+//                    $('#'+lw).css('background-color','rgba(0,255,0,0.4)');
 
                     var callNatMethod = '{"MethodName":"didFindFirstAndLastWordsOfPage","MethodArguments":{"arg1":"'+Number(firstWordId)+'","arg2":"'+Number(lastWordId)+'"}}';
                     callNativeMethod('jstoobjc:'+callNatMethod);
@@ -484,7 +491,8 @@ function copySelectedTextToPasteBoard()
     if(currHVO != null || currHVO != undefined)
     {
         var text = getSelectedText(currHVO.startWordID,currHVO.endWordID);
-        var callNatMethod = '{"MethodName":"copySelectedTextToPasteBoard","MethodArguments":{"arg1":"'+text+'"}}';
+        var formattedText = JSON.stringify(text);
+        var callNatMethod = '{"MethodName":"copySelectedTextToPasteBoard","MethodArguments":{"arg1":'+formattedText+'}}';
         callNativeMethod('jstoobjc:'+callNatMethod);
     }
 }
@@ -492,6 +500,7 @@ function copySelectedTextToPasteBoard()
 function bookmarkThisPage()
 {
     var text = getSelectedText(firstWordId,Number(firstWordId)+4);
-    var callNatMethod = '{"MethodName":"bookmarkThisPage","MethodArguments":{"arg1":"'+text+'"}}';
+    var formattedText = JSON.stringify(text);
+    var callNatMethod = '{"MethodName":"bookmarkThisPage","MethodArguments":{"arg1":'+formattedText+'}}';
     callNativeMethod('jstoobjc:'+callNatMethod);
 }

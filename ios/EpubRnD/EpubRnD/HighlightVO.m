@@ -46,5 +46,15 @@
 {
     return _endWordID;
 }
+    
+-(void)setHasNote:(BOOL)hasNote
+{
+    _hasNote = hasNote;
+}
+    
+-(BOOL)hasNote
+{
+    return _hasNote;
+}
 
 @end

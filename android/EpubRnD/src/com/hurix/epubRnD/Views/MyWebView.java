@@ -1,7 +1,5 @@
 package com.hurix.epubRnD.Views;
 
-import java.util.Date;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,8 +72,8 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 	private EndStickView endStick;
 	private int firstWordID, lastWordID;
 	private HighlightVO _currHighlightVO;
-	private boolean isAddingNote;
 	private BookmarkView _bookmarkView;
+	private boolean shouldOpenNoteEditor;
 	
 	public MyWebView(Context context) {
 		super(context);
@@ -552,14 +550,14 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 				hRecord.put("endWordID",_currHighlightVO.getEndWordID());
 				hRecord.put("chapterIndex", ""+_data.getIndexOfChapter());
 				hRecord.put("highlightedText", text);
-				hRecord.put("hasNote",isAddingNote);
+				hRecord.put("hasNote",_currHighlightVO.hasNote());
 				allHighlightsArray.put(hRecord);
 				
 				SharedPreferences.Editor editor = pref.edit();
 				editor.putString("Highlights", allHighlightsArray.toString());
 				editor.commit();
 				
-				if(isAddingNote)
+				if(_currHighlightVO.hasNote())
 		        {
 		            String jsMethod = "addNoteIconToPage("+_currHighlightVO.getStartWordID()+","+_currHighlightVO.getEndWordID()+")";
 		            loadUrl("javascript:"+jsMethod);
@@ -587,7 +585,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 				JSONObject hRecord = allHighlightsArray.getJSONObject(i);
 				if(hRecord.getString("chapterIndex").equalsIgnoreCase(""+_data.getIndexOfChapter()))
 				{
-					loadUrl("javascript: addHightlight('"+hRecord.getString("startWordID")+"','"+hRecord.getString("endWordID")+"')");
+					loadUrl("javascript: addHightlight('"+hRecord.getString("startWordID")+"','"+hRecord.getString("endWordID")+"',"+hRecord.getBoolean("hasNote")+")");
 					foundHighlightsOnPage = true;
 				}
 			}
@@ -903,7 +901,6 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 	
 	private void updateHighlightSticksPosition(int sID,float sX, float sY, float sW, float sH, int eID, float eX, float eY, float eW, float eH)
 	{
-		isAddingNote = false;
 		
 		stickHeight = sH;
 		sX = sX * getContext().getResources().getDisplayMetrics().density;
@@ -996,9 +993,9 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 			icon.setData(hVO);
 			icon.setLayoutParams(params);
 			((PageView)getParent().getParent()).addView(icon);
-			if(isAddingNote)
+			if(shouldOpenNoteEditor)
 			{
-				isAddingNote = false;
+				shouldOpenNoteEditor = false; 
 				openNoteEditor(icon);
 			}
 		}
@@ -1071,12 +1068,13 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 		switch (v.getId()) 
 		{
 			case R.id.highlightSaveBtn:
-				loadUrl("javascript: saveCurrentHighlight()");
+				loadUrl("javascript: saveCurrentHighlight("+false+")");
 				closeHighlight();
 				break;
 			case R.id.highlightNoteBtn:
-				isAddingNote = true;
-				loadUrl("javascript: saveCurrentHighlight()");
+				shouldOpenNoteEditor = true;
+				_currHighlightVO.setHasNote(true);
+				loadUrl("javascript: saveCurrentHighlight("+true+")");
 				closeHighlight();
 				break;
 			case R.id.highlightCopyBtn:
@@ -1299,7 +1297,6 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 
 	public void triggerNewHighlight(int pageX, int pageY) 
 	{
-		isAddingNote = false;
 		_currHighlightVO = null;
 		loadUrl("javascript: triggerHighlight("+pageX+","+pageY+")");
 	}

@@ -18,6 +18,7 @@ function HighlightVO()
     var eW;
     var eH;
     var selectedText;
+    var hasNote;
 };
 
 function bindDocumentTouch()
@@ -74,6 +75,7 @@ function triggerHighlight(pageX,pageY)
         currHVO = new HighlightVO();
         currHVO.startWordID =spanIDNumber;
         currHVO.endWordID =spanIDNumber;
+        currHVO.hasNote = false;
         lastHoverdWordID = spanIDNumber;
         
         $('span').css('background-color','rgba(0, 0, 0, 0)');
@@ -112,6 +114,7 @@ function onTouchStart(e)
             {
                 //initiate highlight vo
                 currHVO = new HighlightVO();
+                currHVO.hasNote = false;
                 //check for existed highlight
                 var seletedHVO = checkIsIntersectingWithExistedHighlights(spanIDNumber);
                 if(seletedHVO)
@@ -249,12 +252,14 @@ function checkIsIntersectingWithExistedHighlights(wordID)
 }
 
 
-function saveCurrentHighlight()
+function saveCurrentHighlight(hasNote)
 {
     if(currHVO != null || currHVO != undefined)
     {
         highlightText(currHVO.startWordID,currHVO.endWordID);
-        var formattedText = JSON.stringify(currHVO.selectedText);
+        var formattedText = JSON.stringify(getSelectedText(currHVO.startWordID,currHVO.endWordID));
+        currHVO.selectedText = formattedText;
+        currHVO.hasNote = hasNote;
         var jsonSaveHighlight = '{"MethodName":"saveTextHighlightToPersistantStorage","MethodArguments":{"arg1":"'+currHVO.startWordID+'","arg2":"'+currHVO.endWordID+'","arg3":'+formattedText+'}}';
         jsInterface.callNativeMethod('jstoobjc:'+jsonSaveHighlight);
         
@@ -266,7 +271,7 @@ function saveCurrentHighlight()
         var vo = new HighlightVO();
         vo.startWordID = currHVO.startWordID;
         vo.endWordID = currHVO.endWordID;
-        
+        vo.hasNote = currHVO.hasNote;
         
         highlightVOColl.push(vo);
         currHVO = null;
@@ -373,7 +378,10 @@ function drawSavedHighlights()
             var spanIdToHighlight = 'wordID-'+i;
             $('#'+spanIdToHighlight).css('background-color','rgba(0,0,255,0.3)');
         }
-        addNoteIconToPage(Number(highlightVOColl[j].startWordID), Number(highlightVOColl[j].endWordID));
+        if(highlightVOColl[j].hasNote)
+        {
+        	addNoteIconToPage(Number(highlightVOColl[j].startWordID), Number(highlightVOColl[j].endWordID));
+        }
     }
 }
 
@@ -382,13 +390,13 @@ function clearHighlightsArray()
     highlightVOColl = [];
 }
 
-function addHightlight(startWID,endWID)
+function addHightlight(startWID,endWID,hasNote)
 {
     var currHighlightVO = new HighlightVO();
     
     currHighlightVO.startWordID = startWID;
     currHighlightVO.endWordID = endWID;
-    
+    currHighlightVO.hasNote = hasNote;
     highlightVOColl.push(currHighlightVO);
 }
 

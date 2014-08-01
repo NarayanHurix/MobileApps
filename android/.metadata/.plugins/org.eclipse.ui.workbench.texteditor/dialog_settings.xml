@@ -2,30 +2,34 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="263" key="DIALOG_WIDTH"/>
-		<item value="168" key="DIALOG_Y_ORIGIN"/>
+		<item value="408" key="DIALOG_Y_ORIGIN"/>
+		<item value="559" key="DIALOG_X_ORIGIN"/>
 		<item value="399" key="DIALOG_HEIGHT"/>
-		<item value="6" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="isRegEx"/>
 		<item value="false" key="casesensitive"/>
+		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="getAllBookmarksOfThisChapter" key="selection"/>
+		<item value="new HighlightVO" key="selection"/>
 		<list key="findhistory">
-			<item value="getAllBookmarksOfThisChapter"/>
-			<item value="indexOfCurrPage"/>
-			<item value="onWordHighlightManagerJS"/>
-			<item value="firstWordID"/>
-			<item value="didFindFirstAndLastWordsOfPage"/>
-			<item value="pageview"/>
-			<item value="javascript"/>
-			<item value="Javascript"/>
+			<item value="new HighlightVO"/>
+			<item value="addNoteIconToPage"/>
+			<item value="saveTextHighlightToPersistantStorage"/>
+			<item value="isAddingNote"/>
+			<item value="saveCurrentHighlight"/>
+			<item value="savecurrent"/>
+			<item value="trigger"/>
+			<item value="closeHighlight"/>
 		</list>
 		<list key="replacehistory">
 			<item value="HelperViewForPageCount"/>
 		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.GotoLineAction$GotoLineDialog_dialogBounds">
+		<item value="284" key="DIALOG_Y_ORIGIN"/>
+		<item value="463" key="DIALOG_X_ORIGIN"/>
 	</section>
 </section>

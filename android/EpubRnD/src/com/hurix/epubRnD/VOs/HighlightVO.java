@@ -8,6 +8,7 @@ public class HighlightVO
 	private int _endWordID;
 	private String _chapterPath;
 	private String _selectedText;
+	private boolean _hasNote;
 	
 	public int getChapterIndex() {
 		return _chapterIndex;
@@ -44,6 +45,12 @@ public class HighlightVO
 	}
 	public void setSelectedText(String _selectedText) {
 		this._selectedText = _selectedText;
+	}
+	public boolean hasNote() {
+		return _hasNote;
+	}
+	public void setHasNote(boolean _hasNote) {
+		this._hasNote = _hasNote;
 	}
 	
 

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.hurix.epubRnD.Views.EndStickView"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.widgets.QuickAction"/>
 <fullyQualifiedTypeName name="android.widget.Button"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.R.layout"/>
@@ -18,7 +17,6 @@
 <fullyQualifiedTypeName name="java.lang.Override"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Controllers.ViewPagerController.ViewPagerControllerCallBacks"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.VOs.WebViewDAO"/>
-<fullyQualifiedTypeName name="java.lang.Exception"/>
 <fullyQualifiedTypeName name="android.view.View.OnLongClickListener"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Views.MyWebView"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Settings.GlobalSettings"/>
@@ -60,4 +58,6 @@
 <fullyQualifiedTypeName name="com.hurix.epubRnD.VOs.BookmarkVO"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Views.BookmarkView"/>
 <fullyQualifiedTypeName name="org.json.JSONObject"/>
+<fullyQualifiedTypeName name="java.lang.Exception"/>
+<fullyQualifiedTypeName name="java.lang.NullPointerException"/>
 </qualifiedTypeNameHistroy>

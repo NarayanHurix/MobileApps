@@ -39,8 +39,7 @@
 - (void) updateFontSize;
 - (void) didHighlightButtonTap;
 - (void) didTouchOnHighlightStick :(BOOL) isStartStick : (BOOL) isEndStick;
-- (void) saveHighlight;
+- (void) saveHighlight:(BOOL) hasNote;
 - (void) closePopupAndClearHighlight;
-- (void) addNoteAndClosePopup;
 - (float) getScaleFactorOfPageFit;
 @end

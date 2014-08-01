@@ -38,7 +38,7 @@
 
 - (IBAction)didClickOnSave:(id)sender
 {
-    [myWebView saveHighlight];
+    [myWebView saveHighlight:NO];
 }
 - (IBAction)Close:(id)sender
 {
@@ -47,7 +47,7 @@
 
 - (IBAction)addStickyNote:(UIButton *)sender
 {
-    [myWebView addNoteAndClosePopup];
+    [myWebView saveHighlight:YES];
 }
 
 - (IBAction)copySelectedText:(id)sender

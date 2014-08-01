@@ -15,7 +15,7 @@
     NSInteger _startWordID;
     NSInteger _endWordID;
     NSInteger _id;
-    
+    BOOL _hasNote;
 }
 @property (nonatomic,strong) NSString *moidURIRepresentationString;
 
@@ -34,4 +34,6 @@
 - (void) setEndWordID:(int) endWordID;
 - (int) getEndWordID;
 
+- (void) setHasNote:(BOOL) hasNote;
+- (BOOL) hasNote;
 @end
