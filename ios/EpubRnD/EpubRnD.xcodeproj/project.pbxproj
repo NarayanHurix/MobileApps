@@ -93,7 +93,7 @@
 		5A32C26C198680C6002BC443 /* bookmarkbutton_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookmarkbutton_selected@2x.png"; sourceTree = "<group>"; };
 		5A3E309719488FC4001080F6 /* GlobalSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalSettings.h; sourceTree = "<group>"; };
 		5A3E309819488FC4001080F6 /* GlobalSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalSettings.m; sourceTree = "<group>"; };
-		5A45B65B19472E52003FA663 /* kitaboojune3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kitaboojune3.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A45B65B19472E52003FA663 /* epub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = epub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A45B65E19472E52003FA663 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5A45B66019472E52003FA663 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		5A45B66219472E52003FA663 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -230,7 +230,7 @@
 		5A45B65C19472E52003FA663 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5A45B65B19472E52003FA663 /* kitaboojune3.app */,
+				5A45B65B19472E52003FA663 /* epub.app */,
 				5A45B67B19472E52003FA663 /* EpubRnDTests.xctest */,
 			);
 			name = Products;
@@ -450,7 +450,7 @@
 			);
 			name = EpubRnD;
 			productName = EpubRnD;
-			productReference = 5A45B65B19472E52003FA663 /* kitaboojune3.app */;
+			productReference = 5A45B65B19472E52003FA663 /* epub.app */;
 			productType = "com.apple.product-type.application";
 		};
 		5A45B67A19472E52003FA663 /* EpubRnDTests */ = {
@@ -701,7 +701,8 @@
 				GCC_PREFIX_HEADER = "EpubRnD/EpubRnD-Prefix.pch";
 				INFOPLIST_FILE = "EpubRnD/EpubRnD-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
-				PRODUCT_NAME = kitaboojune3;
+				PRODUCT_NAME = epub;
+				PROVISIONING_PROFILE = "9AE5BA94-0E03-4EB1-A86F-B2D1E7B0675D";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -720,7 +721,8 @@
 				GCC_PREFIX_HEADER = "EpubRnD/EpubRnD-Prefix.pch";
 				INFOPLIST_FILE = "EpubRnD/EpubRnD-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
-				PRODUCT_NAME = kitaboojune3;
+				PRODUCT_NAME = epub;
+				PROVISIONING_PROFILE = "9AE5BA94-0E03-4EB1-A86F-B2D1E7B0675D";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

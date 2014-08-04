@@ -338,9 +338,11 @@
     if(currentPageWebViewDAO)
     {
         ChapterVO *vo = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:[currentPageWebViewDAO getIndexOfChapter]];
+        [currentPageWebViewDAO setPageCount:vo.pageCountInChapter];
         if([currentPageWebViewDAO getIndexOfPage]>=[vo pageCountInChapter])
         {
             [currentPageWebViewDAO setIndexOfPage:vo.pageCountInChapter-1];
+            
         }
         
         [pageView loadViewWithData:currentPageWebViewDAO];
@@ -361,6 +363,11 @@
 //    [self.bookLoadingIndicatorView setHidden:YES];
     [self.bookLoadingIndicatorView removeFromSuperview];
     [self.pageNavSlider setMaximumValue:count];
+    int pageNo =[self getPageNoFromPageWebViewDAO: currentPageWebViewDAO];
+    if(pageNo != -1)
+    {
+        [self updatePageNavSliderValue:pageNo];
+    }
 }
 
 - (void) updatePageNavSliderValue:(int)value

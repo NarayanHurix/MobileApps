@@ -140,20 +140,23 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
 
 - (void)onPageOutOfRange
 {
-    self.currenPageView = adjacentPrev;
-    adjacentPrev = [_delegate getPreviousPage:self.currenPageView];
-    adjacentPrev.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-    [self addSubview: adjacentPrev];
-    
-    self.currenPageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-    if(adjacentPrev)
-    {
-        adjacentPrev.frame = CGRectMake(-self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
-    }
-    if(adjacentNext)
-    {
-        adjacentNext.frame = CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
-    }
+//    self.currenPageView = adjacentPrev;
+//    adjacentPrev = [_delegate getPreviousPage:self.currenPageView];
+//    adjacentPrev.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+//    [self addSubview: adjacentPrev];
+//    
+//    self.currenPageView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+//    if(adjacentPrev)
+//    {
+//        adjacentPrev.frame = CGRectMake(-self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
+//    }
+//    if(adjacentNext)
+//    {
+//        adjacentNext.frame = CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height);
+//    }
+//    adjacentPrev = nil;
+//    adjacentNext = nil;
+//    [self checkAdjacentPagesLoaded];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
