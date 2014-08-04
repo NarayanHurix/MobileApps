@@ -844,11 +844,6 @@
 }
 
 
--(void) dealloc
-{
-    
-}
-
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     NSLog(@"touch comes here");
@@ -994,6 +989,21 @@
         //failed to bookmark this page
         [self.myDelegate changeBookMarkStatus:NO byUser:NO];
     }
+}
+
+- (void) destroy
+{
+    self.webViewDAO = nil;  
+    self.myDelegate = nil;
+    self.delegate = nil;
+    self.startStick = nil;
+    self.endStick = nil;
+    self.currHighlightVO = nil;
+}
+
+- (void)dealloc
+{
+    NSLog(@"my web view released");
 }
 
 @end

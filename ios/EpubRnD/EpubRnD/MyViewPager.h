@@ -22,9 +22,10 @@
 
 @property (nonatomic,retain) UIViewController *mainController;
 @property (nonatomic,weak) id<MyViewPagerDelegate> delegate;
-@property (nonatomic,retain) MyPageView *currenPageView;
+
 
 - (void) initWithPageView:(MyPageView *) view;
 - (void) onPageOutOfRange;
 - (void) refreshAdjacentPages;
+- (MyPageView *) getCurrentPageView;
 @end

@@ -42,4 +42,5 @@
 - (void) saveHighlight:(BOOL) hasNote;
 - (void) closePopupAndClearHighlight;
 - (float) getScaleFactorOfPageFit;
+- (void) destroy;
 @end

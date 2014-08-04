@@ -24,6 +24,7 @@
         // Initialization code
 //        path = [UIBezierPath bezierPath];
 //        [path setLineWidth:2.0];
+        NSLog(@"my page view created");
         
     }
     return self;
@@ -158,6 +159,28 @@
 - (void) disableBookmark:(BOOL) disable
 {
     [self.bookmarkView setHidden:disable];
+}
+
+- (void) destroy
+{
+    [self.myWebView destroy];
+    [self.myWebView removeFromSuperview];
+    self.myWebView = nil;
+    
+    [self.activityIndicator removeFromSuperview];
+    self.activityIndicator = nil;
+    
+    self.bookmarkView.myDelegate = nil;
+    [self.bookmarkView removeFromSuperview];
+    self.bookmarkView= nil;
+    
+    [self.touchHelperView removeFromSuperview];
+    self.touchHelperView=nil;
+}
+
+- (void)dealloc
+{
+    NSLog(@"my page view released");
 }
 
 @end

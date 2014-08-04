@@ -56,7 +56,6 @@
 		5AC1F8BA19505E850088B1A7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8B919505E850088B1A7 /* QuartzCore.framework */; };
 		5AC1F8BC19505E910088B1A7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8BB19505E910088B1A7 /* Security.framework */; };
 		5AC1F8BE19505E9E0088B1A7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AC1F8BD19505E9E0088B1A7 /* SystemConfiguration.framework */; };
-		5AD494A6194F27260059C0E9 /* AssetsContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AD494A5194F27260059C0E9 /* AssetsContainer.m */; };
 		5AE098471977F72700B5A75D /* StickyNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AE098461977F72700B5A75D /* StickyNoteView.m */; };
 		5AE0984A1977F77A00B5A75D /* HighlightVO.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AE098491977F77A00B5A75D /* HighlightVO.m */; };
 		5AE0984E1977FB3600B5A75D /* StickyNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AE0984C1977FB3600B5A75D /* StickyNoteViewController.m */; };
@@ -143,8 +142,6 @@
 		5AC1F8B919505E850088B1A7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5AC1F8BB19505E910088B1A7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		5AC1F8BD19505E9E0088B1A7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		5AD494A4194F27260059C0E9 /* AssetsContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AssetsContainer.h; sourceTree = "<group>"; };
-		5AD494A5194F27260059C0E9 /* AssetsContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AssetsContainer.m; sourceTree = "<group>"; };
 		5AE098451977F72700B5A75D /* StickyNoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickyNoteView.h; sourceTree = "<group>"; };
 		5AE098461977F72700B5A75D /* StickyNoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyNoteView.m; sourceTree = "<group>"; };
 		5AE098481977F77A00B5A75D /* HighlightVO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightVO.h; sourceTree = "<group>"; };
@@ -322,8 +319,6 @@
 				5A51EBFE1962C1310065A595 /* TextHighlight */,
 				5A45B69E19473AB0003FA663 /* MyWebView.h */,
 				5A45B69F19473AB0003FA663 /* MyWebView.m */,
-				5AD494A4194F27260059C0E9 /* AssetsContainer.h */,
-				5AD494A5194F27260059C0E9 /* AssetsContainer.m */,
 				5A51EC041962D1050065A595 /* StartStickView.h */,
 				5A51EC051962D1050065A595 /* StartStickView.m */,
 				5A51EC071962D1E70065A595 /* EndStickView.h */,
@@ -544,7 +539,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5AD494A6194F27260059C0E9 /* AssetsContainer.m in Sources */,
 				5AE0984A1977F77A00B5A75D /* HighlightVO.m in Sources */,
 				5A26001219485A9800F472CE /* GlobalConstants.m in Sources */,
 				5A26000D194840E400F472CE /* AppViewController.m in Sources */,

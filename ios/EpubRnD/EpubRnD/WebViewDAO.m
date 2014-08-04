@@ -66,4 +66,9 @@
 //    return isBookmarked;
 //}
 
+- (void)dealloc
+{
+    NSLog(@"my page view released");
+}
+
 @end

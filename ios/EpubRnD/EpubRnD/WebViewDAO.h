@@ -35,7 +35,7 @@
 //- (void) setBookmarked:(BOOL) status;
 //- (BOOL) isBookmarked;
 
-@property (nonatomic,retain) BookmarkVO *bookmarkVO;
+@property (nonatomic,weak) BookmarkVO *bookmarkVO;
 
 
 

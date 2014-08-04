@@ -36,6 +36,11 @@
     _myViewPager.mainController = self;
     self.helperForPageCount.frame = _myViewPager.frame;
     self.highlightBtn.hidden = YES;
+    [self.pageNavSlider addTarget:self action:@selector(didSlidingFinish:) forControlEvents:UIControlEventTouchUpInside];
+    [self.pageNavSlider addTarget:self action:@selector(didSlidingFinish:) forControlEvents:UIControlEventTouchCancel];
+    [self.pageNavSlider addTarget:self action:@selector(didSlidingFinish:) forControlEvents:UIControlEventTouchUpOutside];
+//    UIControlEventTouchUpInside *touchUpEvent = [UIControlEventTouchUpInside al];
+//    self.pageNavSlider
 }
 
 - (void)didReceiveMemoryWarning
@@ -82,12 +87,12 @@
             CGRect rect = CGRectMake(0, 0, _myViewPager.frame.size.width, _myViewPager.frame.size.height);
             MyPageView *pageView = [[MyPageView alloc] initWithFrame:rect];
             
-            WebViewDAO *webDAO = [WebViewDAO new];
+            WebViewDAO *webDAO = [[WebViewDAO alloc] init];
             webDAO.chapterVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:indexOfChapter];
             [webDAO setIndexOfPage:indexOfPage];
             [webDAO setIndexOfChapter:indexOfChapter];
             
-            [pageView loadViewWithData:webDAO];
+            [pageView loadViewWithData:webDAO];webDAO = nil;
             return pageView;
         }
     }
@@ -97,12 +102,12 @@
         CGRect rect = CGRectMake(0, 0, _myViewPager.frame.size.width, _myViewPager.frame.size.height);
         MyPageView *pageView = [[MyPageView alloc] initWithFrame:rect];
         
-        WebViewDAO *webDAO = [WebViewDAO new];
+        WebViewDAO *webDAO = [[WebViewDAO alloc] init];
         webDAO.chapterVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:indexOfChapter];
         [webDAO setIndexOfPage:indexOfPage];
         [webDAO setIndexOfChapter:indexOfChapter];
         
-        [pageView loadViewWithData:webDAO];
+        [pageView loadViewWithData:webDAO];webDAO = nil;
         return pageView;
     }
     
@@ -131,13 +136,13 @@
             CGRect rect = CGRectMake(0, 0, _myViewPager.frame.size.width, _myViewPager.frame.size.height);
             MyPageView *pageView = [[MyPageView alloc] initWithFrame:rect];
             
-            WebViewDAO *webDAO = [WebViewDAO new];
+            WebViewDAO *webDAO = [[WebViewDAO alloc] init];
             webDAO.chapterVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:indexOfChapter];
             [webDAO setIndexOfPage:-2];
             [webDAO setIndexOfChapter:indexOfChapter];
             
             [pageView loadViewWithData:webDAO];
-            
+            webDAO = nil;
             return pageView;
         }
     }
@@ -147,12 +152,12 @@
         CGRect rect = CGRectMake(0, 0, _myViewPager.frame.size.width, _myViewPager.frame.size.height);
         MyPageView *pageView = [[MyPageView alloc] initWithFrame:rect];
         
-        WebViewDAO *webDAO = [WebViewDAO new];
+        WebViewDAO *webDAO = [[WebViewDAO alloc] init];
         webDAO.chapterVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:indexOfChapter];
         [webDAO setIndexOfPage:indexOfPage];
         [webDAO setIndexOfChapter:indexOfChapter];
         
-        [pageView loadViewWithData:webDAO];
+        [pageView loadViewWithData:webDAO];webDAO = nil;
         return pageView;
     }
     return oldPageView;
@@ -227,7 +232,7 @@
 {
     HIGHLIGHT_TOOL_SWITCH = HIGHLIGHT_TOOL_SWITCH?NO:YES;
     [self.highlightBtn setSelected:HIGHLIGHT_TOOL_SWITCH];
-    MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
+    MyPageView *myPageView = (MyPageView *)[_myViewPager getCurrentPageView];
     [myPageView.myWebView didHighlightButtonTap];
     
     myPageView.touchHelperView.userInteractionEnabled = !HIGHLIGHT_TOOL_SWITCH;
@@ -237,7 +242,7 @@
 
 - (void) didOpenNoteEditor
 {
-    MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
+    MyPageView *myPageView = (MyPageView *)[_myViewPager getCurrentPageView];
     myPageView.touchHelperView.userInteractionEnabled = NO;
     self.btnFontDecrease.userInteractionEnabled = NO;
     self.btnFontIncrease.userInteractionEnabled = NO;
@@ -245,7 +250,7 @@
 
 - (void) didCloseNoteEditor
 {
-    MyPageView *myPageView = (MyPageView *)_myViewPager.currenPageView;
+    MyPageView *myPageView = (MyPageView *)[_myViewPager getCurrentPageView];
     myPageView.touchHelperView.userInteractionEnabled = YES;
     self.btnFontDecrease.userInteractionEnabled = YES;
     self.btnFontIncrease.userInteractionEnabled = YES;
@@ -304,6 +309,18 @@
     if(pageNo<1)
     {
         pageNo = 1;
+        self.pageNavSlider.value = pageNo;
+    }
+    [self.pageNoLable setText:[NSString stringWithFormat:@"%d / %d",pageNo, [BookModelFactory sharedInstance].pageCountInBook]];
+}
+
+-(void) didSlidingFinish:(UIControlEvents *) events
+{
+    int pageNo = [NSNumber numberWithFloat:roundf(self.pageNavSlider.value)].intValue;
+    if(pageNo<1)
+    {
+        pageNo = 1;
+        self.pageNavSlider.value = pageNo;
     }
     if(pageNo != currentPageNo)
     {
@@ -315,19 +332,18 @@
         {
             CGRect rect = CGRectMake(0, 0, _myViewPager.frame.size.width, _myViewPager.frame.size.height);
             MyPageView *pageView = [[MyPageView alloc] initWithFrame:rect];
-
+            
             WebViewDAO *webDAO = [WebViewDAO new];
             webDAO.chapterVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:[dao getIndexOfChapter]];
             [webDAO setIndexOfPage:[dao getIndexOfPage]];
             [webDAO setIndexOfChapter:[dao getIndexOfChapter]];
             [webDAO setPageCount:webDAO.chapterVO.pageCountInChapter];
             [pageView loadViewWithData:webDAO];
-
+            
             [_myViewPager initWithPageView:pageView];
         }
     }
 }
-
 - (void) didCompletePageCounting:(int) count
 {
     [self.pageNoLable setText:[NSString stringWithFormat:@"%d / %d",1, [BookModelFactory sharedInstance].pageCountInBook]];
@@ -342,22 +358,18 @@
         if([currentPageWebViewDAO getIndexOfPage]>=[vo pageCountInChapter])
         {
             [currentPageWebViewDAO setIndexOfPage:vo.pageCountInChapter-1];
-            
         }
-        
-        [pageView loadViewWithData:currentPageWebViewDAO];
     }
     else
     {
         currentPageWebViewDAO = [WebViewDAO new];
-        NSArray *arr = [[BookModelFactory sharedInstance] chaptersColl];
+        //NSArray *arr = [[BookModelFactory sharedInstance] chaptersColl];
         currentPageWebViewDAO.chapterVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:0];
         [currentPageWebViewDAO setIndexOfPage:0];
         [currentPageWebViewDAO setIndexOfChapter:0];
         [currentPageWebViewDAO setPageCount:currentPageWebViewDAO.chapterVO.pageCountInChapter];
-        [pageView loadViewWithData:currentPageWebViewDAO];
     }
-    
+    [pageView loadViewWithData:currentPageWebViewDAO];
     [_myViewPager initWithPageView:pageView];
     [self.bookLoadActInd stopAnimating];
 //    [self.bookLoadingIndicatorView setHidden:YES];
@@ -379,6 +391,7 @@
 
 - (void) didPageChange:(MyPageView *) currentPageView
 {
+    currentPageWebViewDAO = nil;
     currentPageWebViewDAO =currentPageView.myWebView.webViewDAO;
     int pageNo =[self getPageNoFromPageWebViewDAO: currentPageWebViewDAO];
     if(pageNo != -1)
