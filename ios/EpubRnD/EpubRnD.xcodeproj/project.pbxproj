@@ -40,7 +40,7 @@
 		5A45B69A19473A2D003FA663 /* MyViewPager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B69919473A2D003FA663 /* MyViewPager.m */; };
 		5A45B6A019473AB0003FA663 /* MyWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B69F19473AB0003FA663 /* MyWebView.m */; };
 		5A45B6A319473B8F003FA663 /* MyPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B6A219473B8F003FA663 /* MyPageView.m */; };
-		5A45B6A619473CB0003FA663 /* WebViewDAO.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B6A519473CB0003FA663 /* WebViewDAO.m */; };
+		5A45B6A619473CB0003FA663 /* PageVO.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B6A519473CB0003FA663 /* PageVO.m */; };
 		5A45B6A919473D11003FA663 /* ChapterVO.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A45B6A819473D11003FA663 /* ChapterVO.m */; };
 		5A51EC021962C1630065A595 /* HighlightPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A51EC001962C1630065A595 /* HighlightPopupViewController.m */; };
 		5A51EC031962C1630065A595 /* HighlightPopupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A51EC011962C1630065A595 /* HighlightPopupViewController.xib */; };
@@ -118,8 +118,8 @@
 		5A45B69F19473AB0003FA663 /* MyWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWebView.m; sourceTree = "<group>"; };
 		5A45B6A119473B8F003FA663 /* MyPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPageView.h; sourceTree = "<group>"; };
 		5A45B6A219473B8F003FA663 /* MyPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPageView.m; sourceTree = "<group>"; };
-		5A45B6A419473CB0003FA663 /* WebViewDAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewDAO.h; sourceTree = "<group>"; };
-		5A45B6A519473CB0003FA663 /* WebViewDAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewDAO.m; sourceTree = "<group>"; };
+		5A45B6A419473CB0003FA663 /* PageVO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageVO.h; sourceTree = "<group>"; };
+		5A45B6A519473CB0003FA663 /* PageVO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageVO.m; sourceTree = "<group>"; };
 		5A45B6A719473D11003FA663 /* ChapterVO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChapterVO.h; sourceTree = "<group>"; };
 		5A45B6A819473D11003FA663 /* ChapterVO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChapterVO.m; sourceTree = "<group>"; };
 		5A51EBFF1962C1630065A595 /* HighlightPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightPopupViewController.h; sourceTree = "<group>"; };
@@ -297,8 +297,8 @@
 		5A45B6AA19473D33003FA663 /* ModelClasses */ = {
 			isa = PBXGroup;
 			children = (
-				5A45B6A419473CB0003FA663 /* WebViewDAO.h */,
-				5A45B6A519473CB0003FA663 /* WebViewDAO.m */,
+				5A45B6A419473CB0003FA663 /* PageVO.h */,
+				5A45B6A519473CB0003FA663 /* PageVO.m */,
 				5A45B6A719473D11003FA663 /* ChapterVO.h */,
 				5A45B6A819473D11003FA663 /* ChapterVO.m */,
 				5AE7662E196E88CA002BE2DE /* BookModelFactory.h */,
@@ -550,7 +550,7 @@
 				5A3E309919488FC4001080F6 /* GlobalSettings.m in Sources */,
 				5AE098471977F72700B5A75D /* StickyNoteView.m in Sources */,
 				5A45B6A319473B8F003FA663 /* MyPageView.m in Sources */,
-				5A45B6A619473CB0003FA663 /* WebViewDAO.m in Sources */,
+				5A45B6A619473CB0003FA663 /* PageVO.m in Sources */,
 				5A51EC091962D1E70065A595 /* EndStickView.m in Sources */,
 				5A45B6A919473D11003FA663 /* ChapterVO.m in Sources */,
 				5A9DD28A19827B310056C584 /* BookmarkVO.m in Sources */,

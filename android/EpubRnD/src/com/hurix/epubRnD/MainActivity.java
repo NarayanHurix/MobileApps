@@ -14,6 +14,8 @@ import net.hockeyapp.android.UpdateManager;
 import org.w3c.dom.Document;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -38,7 +40,7 @@ import com.hurix.epubRnD.VOs.ChapterVO;
 import com.hurix.epubRnD.VOs.ManifestVO;
 import com.hurix.epubRnD.VOs.PathVO;
 import com.hurix.epubRnD.VOs.SpineVO;
-import com.hurix.epubRnD.VOs.WebViewDAO;
+import com.hurix.epubRnD.VOs.PageVO;
 import com.hurix.epubRnD.Views.FixedTopMostLayout;
 import com.hurix.epubRnD.Views.HelperViewForPageCount;
 import com.hurix.epubRnD.Views.HelperViewForPageCount.PageCountListener;
@@ -58,6 +60,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,P
 	private SeekBar _pageNavSeekBar;
 	private TextView _pageNoTV;
 	int currentPage = -1;
+	private PageVO _currentPageVO;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,P
 		_bookLoadingProg = (RelativeLayout) findViewById(R.id.bookLoadingProg);
 		_helperViewForPageCount = (HelperViewForPageCount) findViewById(R.id.helperViewForPageCount);
 		_pageNavSeekBar = (SeekBar) findViewById(R.id.seekBar1);
+		
 		_pageNavSeekBar.setOnSeekBarChangeListener(this);
 		_pageNoTV = (TextView) findViewById(R.id.pageNoTV);
 		GlobalSettings.HIGHLIGHT_SWITCH = false;
@@ -133,7 +138,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,P
 		ViewPagerController controller = new ViewPagerController();
 		_mViewPager.setOnPageChangeListener(controller);
 		controller.setData(_chaptersColl,_mViewPager,this);
-		
+		restorePlayerToLastSavedState();
 		_helperViewForPageCount.startPageCounting(this, _chaptersColl);
 	}
 
@@ -395,35 +400,28 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,P
 		_bookLoadingProg.setVisibility(View.GONE);
 		PageView pageView = new PageView(this,_mViewPager);
 		int pageNo = 1;
-		if(_mViewPager.getCurrentPageView() != null)
+		if(_currentPageVO != null)
 		{
-			PageView currPage = (PageView) _mViewPager.getCurrentPageView();
-			WebViewDAO data = new WebViewDAO();
-			data.setIndexOfChapter(currPage.getWebView().getData().getIndexOfChapter());
-			data.setChapterVO(_chaptersColl.get(data.getIndexOfChapter()));
-			if(currPage.getWebView().getData().getIndexOfPage()<data.getChapterVO().getPageCount())
+			_currentPageVO.setChapterVO(_chaptersColl.get(_currentPageVO.getIndexOfChapter()));
+			if(_currentPageVO.getIndexOfPage()>=_currentPageVO.getChapterVO().getPageCount())
 			{
-				data.setIndexOfPage(currPage.getWebView().getData().getIndexOfPage());
-			}
-			else
-			{
-				data.setIndexOfPage(data.getChapterVO().getPageCount()-1);
+				_currentPageVO.setIndexOfPage(_currentPageVO.getChapterVO().getPageCount()-1);
 			}
 			
-			data.setPageCount(data.getChapterVO().getPageCount());
+			//data.setPageCount(data.getChapterVO().getPageCount());
 			
-			pageView.getWebView().setData(data);
+			pageView.getWebView().setData(_currentPageVO);
 	
 			_mViewPager.initWithView(pageView);
-			pageNo = Utils.getPageNo(data,_chaptersColl);
+			pageNo = Utils.getPageNo(_currentPageVO,_chaptersColl);
 		}
 		else
 		{
-			WebViewDAO data = new WebViewDAO();
+			PageVO data = new PageVO();
 			data.setChapterVO(_chaptersColl.get(0));
 			data.setIndexOfPage(0);
 			data.setIndexOfChapter(0);
-			data.setPageCount(_chaptersColl.get(0).getPageCount());
+			//data.setPageCount(_chaptersColl.get(0).getPageCount());
 			
 			pageView.getWebView().setData(data);
 	
@@ -444,30 +442,50 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,P
 	@Override
 	public void onStopTrackingTouch(SeekBar seekBar) 
 	{
-		
-	}
-	
-	@Override
-	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) 
-	{
+		int progress = seekBar.getProgress();
 		progress = progress==0?1:progress;
 		seekBar.setProgress(progress);
-		if(fromUser && currentPage != progress)
+		if(currentPage != progress)
 		{
 			currentPage = progress;
 			PageView pageView = new PageView(this,_mViewPager);
-			WebViewDAO data = new WebViewDAO();
-			WebViewDAO dao = Utils.getPageWebViewDAO(progress, _chaptersColl);
+			PageVO data = new PageVO();
+			PageVO dao = Utils.getPageVO(progress, _chaptersColl);
 			data.setChapterVO(_chaptersColl.get(dao.getIndexOfChapter()));
 			data.setIndexOfPage(dao.getIndexOfPage());
 			data.setIndexOfChapter(dao.getIndexOfChapter());
-			data.setPageCount(_chaptersColl.get(dao.getIndexOfChapter()).getPageCount());
+			//data.setPageCount(_chaptersColl.get(dao.getIndexOfChapter()).getPageCount());
 			
 			pageView.getWebView().setData(data);
 			_pageNoTV.setText(progress+"/"+GlobalConstants.PAGE_COUNT);
 			_mViewPager.initWithView(pageView);
 			
 		}
+	}
+	
+	@Override
+	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) 
+	{
+		progress = progress==0?1:progress;
+		_pageNoTV.setText(progress+"/"+GlobalConstants.PAGE_COUNT);
+//		progress = progress==0?1:progress;
+//		seekBar.setProgress(progress);
+//		if(fromUser && currentPage != progress)
+//		{
+//			currentPage = progress;
+//			PageView pageView = new PageView(this,_mViewPager);
+//			WebViewDAO data = new WebViewDAO();
+//			WebViewDAO dao = Utils.getPageWebViewDAO(progress, _chaptersColl);
+//			data.setChapterVO(_chaptersColl.get(dao.getIndexOfChapter()));
+//			data.setIndexOfPage(dao.getIndexOfPage());
+//			data.setIndexOfChapter(dao.getIndexOfChapter());
+//			data.setPageCount(_chaptersColl.get(dao.getIndexOfChapter()).getPageCount());
+//			
+//			pageView.getWebView().setData(data);
+//			_pageNoTV.setText(progress+"/"+GlobalConstants.PAGE_COUNT);
+//			_mViewPager.initWithView(pageView);
+//			
+//		}
 	}
 
 	@Override
@@ -476,6 +494,31 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,P
 		int pageNo = Utils.getPageNo(currentPageView.getWebView().getData(),_chaptersColl);
 		_pageNoTV.setText(pageNo+"/"+GlobalConstants.PAGE_COUNT);
 		_pageNavSeekBar.setProgress(pageNo);
+		_currentPageVO = currentPageView.getWebView().getData();
+		savePlayerState(currentPageView);
+	}
+	
+	private void savePlayerState(PageView currentPageView)
+	{
+		SharedPreferences pref =  getSharedPreferences("EpubPlayer", Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = pref.edit();
+		editor.putInt("IndexOfPage",currentPageView.getWebView().getData().getIndexOfPage());
+		editor.putInt("IndexOfChapter",currentPageView.getWebView().getData().getIndexOfChapter());
+		editor.putInt("FirstWordID",currentPageView.getWebView().getData().getFirstWordID());
+		editor.putInt("LastWordID",currentPageView.getWebView().getData().getLastWordID());
+		editor.putInt("FontSize",GlobalSettings.FONT_SIZE);
+		editor.commit();
+	}
+	
+	private void restorePlayerToLastSavedState()
+	{
+		SharedPreferences pref =  getSharedPreferences("EpubPlayer", Context.MODE_PRIVATE);
+		_currentPageVO = new PageVO();
+		_currentPageVO.setFirstWordID(pref.getInt("FirstWordID", 0));
+		_currentPageVO.setLastWordID(pref.getInt("LastWordID", 0));
+		_currentPageVO.setIndexOfPage(pref.getInt("IndexOfPage", 0));
+		_currentPageVO.setIndexOfChapter(pref.getInt("IndexOfChapter", 0));
+		GlobalSettings.FONT_SIZE = pref.getInt("FontSize", GlobalConstants.MIN_FONT_SIZE);
 	}
 	
 }

@@ -3,7 +3,7 @@ package com.hurix.epubRnD.Controllers;
 import java.util.ArrayList;
 
 import com.hurix.epubRnD.VOs.ChapterVO;
-import com.hurix.epubRnD.VOs.WebViewDAO;
+import com.hurix.epubRnD.VOs.PageVO;
 import com.hurix.epubRnD.Views.MyViewFlipper;
 import com.hurix.epubRnD.Views.MyViewFlipper.OnPageChangeListener;
 import com.hurix.epubRnD.Views.MyWebView;
@@ -40,7 +40,7 @@ public class ViewPagerController implements OnPageChangeListener
 		
 		int chapterIndex = oldWebView.getData().getIndexOfChapter();
 		int pageIndex = oldWebView.getData().getIndexOfPage();
-		int pageCount = oldWebView.getData().getPageCount();
+		int pageCount = oldWebView.getData().getChapterVO().getPageCount();
 		pageIndex--;
 		if(pageIndex < 0)
 		{
@@ -58,7 +58,7 @@ public class ViewPagerController implements OnPageChangeListener
 				PageView pageView = new PageView(oldPage.getContext(),_mViewPager);
 				MyWebView webView= pageView.getWebView();
 				
-				WebViewDAO data = new WebViewDAO();
+				PageVO data = new PageVO();
 				data.setChapterVO(chaptersColl.get(chapterIndex));
 				data.setIndexOfChapter(chapterIndex);
 				data.setIndexOfPage(-2);
@@ -73,7 +73,7 @@ public class ViewPagerController implements OnPageChangeListener
 			PageView pageView = new PageView(oldPage.getContext(),_mViewPager);
 			MyWebView webView= pageView.getWebView();
 			
-			WebViewDAO data = new WebViewDAO();
+			PageVO data = new PageVO();
 			data.setChapterVO(chaptersColl.get(chapterIndex));
 			data.setIndexOfChapter(chapterIndex);
 			data.setIndexOfPage(pageIndex);
@@ -90,7 +90,7 @@ public class ViewPagerController implements OnPageChangeListener
 		MyWebView oldWebView = ((PageView)oldPage).getWebView();
 		int chapterIndex = oldWebView.getData().getIndexOfChapter();
 		int pageIndex = oldWebView.getData().getIndexOfPage();
-		int pageCount = oldWebView.getData().getPageCount();
+		int pageCount = oldWebView.getData().getChapterVO().getPageCount();
 		pageIndex++;
 		if(pageIndex>=pageCount)
 		{
@@ -108,7 +108,7 @@ public class ViewPagerController implements OnPageChangeListener
 				PageView pageView = new PageView(oldPage.getContext(),_mViewPager);
 				MyWebView webView= pageView.getWebView();
 				
-				WebViewDAO data = new WebViewDAO();
+				PageVO data = new PageVO();
 				data.setChapterVO(chaptersColl.get(chapterIndex));
 				data.setIndexOfChapter(chapterIndex);
 				data.setIndexOfPage(pageIndex);
@@ -124,11 +124,11 @@ public class ViewPagerController implements OnPageChangeListener
 			PageView pageView = new PageView(oldPage.getContext(),_mViewPager);
 			MyWebView webView= pageView.getWebView();
 			
-			WebViewDAO data = new WebViewDAO();
+			PageVO data = new PageVO();
 			data.setChapterVO(chaptersColl.get(chapterIndex));
 			data.setIndexOfChapter(chapterIndex);
 			data.setIndexOfPage(pageIndex);
-			data.setPageCount(pageCount);
+			//data.setPageCount(pageCount);
 			
 			webView.setData(data);
 			

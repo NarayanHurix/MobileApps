@@ -375,6 +375,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 		 
 		addView(view,0);
 		_currentView = view;
+		_listener.onPageChanged(_currentView);
 	}
 	
 	public ViewGroup getCurrentPageView()

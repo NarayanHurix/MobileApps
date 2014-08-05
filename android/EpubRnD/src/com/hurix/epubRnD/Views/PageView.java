@@ -87,6 +87,7 @@ public class PageView extends RelativeLayout implements MyWebViewLoadListener
 	public void onLoadStart() {
 		_mWebView.setVisibility(View.INVISIBLE);
 		_mProgressBar.setVisibility(View.VISIBLE);
+		cleanPageMarkups();
 	}
 	
 	@Override
@@ -125,5 +126,17 @@ public class PageView extends RelativeLayout implements MyWebViewLoadListener
 	public BookmarkView getBookmarkView()
 	{
 		return _bookMarkView;
+	}
+	
+	private void cleanPageMarkups()
+	{
+		for(int i=0; i<getChildCount();i++)
+		{
+			View view = getChildAt(i);
+			if(view.getClass().equals(StickyNoteIconView.class))
+			{
+				removeView(view);
+			}
+		}
 	}
 }

@@ -10,7 +10,7 @@
 
 @implementation ChapterVO
 
-- (id) init
+- (id) initWithCoder:(NSCoder *)aDecoder
 {
     self = [super init];
     if(self)
@@ -20,5 +20,6 @@
     }
     return self;
 }
+
 
 @end

@@ -57,9 +57,9 @@
     // Drawing code
 }
 */
-- (void) loadViewWithData:(WebViewDAO *) data
+- (void) loadViewWithData:(PageVO *) data
 {
-    _webViewDAO = data;
+    self.pageVO = data;
     [_myDelegate myWebViewBeganLoading];
     [self performSelector:@selector(loadWebData) withObject:self afterDelay:0.0 ];
 
@@ -68,17 +68,15 @@
 - (void) loadWebData
 {
     startStick = [[StartStickView alloc] init];
-    startStick.myWebView = self;
     startStick.hidden = YES;
     [[self superview] addSubview:startStick];
     
     endStick = [[EndStickView alloc] init];
-    endStick.myWebView = self;
     endStick.hidden = YES;
     [[self superview] addSubview:endStick];
     
     
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:_webViewDAO.chapterVO.chapterURL  ofType:@"xhtml" inDirectory:CHAPTERS_FOLDER_PATH];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:self.pageVO.chapterVO.chapterURL  ofType:@"xhtml" inDirectory:CHAPTERS_FOLDER_PATH];
     
     NSURL *url = [NSURL fileURLWithPath:filePath];
     NSURLRequest *urlRqst = [NSURLRequest requestWithURL:url];
@@ -144,7 +142,7 @@
     }
     else
     {
-        [self.webViewDAO setPageCount:1];
+        self.pageVO.chapterVO.pageCountInChapter = 1;
         [_myDelegate myWebViewDidLoadFinish];
     }
 }
@@ -173,25 +171,25 @@
     
     CGSize contentSize = CGSizeMake([[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollWidth;"] floatValue],
                                     [[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight;"] floatValue]);
-    [self.webViewDAO setPageCount:contentSize.width/webView.frame.size.width];
+    self.pageVO.chapterVO.pageCountInChapter = contentSize.width/webView.frame.size.width;
     
 //    NSLog(@"content width : %f ,frame width : %f ,my page count : %f",contentSize.width,webView.frame.size.width,contentSize.width/webView.frame.size.width);
     CGPoint point = CGPointMake(0, 0);
     if([self checkIsPageIndexOutOfRange])
     {
         //after decreasing font size page will be left blank
-        [self.webViewDAO setIndexOfPage:[self.webViewDAO getPageCount]-1];
+        [self.pageVO setIndexOfPage:self.pageVO.chapterVO.pageCountInChapter-1];
         [_myDelegate myWebViewOnPageOutOfRange];
     }
     else
     {
         
-        if([self.webViewDAO getIndexOfPage] ==-2)
+        if([self.pageVO getIndexOfPage] ==-2)
         {
             //load last page of chapter
-            [self.webViewDAO setIndexOfPage:[self.webViewDAO getPageCount]-1];
+            [self.pageVO setIndexOfPage:self.pageVO.chapterVO.pageCountInChapter-1];
         }
-        point = CGPointMake([self.webViewDAO getIndexOfPage]*webView.frame.size.width, 0);
+        point = CGPointMake([self.pageVO getIndexOfPage]*webView.frame.size.width, 0);
         self.scrollView.contentOffset = point;
     }
     [_myDelegate myWebViewDidLoadFinish];
@@ -201,7 +199,7 @@
 {
     //page index out of range
         
-    return [self.webViewDAO getIndexOfPage]>=[self.webViewDAO getPageCount];
+    return [self.pageVO getIndexOfPage]>=self.pageVO.chapterVO.pageCountInChapter;
 }
 
 
@@ -485,21 +483,21 @@
 - (void) didHighlightManagerJSadded
 {
     int indexOfNextPage = -1;
-    if([self.webViewDAO getIndexOfPage]<[self.webViewDAO getPageCount]-1)
+    if([self.pageVO getIndexOfPage]<self.pageVO.chapterVO.pageCountInChapter-1)
     {
-        indexOfNextPage = [self.webViewDAO getIndexOfPage]+1;
+        indexOfNextPage = [self.pageVO getIndexOfPage]+1;
     }
-    NSString *str = [NSString stringWithFormat:@"findFirstAndLastWordsOfPage(%f,%d,%d)",self.frame.size.width,[self.webViewDAO getIndexOfPage],indexOfNextPage];
+    NSString *str = [NSString stringWithFormat:@"findFirstAndLastWordsOfPage(%f,%d,%d)",self.frame.size.width,[self.pageVO getIndexOfPage],indexOfNextPage];
     [self stringByEvaluatingJavaScriptFromString:str];
 }
 
 - (void) didFindFirstAndLastWordsOfPage:(int) firstWordIdInCurrPage :(int) lastWordIdInCurrPage
 {
-    [self.webViewDAO setFirstWordID:firstWordIdInCurrPage];
-    [self.webViewDAO setLastWordID:lastWordIdInCurrPage];
+    [self.pageVO setFirstWordID:firstWordIdInCurrPage];
+    [self.pageVO setLastWordID:lastWordIdInCurrPage];
     [self getAllHighlights];
     [self getAllBookmarksOfThisChapter];
-    NSLog(@"cIndex : %d  pageIndex : %d  firstWordID : %d",[self.webViewDAO getIndexOfChapter], [self.webViewDAO getIndexOfPage], firstWordIdInCurrPage);
+    NSLog(@"cIndex : %d  pageIndex : %d  firstWordID : %d",[self.pageVO getIndexOfChapter], [self.pageVO getIndexOfPage], firstWordIdInCurrPage);
     if(firstWordIdInCurrPage ==-1 )
     {
         [self.myDelegate disableBookmark:YES];
@@ -582,7 +580,7 @@
         NSManagedObject *oneRecord = [NSEntityDescription insertNewObjectForEntityForName:@"Highlights" inManagedObjectContext:context];
         [oneRecord setValue:[NSNumber numberWithInt:[self.currHighlightVO getStartWordID]]  forKey:@"startWordID"];
         [oneRecord setValue:[NSNumber numberWithInt:[self.currHighlightVO getEndWordID]] forKey:@"endWordID"];
-        [oneRecord setValue:[NSNumber numberWithInteger:[self.webViewDAO getIndexOfChapter]] forKey:@"chapterIndex"];
+        [oneRecord setValue:[NSNumber numberWithInteger:[self.pageVO getIndexOfChapter]] forKey:@"chapterIndex"];
         [oneRecord setValue:self.currHighlightVO.selectedText forKey:@"highlightedText"];
         [oneRecord setValue:[NSNumber numberWithBool:[self.currHighlightVO hasNote]] forKey:@"hasNote"];
         
@@ -610,15 +608,15 @@
 
 - (void) addNoteIconToPage:(int) sID :(int) sX  :(int) sY  :(int) sW :(int) sH :(int) eID :(int)eX  :(int) eY :(int) eW :(int) eH :(NSString *) text
 {
-    if(sID>=[self.webViewDAO getFirstWordID] && sID<=[self.webViewDAO getLastWordID])
+    if(sID>=[self.pageVO getFirstWordID] && sID<=[self.pageVO getLastWordID])
     {
         HighlightVO  *hVO = [HighlightVO new];
         
-        [hVO setChapterPath:self.webViewDAO.chapterVO.chapterURL];
-        [hVO setChapterIndex:[self.webViewDAO getIndexOfChapter]];
+        [hVO setChapterPath:self.pageVO.chapterVO.chapterURL];
+        [hVO setChapterIndex:[self.pageVO getIndexOfChapter]];
         [hVO setStartWordID:sID];
         [hVO setEndWordID:eID];
-        [hVO setNoOfPagesInChapter:self.webViewDAO.chapterVO.pageCountInChapter];
+        [hVO setNoOfPagesInChapter:self.pageVO.chapterVO.pageCountInChapter];
         [hVO setSelectedText:text];
         [hVO setHasNote:YES];
         
@@ -626,7 +624,7 @@
         noteView.myDelegate = self;
         noteView.highlightVO = hVO ;
         
-        //int modifiedX = sX-(self.frame.size.width*[self.webViewDAO getIndexOfPage]);
+        //int modifiedX = sX-(self.frame.size.width*[self.pageVO getIndexOfPage]);
         noteView.frame = CGRectMake(20, sY, STICKY_NOTE_ICON_WIDTH , STICKY_NOTE_ICON_HEIGHT);
         [[self superview] addSubview:noteView];
         [[self superview] bringSubviewToFront:noteView];
@@ -657,7 +655,7 @@
     }
     [self stringByEvaluatingJavaScriptFromString:switchDocTouch];
     
-    NSString *setJSValues = [NSString stringWithFormat:@"setCurrentPageIndex(%d); setCurrentPageWidth(%f);",[self.webViewDAO getIndexOfPage],self.frame.size.width];
+    NSString *setJSValues = [NSString stringWithFormat:@"setCurrentPageIndex(%d); setCurrentPageWidth(%f);",[self.pageVO getIndexOfPage],self.frame.size.width];
     [self stringByEvaluatingJavaScriptFromString:setJSValues];
     
 }
@@ -671,7 +669,7 @@
     NSError *error;
     
     NSMutableArray *jsonArray = [[NSMutableArray alloc] init];
-    NSPredicate *onlyForThisChapter = [NSPredicate predicateWithFormat:@"chapterIndex = %d", [self.webViewDAO getIndexOfChapter]];
+    NSPredicate *onlyForThisChapter = [NSPredicate predicateWithFormat:@"chapterIndex = %d", [self.pageVO getIndexOfChapter]];
     fetchRequest.predicate = onlyForThisChapter;
     
     NSArray *fetchedRecords = [context executeFetchRequest:fetchRequest error:&error];
@@ -736,17 +734,17 @@
         self.currHighlightVO = [HighlightVO new];
     }
     
-    [self.currHighlightVO setChapterPath:self.webViewDAO.chapterVO.chapterURL];
-    [self.currHighlightVO setChapterIndex:[self.webViewDAO getIndexOfChapter]];
+    [self.currHighlightVO setChapterPath:self.pageVO.chapterVO.chapterURL];
+    [self.currHighlightVO setChapterIndex:[self.pageVO getIndexOfChapter]];
     [self.currHighlightVO setStartWordID:sID];
     [self.currHighlightVO setEndWordID:eID];
-    [self.currHighlightVO setNoOfPagesInChapter:self.webViewDAO.chapterVO.pageCountInChapter];
+    [self.currHighlightVO setNoOfPagesInChapter:self.pageVO.chapterVO.pageCountInChapter];
     
     stickHeight = sH;
     
 //    if(!startStick)
 //    {
-//        int modifiedX = sX-stickWidth - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
+//        int modifiedX = sX-stickWidth - (self.frame.size.width*[self.pageVO getIndexOfPage]);
 //        int modifiedY = sY-stickHeight/2;
 //        CGRect sRect = CGRectMake(modifiedX+3, modifiedY, stickWidth, stickHeight);
 //        startStick = [[StartStickView alloc] initWithFrame:sRect];
@@ -756,7 +754,7 @@
 //    else
     {
         startStick.hidden = NO;
-        int modifiedX = sX-stickWidth - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
+        int modifiedX = sX-stickWidth - (self.frame.size.width*[self.pageVO getIndexOfPage]);
         int modifiedY = sY-stickHeight/2;
         CGRect sRect = CGRectMake(modifiedX+3, modifiedY, stickWidth, stickHeight);
         startStick.frame = sRect;
@@ -764,7 +762,7 @@
     stickHeight = eH;
 //    if(!endStick)
 //    {
-//        int modifiedX = eX - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
+//        int modifiedX = eX - (self.frame.size.width*[self.pageVO getIndexOfPage]);
 //        int modifiedY = eY-stickHeight/2;
 //        CGRect eRect = CGRectMake(modifiedX-3, modifiedY, stickWidth, stickHeight);
 //        endStick = [[EndStickView alloc] initWithFrame:eRect];
@@ -774,7 +772,7 @@
 //    else
     {
         endStick.hidden = NO;
-        int modifiedX = eX - (self.frame.size.width*[self.webViewDAO getIndexOfPage]);
+        int modifiedX = eX - (self.frame.size.width*[self.pageVO getIndexOfPage]);
         int modifiedY = eY-stickHeight/2;
         CGRect eRect = CGRectMake(modifiedX-3, modifiedY, stickWidth, stickHeight);
         endStick.frame = eRect;
@@ -874,7 +872,7 @@
 {
     if(byUser)
     {
-        //[self.webViewDAO setBookmarked:madeBookmark];
+        //[self.pageVO setBookmarked:madeBookmark];
         if(madeBookmark)
         {
             //add bookmark vo to bookmark coll in chapter vo and save to coredata
@@ -885,14 +883,14 @@
             //un bookmarked this page
             //iterate all bookmarks in this chaptervo and remove those bookmarks which falls in between first word and last word id of this page
             BOOL anyRecordFailedToDelete = NO;
-            if(self.webViewDAO.chapterVO.bookmarksColl)
+            if(self.pageVO.chapterVO.bookmarksColl)
             {
-                NSMutableArray *bookmarks = self.webViewDAO.chapterVO.bookmarksColl;
+                NSMutableArray *bookmarks = self.pageVO.chapterVO.bookmarksColl;
                 NSMutableArray *discardedItems = [NSMutableArray array];
                 for(BookmarkVO *bVO in bookmarks)
                 {
-                    if(bVO->bookmarkedWordID >= [self.webViewDAO getFirstWordID] &&
-                       bVO->bookmarkedWordID <= [self.webViewDAO getLastWordID])
+                    if(bVO->bookmarkedWordID >= [self.pageVO getFirstWordID] &&
+                       bVO->bookmarkedWordID <= [self.pageVO getLastWordID])
                     {
                         
                         if([self deleteBookmarkFromDB:bVO])
@@ -939,25 +937,25 @@
     NSEntityDescription *entitiyDesc = [NSEntityDescription entityForName:@"Bookmarks" inManagedObjectContext:context];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:entitiyDesc];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chapter_index = %d" ,[self.webViewDAO getIndexOfChapter]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chapter_index = %d" ,[self.pageVO getIndexOfChapter]];
     [request setPredicate:predicate];
     NSError *err ;
     NSArray *records = [context executeFetchRequest:request error:&err];
     
     if(!err)
     {
-        self.webViewDAO.chapterVO.bookmarksColl = nil;
-        self.webViewDAO.chapterVO.bookmarksColl = [[NSMutableArray alloc] init];
+        self.pageVO.chapterVO.bookmarksColl = nil;
+        self.pageVO.chapterVO.bookmarksColl = [[NSMutableArray alloc] init];
         for (NSManagedObject *mObj in records)
         {
             BookmarkVO *bVO = [[BookmarkVO alloc] init];
-            bVO->indexOfChapter = [self.webViewDAO getIndexOfChapter];
+            bVO->indexOfChapter = [self.pageVO getIndexOfChapter];
             bVO->bookmarkedWordID = [(NSString *)[mObj valueForKey:@"word_id"] integerValue];
             [bVO setBookmarkID:[[[mObj objectID] URIRepresentation] absoluteString]];
             [bVO setBookmarkText:[mObj valueForKey:@"chapter_index"]];
-            [self.webViewDAO.chapterVO.bookmarksColl addObject:bVO];
-            if(bVO->bookmarkedWordID>=[self.webViewDAO getFirstWordID] &&
-               bVO->bookmarkedWordID<=[self.webViewDAO getLastWordID])
+            [self.pageVO.chapterVO.bookmarksColl addObject:bVO];
+            if(bVO->bookmarkedWordID>=[self.pageVO getFirstWordID] &&
+               bVO->bookmarkedWordID<=[self.pageVO getLastWordID])
             {
                 [self.myDelegate changeBookMarkStatus:YES byUser:NO];
             }
@@ -969,8 +967,8 @@
 - (void) bookmarkThisPage:(NSString *) text
 {
     BookmarkVO *bVO = [[BookmarkVO alloc] init];
-    bVO->indexOfChapter = [self.webViewDAO getIndexOfChapter];
-    bVO->bookmarkedWordID = [self.webViewDAO getFirstWordID];
+    bVO->indexOfChapter = [self.pageVO getIndexOfChapter];
+    bVO->bookmarkedWordID = [self.pageVO getFirstWordID];
     [bVO setBookmarkText:text];
     NSManagedObjectContext *context = [self managedObjectContext];
     NSManagedObject *mObj = [NSEntityDescription insertNewObjectForEntityForName:@"Bookmarks" inManagedObjectContext:context];
@@ -982,23 +980,13 @@
     if([context save:&err])
     {
         [bVO setBookmarkID: [[[mObj objectID] URIRepresentation] absoluteString]];
-        [self.webViewDAO.chapterVO.bookmarksColl addObject:bVO];
+        [self.pageVO.chapterVO.bookmarksColl addObject:bVO];
     }
     else
     {
         //failed to bookmark this page
         [self.myDelegate changeBookMarkStatus:NO byUser:NO];
     }
-}
-
-- (void) destroy
-{
-    self.webViewDAO = nil;  
-    self.myDelegate = nil;
-    self.delegate = nil;
-    self.startStick = nil;
-    self.endStick = nil;
-    self.currHighlightVO = nil;
 }
 
 - (void)dealloc

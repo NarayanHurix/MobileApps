@@ -39,7 +39,7 @@ import com.hurix.epubRnD.Constants.GlobalConstants;
 import com.hurix.epubRnD.Settings.GlobalSettings;
 import com.hurix.epubRnD.VOs.BookmarkVO;
 import com.hurix.epubRnD.VOs.HighlightVO;
-import com.hurix.epubRnD.VOs.WebViewDAO;
+import com.hurix.epubRnD.VOs.PageVO;
 import com.hurix.epubRnD.Views.BookmarkView.BookmarkViewListener;
 import com.hurix.epubRnD.Views.StickyNoteIconView.StickyNoteIconViewListener;
 import com.hurix.epubRnD.widgets.QuickAction;
@@ -49,7 +49,7 @@ import com.hurix.epubRnD.widgets.QuickAction.OnDismissListener;
 public class MyWebView extends WebView implements OnDismissListener,OnClickListener,StickyNoteIconViewListener,BookmarkViewListener
 {
 	private boolean isDestroyed;
-	private WebViewDAO _data;
+	private PageVO _data;
 	private boolean isURLLoaded = false;
 	private MyWebViewLoadListener _mMyWebViewLoadListener;
 	
@@ -70,7 +70,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 	GestureDetector gestureDetector = new GestureDetector(new MyGestureDetector());
 	private StartStickView startStick;
 	private EndStickView endStick;
-	private int firstWordID, lastWordID;
+	
 	private HighlightVO _currHighlightVO;
 	private BookmarkView _bookmarkView;
 	private boolean shouldOpenNoteEditor;
@@ -112,11 +112,11 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 		return super.computeHorizontalScrollRange();
 	}
 
-	public WebViewDAO getData() 
+	public PageVO getData() 
 	{
 		return _data;
 	}
-	public void setData(WebViewDAO _data) 
+	public void setData(PageVO _data) 
 	{
 		this._data = _data;
 	}
@@ -317,11 +317,11 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 							calculateNoOfPages();
 							if(getData().getIndexOfPage()==-2)
 							{
-								getData().setIndexOfPage(getData().getPageCount()-1);
+								getData().setIndexOfPage(getData().getChapterVO().getPageCount()-1);
 							}
-							if(getData().getIndexOfPage()>=getData().getPageCount())
+							if(getData().getIndexOfPage()>=getData().getChapterVO().getPageCount())
 							{
-								getData().setIndexOfPage(getData().getPageCount());
+								getData().setIndexOfPage(getData().getChapterVO().getPageCount());
 								_mMyWebViewLoadListener.onPageOutOfRange();
 							}
 							else
@@ -732,7 +732,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 			if(getMeasuredWidth() != 0)
 			{
 				int newPageCount = computeHorizontalScrollRange()/getMeasuredWidth();
-				getData().setPageCount(newPageCount);
+				getData().getChapterVO().setPageCount(newPageCount);
 				//Log.d("here","total pages in Spine : "+newPageCount+" curr page : "+(getData().getIndexOfPage()+1));
 			}
 		}
@@ -923,7 +923,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 		_currHighlightVO.setChapterPath(_data.getChapterVO().getChapterURL());
 		_currHighlightVO.setStartWordID(sID);
 		_currHighlightVO.setEndWordID(eID);
-		_currHighlightVO.setNumOfPagesInChapter(_data.getPageCount());
+		_currHighlightVO.setNumOfPagesInChapter(_data.getChapterVO().getPageCount());
 		
 	    if(startStick == null)
 	    {
@@ -974,7 +974,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 
 	private void addNoteIconToPage(int sID, float sX, float sY, float sW, float sH, int eID, float eX, float eY, float eW, float eH, String arg11) 
 	{
-		if(sID>=firstWordID && sID<=lastWordID)
+		if(sID>=getData().getFirstWordID() && sID<=getData().getLastWordID())
 		{
 			HighlightVO	hVO = new HighlightVO();
 			
@@ -982,7 +982,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 			hVO.setChapterPath(_data.getChapterVO().getChapterURL());
 			hVO.setStartWordID(sID);
 			hVO.setEndWordID(eID);
-			hVO.setNumOfPagesInChapter(_data.getPageCount());
+			hVO.setNumOfPagesInChapter(_data.getChapterVO().getPageCount());
 			hVO.setSelectedText(arg11);
 			
 			StickyNoteIconView icon= new StickyNoteIconView(getContext(),this);
@@ -1097,8 +1097,8 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 	
 	private void didFindFirstAndLastWordsOfPage(int firstWordID,int lastWordID)
 	{
-		this.firstWordID = firstWordID;
-		this.lastWordID = lastWordID;
+		getData().setFirstWordID(firstWordID);
+		getData().setLastWordID(lastWordID);
 		if(firstWordID == -1)
 		{
 			getBookmarkView().setVisibility(View.GONE);
@@ -1163,13 +1163,14 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 						getData().getChapterVO().getBookmarksColl().add(vo);
 						if(vo.getIndexOfChapter()== getData().getIndexOfChapter())
 			            {
-							if(vo.getWordID()>=firstWordID && vo.getWordID()<=lastWordID)
+							if(vo.getWordID()>=getData().getFirstWordID() && vo.getWordID()<=getData().getLastWordID())
 							{
+								//bookmark belongs to current page
 								
 							}
 							else
 							{
-								//same chapter but belongs to current page so keep them as it is
+								//same chapter but not belongs to current page so keep them as it is
 								newAllBookmarksArray.put(bObj);
 								getData().getChapterVO().getBookmarksColl().add(vo);
 							}
@@ -1179,12 +1180,12 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 							//not belongs to same chapter
 							newAllBookmarksArray.put(bObj);
 						}
-						SharedPreferences.Editor editor = pref.edit();
-						editor.putString("Bookmarks", allBookmarksArray.toString());
-						if(editor.commit())
-						{
-							
-						}
+					}
+					SharedPreferences.Editor editor = pref.edit();
+					editor.putString("Bookmarks", newAllBookmarksArray.toString());
+					if(editor.commit())
+					{
+						
 					}
 					
 				} catch (JSONException e) {
@@ -1203,7 +1204,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 			BookmarkVO vo = new BookmarkVO();
 			vo.setIndexOfChapter(getData().getIndexOfChapter());
 			vo.setText(refText);
-			vo.setWordID(firstWordID);
+			vo.setWordID(getData().getFirstWordID());
 			
 			JSONArray allBookmarksArray = new JSONArray(jsonArrStr);
 			
@@ -1250,7 +1251,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 				if(getData().getIndexOfChapter()==vo.getIndexOfChapter())
 	            {
 					getData().getChapterVO().getBookmarksColl().add(vo);
-					if(vo.getWordID() >= firstWordID && vo.getWordID() <= lastWordID)
+					if(vo.getWordID() >= getData().getFirstWordID() && vo.getWordID() <= getData().getLastWordID())
 					{
 						getBookmarkView().changeBookMarkStatus(true,false);
 					}

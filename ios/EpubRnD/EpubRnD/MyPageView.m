@@ -10,6 +10,8 @@
 #import "MyViewPager.h"
 #import "MainViewController.h"
 
+@class StickyNoteView;
+
 @implementation MyPageView
 {
     UIBezierPath *path;
@@ -30,7 +32,7 @@
     return self;
 }
 
-- (void) loadViewWithData:(WebViewDAO *) data
+- (void) loadViewWithData:(PageVO *) data
 {
     CGRect parentFrame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     myWebView = [[MyWebView alloc] initWithFrame:parentFrame];
@@ -69,6 +71,7 @@
 - (void)myWebViewBeganLoading
 {
     myWebView.hidden = YES;
+    [self cleanPageMarkups];
     [activityIndicator startAnimating];
 }
 
@@ -161,26 +164,20 @@
     [self.bookmarkView setHidden:disable];
 }
 
-- (void) destroy
-{
-    [self.myWebView destroy];
-    [self.myWebView removeFromSuperview];
-    self.myWebView = nil;
-    
-    [self.activityIndicator removeFromSuperview];
-    self.activityIndicator = nil;
-    
-    self.bookmarkView.myDelegate = nil;
-    [self.bookmarkView removeFromSuperview];
-    self.bookmarkView= nil;
-    
-    [self.touchHelperView removeFromSuperview];
-    self.touchHelperView=nil;
-}
-
 - (void)dealloc
 {
     NSLog(@"my page view released");
+}
+
+- (void) cleanPageMarkups
+{
+    for (UIView *view in self.subviews)
+    {
+        if(view.class == StickyNoteView.class)
+        {
+            [view removeFromSuperview];
+        }
+    }
 }
 
 @end

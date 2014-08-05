@@ -44,7 +44,7 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
 //        [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
 //        [self addGestureRecognizer:swipeRight];
 //        self.userInteractionEnabled = YES;
-
+        
         UILongPressGestureRecognizer *longPressGest= [[UILongPressGestureRecognizer alloc ] initWithTarget:self action:@selector(onLongPress:)];
         [self addGestureRecognizer:longPressGest];
     }
@@ -70,6 +70,7 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
     pendingPageAnimCompleted = YES;
     
     [self checkAdjacentPagesLoaded];
+    [_delegate didPageChange: currenPageView];
 }
 
 //- (void) onSwipeLeft:(UISwipeGestureRecognizer *)gesture
@@ -115,7 +116,7 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
         {
             float scale = [currenPageView.myWebView getScaleFactorOfPageFit];
             int pageX = touchLocation.x / scale;
-            pageX = pageX + (currenPageView.frame.size.width*[currenPageView.myWebView.webViewDAO getIndexOfPage]);
+            pageX = pageX + (currenPageView.frame.size.width*[currenPageView.myWebView.pageVO getIndexOfPage]);
             int pageY = touchLocation.y ;
             NSString *jsFunc = [NSString stringWithFormat:@"triggerHighlight(%d,%d)",pageX,pageY];
             [currenPageView.myWebView stringByEvaluatingJavaScriptFromString:jsFunc];
@@ -407,7 +408,6 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
 
 - (void) destroyPageView:(MyPageView *) pageView
 {
-    [pageView destroy];
     [pageView removeFromSuperview];
     
     pageView = nil;

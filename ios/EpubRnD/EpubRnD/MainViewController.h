@@ -32,8 +32,8 @@
 - (IBAction)didSliderValueChange:(UISlider *)sender;
 @property (weak, nonatomic) IBOutlet UISlider *pageNavSlider;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *bookLoadActInd;
-- (void) didPageChange:(WebViewDAO *) dao;
-@property (nonatomic,strong) WebViewDAO *currentPageData;
+- (void) didPageChange:(PageVO *) dao;
+@property (nonatomic,strong) PageVO *currentPageData;
 - (void) toggleHighlightSwitch;
 
 

@@ -1,11 +1,12 @@
 package com.hurix.epubRnD.VOs;
 
-public class WebViewDAO 
+public class PageVO 
 {
 	private ChapterVO _chapterVO;
 	private int indexOfPage;
 	private int indexOfChapter;
-	private int pageCount;
+	private int firstWordID;
+	private int lastWordID;
 	
 	public ChapterVO getChapterVO() {
 		return _chapterVO;
@@ -31,12 +32,20 @@ public class WebViewDAO
 		this.indexOfChapter = indexOfChapter;
 	}
 
-	public int getPageCount() {
-		return pageCount;
+	public int getFirstWordID() {
+		return firstWordID;
 	}
 
-	public void setPageCount(int pageCount) {
-		this.pageCount = pageCount;
+	public void setFirstWordID(int firstWordID) {
+		this.firstWordID = firstWordID;
+	}
+
+	public int getLastWordID() {
+		return lastWordID;
+	}
+
+	public void setLastWordID(int lastWordID) {
+		this.lastWordID = lastWordID;
 	}
 
 }

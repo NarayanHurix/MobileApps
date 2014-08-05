@@ -1,5 +1,5 @@
 //
-//  WebViewDAO.h
+//  PageVO.h
 //  EpubRnD
 //
 //  Created by UdaySravan K on 10/06/14.
@@ -10,14 +10,12 @@
 #import "ChapterVO.h"
 #import "BookmarkVO.h"
 
-@interface WebViewDAO : NSObject
+@interface PageVO : NSObject <NSCoding>
 {
     NSInteger mIndexOfPage;
     NSInteger mIndexOfChapter;
-    NSInteger mPageCount;
     NSInteger firstWordID;
     NSInteger lastWordID;
-//    BOOL isBookmarked;
 }
 
 @property (nonatomic,weak) ChapterVO *chapterVO;
@@ -26,17 +24,9 @@
 - (NSInteger) getIndexOfPage;
 - (void) setIndexOfChapter:(NSInteger) indexOfChapter;
 - (NSInteger) getIndexOfChapter;
-- (void) setPageCount:(NSInteger) pageCount;
-- (NSInteger) getPageCount;
 - (void) setFirstWordID:(NSInteger) firstWordIDofPage;
 - (NSInteger) getFirstWordID;
 - (void) setLastWordID:(NSInteger) lastWordIDofPage;
 - (NSInteger) getLastWordID;
-//- (void) setBookmarked:(BOOL) status;
-//- (BOOL) isBookmarked;
-
-@property (nonatomic,weak) BookmarkVO *bookmarkVO;
-
-
 
 @end

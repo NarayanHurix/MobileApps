@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WebViewDAO.h"
+#import "PageVO.h"
 #import "StartStickView.h"
 #import "EndStickView.h"
 #import "HighlightVO.h"
@@ -29,18 +29,18 @@
 
 @property (nonatomic,weak) id<MyWebViewDelegate> myDelegate;
 
-@property (nonatomic,retain ) WebViewDAO *webViewDAO;
+@property (nonatomic,retain ) PageVO *pageVO;
 @property (nonatomic,retain ) StartStickView *startStick ;
 @property (nonatomic,retain ) EndStickView *endStick;
 
 @property (nonatomic,strong) HighlightVO *currHighlightVO;
 
-- (void) loadViewWithData:(WebViewDAO *) data;
+- (void) loadViewWithData:(PageVO *) data;
 - (void) updateFontSize;
 - (void) didHighlightButtonTap;
 - (void) didTouchOnHighlightStick :(BOOL) isStartStick : (BOOL) isEndStick;
 - (void) saveHighlight:(BOOL) hasNote;
 - (void) closePopupAndClearHighlight;
 - (float) getScaleFactorOfPageFit;
-- (void) destroy;
+
 @end

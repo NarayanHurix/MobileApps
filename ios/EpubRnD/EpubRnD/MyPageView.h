@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MyWebView.h"
-#import "WebViewDAO.h"
+#import "PageVO.h"
 #import "BookmarkView.h"
 #import "GlobalConstants.h"
 
@@ -19,11 +19,8 @@
 @property (retain,nonatomic) UIActivityIndicatorView *activityIndicator;
 @property (retain,nonatomic) UIView *touchHelperView ;
 
-- (void) loadViewWithData:(WebViewDAO *) data;
+- (void) loadViewWithData:(PageVO *) data;
 
 @property (retain,nonatomic) BookmarkView *bookmarkView;
-
-- (void) destroy;
-
 
 @end

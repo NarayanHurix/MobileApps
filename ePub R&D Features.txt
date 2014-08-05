@@ -30,18 +30,20 @@ Completed R&D Work:
 
 8. Text Copy
 
+9. Bookmarks
+
+10.Last visited page
+
 =====================================================================================================
 
 On Going R&D Work:
 
 1. Search and highlighting the searched word (Book level search)
-2. Bookmarks
-3. Orientation handling (single page,two page mode)
-4. Player Theme (Day/Night mode- background colors and font colors)
-5. Book information Data base
-6. Last visited page
-7. ToC
-8. User Generated Data ToC (list of bookmarks and notes)
+2. Orientation handling (single page,two page mode)
+3. Player Theme (Day/Night mode- background colors and font colors)
+4. Book information Data base
+5. ToC
+6. User Generated Data ToC (list of bookmarks and notes)
 
 =====================================================================================================
 

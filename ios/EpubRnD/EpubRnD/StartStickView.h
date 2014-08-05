@@ -11,6 +11,6 @@
 
 @interface StartStickView : UIView
 
-@property (nonatomic,retain) MyWebView *myWebView;
+@property (nonatomic,weak) MyWebView *myWebView;
 
 @end

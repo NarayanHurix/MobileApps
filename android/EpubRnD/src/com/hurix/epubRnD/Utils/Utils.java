@@ -3,12 +3,12 @@ package com.hurix.epubRnD.Utils;
 import java.util.ArrayList;
 
 import com.hurix.epubRnD.VOs.ChapterVO;
-import com.hurix.epubRnD.VOs.WebViewDAO;
+import com.hurix.epubRnD.VOs.PageVO;
 
 public class Utils 
 {
 	
-	public static WebViewDAO getPageWebViewDAO(int pageNo,ArrayList<ChapterVO> chaptersColl)
+	public static PageVO getPageVO(int pageNo,ArrayList<ChapterVO> chaptersColl)
 	{
 		int arrLength = chaptersColl.size();
 	    int tempPageCount = 0;
@@ -18,7 +18,7 @@ public class Utils
 	        tempPageCount+= tempCVO.getPageCount();
 	        if(pageNo<=tempPageCount)
 	        {
-	            WebViewDAO dao = new WebViewDAO();
+	            PageVO dao = new PageVO();
 	            dao.setIndexOfChapter(i);
 	            dao.setIndexOfPage(pageNo - (tempPageCount-tempCVO.getPageCount())-1);
 	            return dao;
@@ -27,7 +27,7 @@ public class Utils
 	    return null;
 	}
 	
-	public static int getPageNo(WebViewDAO dao, ArrayList<ChapterVO> chaptersColl)
+	public static int getPageNo(PageVO dao, ArrayList<ChapterVO> chaptersColl)
 	{
 		int arrLength = chaptersColl.size();
 	    int tempPageCount = 0;

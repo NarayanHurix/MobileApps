@@ -169,7 +169,7 @@ public class HelperViewForPageCount extends WebView {
 			}
 		}
 	}
-	
+	private int delayBeforeFirstChapterPageCount = 300;
 	private class MyWebChromeClient extends WebChromeClient
 	{
 		@Override
@@ -191,6 +191,10 @@ public class HelperViewForPageCount extends WebView {
 						{
 							if(getMeasuredWidth() != 0)
 							{
+								if(totalPageCountInBook == 0)
+								{
+									delayBeforeFirstChapterPageCount = 100;
+								}
 								int newPageCount = computeHorizontalScrollRange()/getMeasuredWidth();
 								totalPageCountInBook = totalPageCountInBook + newPageCount;
 								_currChapterVO.setPageCount(newPageCount);
@@ -198,7 +202,7 @@ public class HelperViewForPageCount extends WebView {
 							}
 						}
 					}
-				},300);
+				},delayBeforeFirstChapterPageCount);
 			}
 		}
 	}
