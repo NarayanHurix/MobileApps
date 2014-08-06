@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "MyPageView.h"
 
+@class MainViewController;
+
 @protocol MyViewPagerDelegate <NSObject>
 
 @required
@@ -20,12 +22,13 @@
 
 @interface MyViewPager : UIView
 
-@property (nonatomic,retain) UIViewController *mainController;
+@property (nonatomic,retain) MainViewController *mainController;
 @property (nonatomic,weak) id<MyViewPagerDelegate> delegate;
 
 
 - (void) initWithPageView:(MyPageView *) view;
 - (void) onPageOutOfRange;
 - (void) refreshAdjacentPages;
+- (void) checkAdjacentPagesLoaded;
 - (MyPageView *) getCurrentPageView;
 @end

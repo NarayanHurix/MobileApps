@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.hurix.epubRnD.widgets.QuickAction"/>
-<fullyQualifiedTypeName name="android.widget.Button"/>
-<fullyQualifiedTypeName name="com.hurix.epubRnD.R.layout"/>
-<fullyQualifiedTypeName name="com.hurix.epubRnD.widgets.QuickAction.OnDismissListener"/>
 <fullyQualifiedTypeName name="java.lang.Runnable"/>
 <fullyQualifiedTypeName name="android.support.v4.view.ViewPager.PageTransformer"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Views.HelperViewForPageCount.PageCountListener"/>
@@ -19,14 +15,12 @@
 <fullyQualifiedTypeName name="com.hurix.epubRnD.VOs.WebViewDAO"/>
 <fullyQualifiedTypeName name="android.view.View.OnLongClickListener"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.Views.MyWebView"/>
-<fullyQualifiedTypeName name="com.hurix.epubRnD.Settings.GlobalSettings"/>
 <fullyQualifiedTypeName name="android.webkit.WebView"/>
 <fullyQualifiedTypeName name="android.webkit.WebViewClient"/>
 <fullyQualifiedTypeName name="android.webkit.WebSettings.ZoomDensity"/>
 <fullyQualifiedTypeName name="android.text.ClipboardManager"/>
 <fullyQualifiedTypeName name="android.content.ClipboardManager"/>
 <fullyQualifiedTypeName name="android.content.ClipData"/>
-<fullyQualifiedTypeName name="com.hurix.epubRnD.Constants.GlobalConstants"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.VOs.HighlightVO"/>
 <fullyQualifiedTypeName name="android.view.GestureDetector"/>
 <fullyQualifiedTypeName name="android.view.GestureDetector.OnDoubleTapListener"/>
@@ -37,7 +31,6 @@
 <fullyQualifiedTypeName name="com.hurix.epubRnD.R.id"/>
 <fullyQualifiedTypeName name="android.view.ViewGroup"/>
 <fullyQualifiedTypeName name="android.graphics.Rect"/>
-<fullyQualifiedTypeName name="com.hurix.epubRnD.Views.StickyNoteIconView"/>
 <fullyQualifiedTypeName name="android.graphics.Color"/>
 <fullyQualifiedTypeName name="android.R"/>
 <fullyQualifiedTypeName name="android.R.style"/>
@@ -45,7 +38,6 @@
 <fullyQualifiedTypeName name="android.support.v4.app.ActionBarDrawerToggle"/>
 <fullyQualifiedTypeName name="com.example.pc.R.id"/>
 <fullyQualifiedTypeName name="android.util.Log"/>
-<fullyQualifiedTypeName name="android.content.Context"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.R"/>
 <fullyQualifiedTypeName name="com.hurix.epubRnD.R.drawable"/>
 <fullyQualifiedTypeName name="android.widget.RelativeLayout.LayoutParams"/>
@@ -60,4 +52,12 @@
 <fullyQualifiedTypeName name="org.json.JSONObject"/>
 <fullyQualifiedTypeName name="java.lang.Exception"/>
 <fullyQualifiedTypeName name="java.lang.NullPointerException"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.Views.StickyNoteIconView"/>
+<fullyQualifiedTypeName name="android.content.SharedPreferences"/>
+<fullyQualifiedTypeName name="android.content.Context"/>
+<fullyQualifiedTypeName name="android.content.SharedPreferences.Editor"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.Utils.Constants"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.Constants.GlobalConstants"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.Settings.GlobalSettings"/>
+<fullyQualifiedTypeName name="com.hurix.epubRnD.VOs.PageVO"/>
 </qualifiedTypeNameHistroy>

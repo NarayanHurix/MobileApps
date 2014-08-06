@@ -9,6 +9,7 @@
 #import "MyViewPager.h"
 #import "GlobalConstants.h"
 #import "GlobalSettings.h"
+#import "MainViewController.h"
 
 const int MIN_MOVE_TO_CHANGE_PAGE = 120;
 
@@ -47,6 +48,11 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
         
         UILongPressGestureRecognizer *longPressGest= [[UILongPressGestureRecognizer alloc ] initWithTarget:self action:@selector(onLongPress:)];
         [self addGestureRecognizer:longPressGest];
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSingleTap:)];
+        tapGesture.numberOfTapsRequired = 1;
+        tapGesture.numberOfTouchesRequired = 1;
+        [self addGestureRecognizer:tapGesture];
     }
     return self;
 }
@@ -411,6 +417,11 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
     [pageView removeFromSuperview];
     
     pageView = nil;
+}
+
+- (void) onSingleTap:(UIGestureRecognizer *) gestureRecognizer
+{
+    [self.mainController toggleDataBankLayout:nil];
 }
 
 @end

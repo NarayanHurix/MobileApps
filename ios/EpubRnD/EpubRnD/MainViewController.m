@@ -34,6 +34,7 @@
     [super viewDidLoad];
      _myViewPager.delegate = self;
     _myViewPager.mainController = self;
+    self.contentsView.hidden = CONTENTS_VIEW_HIDDEN;
     self.helperForPageCount.frame = _myViewPager.frame;
     self.highlightBtn.hidden = YES;
     [self.pageNavSlider addTarget:self action:@selector(didSlidingFinish:) forControlEvents:UIControlEventTouchUpInside];
@@ -138,7 +139,7 @@
             
             PageVO *pageVO = [[PageVO alloc] init];
             pageVO.chapterVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:indexOfChapter];
-            [pageVO setIndexOfPage:-2];
+            [pageVO setIndexOfPage:PAGE_INDEX_GREATER_THAN_PAGE_COUNT];
             [pageVO setIndexOfChapter:indexOfChapter];
             
             [pageView loadViewWithData:pageVO];
@@ -240,6 +241,12 @@
     self.btnFontIncrease.userInteractionEnabled = !HIGHLIGHT_TOOL_SWITCH;
 }
 
+- (IBAction)toggleDataBankLayout:(id)sender
+{
+    CONTENTS_VIEW_HIDDEN = !CONTENTS_VIEW_HIDDEN;
+    self.contentsView.hidden = CONTENTS_VIEW_HIDDEN;
+}
+
 - (void) didOpenNoteEditor
 {
     MyPageView *myPageView = (MyPageView *)[_myViewPager getCurrentPageView];
@@ -327,7 +334,7 @@
         currentPageNo = pageNo;
         
         [self.pageNoLable setText:[NSString stringWithFormat:@"%d / %d",pageNo, [BookModelFactory sharedInstance].pageCountInBook]];
-        PageVO *dao = [self getPageVO:pageNo];
+        PageVO *dao = [Utils getPageVO:pageNo];
         if(dao)
         {
             CGRect rect = CGRectMake(0, 0, _myViewPager.frame.size.width, _myViewPager.frame.size.height);
@@ -373,7 +380,7 @@
 //    [self.bookLoadingIndicatorView setHidden:YES];
     [self.bookLoadingIndicatorView removeFromSuperview];
     [self.pageNavSlider setMaximumValue:count];
-    int pageNo =[self getPageNoFromPageVO: currentPageVO];
+    int pageNo =[Utils getPageNoFromPageVO: currentPageVO];
     if(pageNo != -1)
     {
         [self updatePageNavSliderValue:pageNo];
@@ -391,7 +398,8 @@
 {
     currentPageVO = nil;
     currentPageVO =currentPageView.myWebView.pageVO;
-    int pageNo =[self getPageNoFromPageVO: currentPageVO];
+    
+    int pageNo =[Utils getPageNoFromPageVO: currentPageVO];
     if(pageNo != -1)
     {
         [self updatePageNavSliderValue:pageNo];
@@ -434,42 +442,6 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     PageVO *decodedObject = [NSKeyedUnarchiver unarchiveObjectWithData:[userDefaults objectForKey:@"LastVisitedPageInfo"]];
     return decodedObject;
-}
-
-- (PageVO *) getPageVO:(int) pageNo
-{
-    int arrLength = [[BookModelFactory sharedInstance] chaptersColl].count;
-    int tempPageCount = 0;
-    for (int i=0; i<arrLength; i++)
-    {
-        ChapterVO *tempCVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:i];
-        tempPageCount+= tempCVO.pageCountInChapter;
-        if(pageNo<=tempPageCount)
-        {
-            PageVO *vo = [[PageVO alloc] init];
-            [vo setIndexOfChapter:i];
-            [vo setIndexOfPage:(pageNo - (tempPageCount-tempCVO.pageCountInChapter))-1];
-            return vo;
-        }
-    }
-    
-    return Nil;
-}
-
-- (int) getPageNoFromPageVO:(PageVO *) vo
-{
-    int arrLength = [[BookModelFactory sharedInstance] chaptersColl].count;
-    int tempPageCount = 0;
-    for (int i=0; i<arrLength; i++)
-    {
-        ChapterVO *tempCVO = [[[BookModelFactory sharedInstance] chaptersColl] objectAtIndex:i];
-        tempPageCount+= tempCVO.pageCountInChapter;
-        if(i == [vo getIndexOfChapter])
-        {
-            return tempPageCount-tempCVO.pageCountInChapter+([vo getIndexOfPage]+1);
-        }
-    }
-    return -1;
 }
 
 @end

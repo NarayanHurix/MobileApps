@@ -39,11 +39,12 @@ Completed R&D Work:
 On Going R&D Work:
 
 1. Search and highlighting the searched word (Book level search)
-2. Orientation handling (single page,two page mode)
-3. Player Theme (Day/Night mode- background colors and font colors)
-4. Book information Data base
-5. ToC
-6. User Generated Data ToC (list of bookmarks and notes)
+2. ToC
+3. List of bookmarks,highlights and notes
+4. Orientation handling (single page,two page mode)
+5. Fixed Layout
+6. Content scaling (Ex image dimensions exceeding device dimensions)
+7. Pen annotations
 
 =====================================================================================================
 

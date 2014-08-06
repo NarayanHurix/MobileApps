@@ -24,4 +24,8 @@ extern NSInteger const DEFAULT_BOOKMARK_WIDTH;
 extern NSInteger const DEFAULT_BOOKMARK_HEIGHT;
 
 extern NSString *const CHAPTERS_FOLDER_PATH;
+
+extern NSInteger const PAGE_INDEX_GREATER_THAN_PAGE_COUNT;
+extern NSInteger const GET_PAGE_INDEX_USING_WORD_ID;
+
 @end

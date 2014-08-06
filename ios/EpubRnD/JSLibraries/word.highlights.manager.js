@@ -504,3 +504,14 @@ function bookmarkThisPage()
     var callNatMethod = '{"MethodName":"bookmarkThisPage","MethodArguments":{"arg1":'+formattedText+'}}';
     callNativeMethod('jstoobjc:'+callNatMethod);
 }
+
+function findIndexOfPageUsingWordId(columnWidth , wordID)
+{
+    var indexOfPage = -1;
+    var leftMargin = $('#'+wordID).position().left;
+    var res = Number(leftMargin)/Number(columnWidth);
+    indexOfPage = Math.ceil(res)-1;
+    
+    var callNatMethod = '{"MethodName":"didFindIndexOfPage","MethodArguments":{"arg1":"'+indexOfPage+'"}}';
+    callNativeMethod('jstoobjc:'+callNatMethod);
+}

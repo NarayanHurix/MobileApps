@@ -26,6 +26,10 @@ NSInteger const DEFAULT_STICKYNOTE_HEIGHT = 40;
 NSInteger const DEFAULT_BOOKMARK_WIDTH = 30;
 NSInteger const DEFAULT_BOOKMARK_HEIGHT = 60;
 
+NSInteger const PAGE_INDEX_GREATER_THAN_PAGE_COUNT = -2;
+
+NSInteger const GET_PAGE_INDEX_USING_WORD_ID = -3;
+
 NSString *const CHAPTERS_FOLDER_PATH = @"assets/cole-voyage-of-life-20120320/EPUB/xhtml";
 //NSString *const CHAPTERS_FOLDER_PATH = @"assets/3920131231111/OPS";
 @end

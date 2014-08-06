@@ -47,6 +47,16 @@
     return lastWordID;
 }
 
+- (void) setWordIDToGetIndexOfPage:(NSInteger) wordID
+{
+    wordIDToGetIndexOfPage = wordID;
+}
+
+- (NSInteger) getWordIDToGetIndexOfPage
+{
+    return wordIDToGetIndexOfPage;
+}
+
 //- (void) setBookmarked:(BOOL) status
 //{
 //    isBookmarked = status;

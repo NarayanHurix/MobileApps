@@ -9,6 +9,7 @@
 #import "MyWebView.h"
 #import "GlobalSettings.h"
 #import "HighlightPopupViewController.h"
+#import "MyViewPager.h"
 
 @implementation MyWebView
 {
@@ -184,13 +185,17 @@
     else
     {
         
-        if([self.pageVO getIndexOfPage] ==-2)
+        if([self.pageVO getIndexOfPage] ==PAGE_INDEX_GREATER_THAN_PAGE_COUNT)
         {
             //load last page of chapter
             [self.pageVO setIndexOfPage:self.pageVO.chapterVO.pageCountInChapter-1];
         }
-        point = CGPointMake([self.pageVO getIndexOfPage]*webView.frame.size.width, 0);
-        self.scrollView.contentOffset = point;
+        
+        if([self.pageVO getIndexOfPage] !=PAGE_INDEX_GREATER_THAN_PAGE_COUNT)
+        {
+            point = CGPointMake([self.pageVO getIndexOfPage]*webView.frame.size.width, 0);
+            self.scrollView.contentOffset = point;
+        }
     }
     [_myDelegate myWebViewDidLoadFinish];
 }
@@ -370,6 +375,11 @@
     {
         [self didHighlightManagerJSadded];
     }
+    else if([methodName isEqualToString:@"didFindIndexOfPage"])
+    {
+        NSString *arg1 =[methodArgs objectForKey:@"arg1"];
+        [self didFindIndexOfPage:arg1.integerValue];
+    }
     else if([methodName isEqualToString:@"didFindFirstAndLastWordsOfPage"])
     {
         NSString *arg1 =[methodArgs objectForKey:@"arg1"];
@@ -482,6 +492,28 @@
 
 - (void) didHighlightManagerJSadded
 {
+    if([self.pageVO getIndexOfPage] == PAGE_INDEX_GREATER_THAN_PAGE_COUNT)
+    {
+        NSString *callJsMethod = [NSString stringWithFormat:@"findIndexOfPageUsingWordId(%f,%d)",self.frame.size.width, [self.pageVO getWordIDToGetIndexOfPage]];
+        [self stringByEvaluatingJavaScriptFromString:callJsMethod];
+    }
+    else
+    {
+    
+        int indexOfNextPage = -1;
+        if([self.pageVO getIndexOfPage]<self.pageVO.chapterVO.pageCountInChapter-1)
+        {
+            indexOfNextPage = [self.pageVO getIndexOfPage]+1;
+        }
+        NSString *str = [NSString stringWithFormat:@"findFirstAndLastWordsOfPage(%f,%d,%d)",self.frame.size.width,[self.pageVO getIndexOfPage],indexOfNextPage];
+        [self stringByEvaluatingJavaScriptFromString:str];
+    }
+}
+
+- (void) didFindIndexOfPage :(NSInteger) indexOfPage
+{
+    [self.pageVO setIndexOfPage:indexOfPage];
+    [self checkAdjacentPages];
     int indexOfNextPage = -1;
     if([self.pageVO getIndexOfPage]<self.pageVO.chapterVO.pageCountInChapter-1)
     {
@@ -489,6 +521,12 @@
     }
     NSString *str = [NSString stringWithFormat:@"findFirstAndLastWordsOfPage(%f,%d,%d)",self.frame.size.width,[self.pageVO getIndexOfPage],indexOfNextPage];
     [self stringByEvaluatingJavaScriptFromString:str];
+}
+
+- (void) checkAdjacentPages
+{
+    MyViewPager *viewPager = (MyViewPager *)[[self superview] superview];
+    [viewPager checkAdjacentPagesLoaded];
 }
 
 - (void) didFindFirstAndLastWordsOfPage:(int) firstWordIdInCurrPage :(int) lastWordIdInCurrPage

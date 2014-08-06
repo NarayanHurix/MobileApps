@@ -16,6 +16,7 @@
     NSInteger mIndexOfChapter;
     NSInteger firstWordID;
     NSInteger lastWordID;
+    NSInteger wordIDToGetIndexOfPage;
 }
 
 @property (nonatomic,weak) ChapterVO *chapterVO;
@@ -28,5 +29,7 @@
 - (NSInteger) getFirstWordID;
 - (void) setLastWordID:(NSInteger) lastWordIDofPage;
 - (NSInteger) getLastWordID;
+- (void) setWordIDToGetIndexOfPage:(NSInteger) wordID;
+- (NSInteger) getWordIDToGetIndexOfPage;
 
 @end

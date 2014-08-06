@@ -11,6 +11,8 @@
 #import "ChapterVO.h"
 #import "HelperViewForPageCount.h"
 #import "BookModelFactory.h"
+#import "Utils.h"
+#import "ContentsView.h"
 
 @interface MainViewController : UIViewController<MyViewPagerDelegate,ComputePageCountInBookDelgate>
 @property (weak, nonatomic) IBOutlet UILabel *pageNoLable;
@@ -35,6 +37,8 @@
 - (void) didPageChange:(PageVO *) dao;
 @property (nonatomic,strong) PageVO *currentPageData;
 - (void) toggleHighlightSwitch;
+- (IBAction)toggleDataBankLayout:(id)sender;
+@property (weak, nonatomic) IBOutlet ContentsView *contentsView;
 
 
 - (void) didOpenNoteEditor;

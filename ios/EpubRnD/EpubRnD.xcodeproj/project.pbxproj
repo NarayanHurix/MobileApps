@@ -20,6 +20,16 @@
 		5A32C26E198680C6002BC443 /* bookmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A32C26A198680C6002BC443 /* bookmark@2x.png */; };
 		5A32C26F198680C6002BC443 /* bookmarkbutton_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A32C26B198680C6002BC443 /* bookmarkbutton_selected.png */; };
 		5A32C270198680C6002BC443 /* bookmarkbutton_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A32C26C198680C6002BC443 /* bookmarkbutton_selected@2x.png */; };
+		5A3DB60A19922C74007F8B51 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3DB60919922C74007F8B51 /* Utils.m */; };
+		5A3DB60E19925087007F8B51 /* ContentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3DB60D19925087007F8B51 /* ContentsView.m */; };
+		5A3DB612199255C3007F8B51 /* ContentsTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3DB610199255C3007F8B51 /* ContentsTabBarController.m */; };
+		5A3DB613199255C3007F8B51 /* ContentsTabBarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A3DB611199255C3007F8B51 /* ContentsTabBarController.xib */; };
+		5A3DB62619925B38007F8B51 /* BookmarksListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3DB62419925B38007F8B51 /* BookmarksListViewController.m */; };
+		5A3DB62719925B38007F8B51 /* BookmarksListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A3DB62519925B38007F8B51 /* BookmarksListViewController.xib */; };
+		5A3DB62B19925B46007F8B51 /* NotesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3DB62919925B46007F8B51 /* NotesListViewController.m */; };
+		5A3DB62C19925B46007F8B51 /* NotesListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A3DB62A19925B46007F8B51 /* NotesListViewController.xib */; };
+		5A3DB63019925B53007F8B51 /* HighlightsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3DB62E19925B53007F8B51 /* HighlightsListViewController.m */; };
+		5A3DB63119925B53007F8B51 /* HighlightsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A3DB62F19925B53007F8B51 /* HighlightsListViewController.xib */; };
 		5A3E309919488FC4001080F6 /* GlobalSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A3E309819488FC4001080F6 /* GlobalSettings.m */; };
 		5A45B65F19472E52003FA663 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A45B65E19472E52003FA663 /* Foundation.framework */; };
 		5A45B66119472E52003FA663 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A45B66019472E52003FA663 /* CoreGraphics.framework */; };
@@ -90,6 +100,22 @@
 		5A32C26A198680C6002BC443 /* bookmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookmark@2x.png"; sourceTree = "<group>"; };
 		5A32C26B198680C6002BC443 /* bookmarkbutton_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookmarkbutton_selected.png; sourceTree = "<group>"; };
 		5A32C26C198680C6002BC443 /* bookmarkbutton_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookmarkbutton_selected@2x.png"; sourceTree = "<group>"; };
+		5A3DB60819922C74007F8B51 /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		5A3DB60919922C74007F8B51 /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		5A3DB60C19925087007F8B51 /* ContentsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentsView.h; sourceTree = "<group>"; };
+		5A3DB60D19925087007F8B51 /* ContentsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentsView.m; sourceTree = "<group>"; };
+		5A3DB60F199255C3007F8B51 /* ContentsTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentsTabBarController.h; sourceTree = "<group>"; };
+		5A3DB610199255C3007F8B51 /* ContentsTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentsTabBarController.m; sourceTree = "<group>"; };
+		5A3DB611199255C3007F8B51 /* ContentsTabBarController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContentsTabBarController.xib; sourceTree = "<group>"; };
+		5A3DB62319925B38007F8B51 /* BookmarksListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookmarksListViewController.h; sourceTree = "<group>"; };
+		5A3DB62419925B38007F8B51 /* BookmarksListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookmarksListViewController.m; sourceTree = "<group>"; };
+		5A3DB62519925B38007F8B51 /* BookmarksListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookmarksListViewController.xib; sourceTree = "<group>"; };
+		5A3DB62819925B46007F8B51 /* NotesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesListViewController.h; sourceTree = "<group>"; };
+		5A3DB62919925B46007F8B51 /* NotesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesListViewController.m; sourceTree = "<group>"; };
+		5A3DB62A19925B46007F8B51 /* NotesListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotesListViewController.xib; sourceTree = "<group>"; };
+		5A3DB62D19925B53007F8B51 /* HighlightsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightsListViewController.h; sourceTree = "<group>"; };
+		5A3DB62E19925B53007F8B51 /* HighlightsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighlightsListViewController.m; sourceTree = "<group>"; };
+		5A3DB62F19925B53007F8B51 /* HighlightsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HighlightsListViewController.xib; sourceTree = "<group>"; };
 		5A3E309719488FC4001080F6 /* GlobalSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalSettings.h; sourceTree = "<group>"; };
 		5A3E309819488FC4001080F6 /* GlobalSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalSettings.m; sourceTree = "<group>"; };
 		5A45B65B19472E52003FA663 /* epub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = epub.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -194,6 +220,27 @@
 			name = Constants;
 			sourceTree = "<group>";
 		};
+		5A3DB60B1992505B007F8B51 /* ContentsHouse */ = {
+			isa = PBXGroup;
+			children = (
+				5A3DB60C19925087007F8B51 /* ContentsView.h */,
+				5A3DB60D19925087007F8B51 /* ContentsView.m */,
+				5A3DB60F199255C3007F8B51 /* ContentsTabBarController.h */,
+				5A3DB610199255C3007F8B51 /* ContentsTabBarController.m */,
+				5A3DB611199255C3007F8B51 /* ContentsTabBarController.xib */,
+				5A3DB62319925B38007F8B51 /* BookmarksListViewController.h */,
+				5A3DB62419925B38007F8B51 /* BookmarksListViewController.m */,
+				5A3DB62519925B38007F8B51 /* BookmarksListViewController.xib */,
+				5A3DB62819925B46007F8B51 /* NotesListViewController.h */,
+				5A3DB62919925B46007F8B51 /* NotesListViewController.m */,
+				5A3DB62A19925B46007F8B51 /* NotesListViewController.xib */,
+				5A3DB62D19925B53007F8B51 /* HighlightsListViewController.h */,
+				5A3DB62E19925B53007F8B51 /* HighlightsListViewController.m */,
+				5A3DB62F19925B53007F8B51 /* HighlightsListViewController.xib */,
+			);
+			name = ContentsHouse;
+			sourceTree = "<group>";
+		};
 		5A3E309619488FAC001080F6 /* GlobalSettings */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,6 +253,8 @@
 		5A43E7B1195D8DBE00D41CB0 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				5A3DB60819922C74007F8B51 /* Utils.h */,
+				5A3DB60919922C74007F8B51 /* Utils.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -314,6 +363,7 @@
 		5A45B6AB19473D4E003FA663 /* ViewClasses */ = {
 			isa = PBXGroup;
 			children = (
+				5A3DB60B1992505B007F8B51 /* ContentsHouse */,
 				5AE098441977F70900B5A75D /* StickyNotes */,
 				5A7EF3D4196D613400C8AF45 /* ViewPager */,
 				5A51EBFE1962C1310065A595 /* TextHighlight */,
@@ -503,9 +553,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A3DB62719925B38007F8B51 /* BookmarksListViewController.xib in Resources */,
 				5A0DCF6F1978F83800BE36B2 /* ic_launcher_72.png in Resources */,
 				5A51EC031962C1630065A595 /* HighlightPopupViewController.xib in Resources */,
 				5A32C26E198680C6002BC443 /* bookmark@2x.png in Resources */,
+				5A3DB63119925B53007F8B51 /* HighlightsListViewController.xib in Resources */,
 				5A0DCF701978F83800BE36B2 /* ic_launcher_76.png in Resources */,
 				5AE0984F1977FB3600B5A75D /* StickyNoteViewController.xib in Resources */,
 				5A0DCF731978F83800BE36B2 /* ic_launcher_512.png in Resources */,
@@ -513,12 +565,14 @@
 				5A01669D1951987B00A5FA59 /* JSLibraries in Resources */,
 				5A9DD28719824C6C0056C584 /* MainViewController.xib in Resources */,
 				5A0DCF721978F83800BE36B2 /* ic_launcher_152.png in Resources */,
+				5A3DB613199255C3007F8B51 /* ContentsTabBarController.xib in Resources */,
 				5A45B66B19472E52003FA663 /* InfoPlist.strings in Resources */,
 				5A0DCF711978F83800BE36B2 /* ic_launcher_144.png in Resources */,
 				5AE09852197815EB00B5A75D /* sticky_note.png in Resources */,
 				5A32C270198680C6002BC443 /* bookmarkbutton_selected@2x.png in Resources */,
 				5A32C26D198680C6002BC443 /* bookmark.png in Resources */,
 				5A26000E194840E400F472CE /* AppViewController.xib in Resources */,
+				5A3DB62C19925B46007F8B51 /* NotesListViewController.xib in Resources */,
 				5A32C26F198680C6002BC443 /* bookmarkbutton_selected.png in Resources */,
 				5A45B67619472E52003FA663 /* Images.xcassets in Resources */,
 			);
@@ -541,12 +595,15 @@
 			files = (
 				5AE0984A1977F77A00B5A75D /* HighlightVO.m in Sources */,
 				5A26001219485A9800F472CE /* GlobalConstants.m in Sources */,
+				5A3DB60E19925087007F8B51 /* ContentsView.m in Sources */,
 				5A26000D194840E400F472CE /* AppViewController.m in Sources */,
 				5A9DD28519822B160056C584 /* BookmarkView.m in Sources */,
 				5A45B67119472E52003FA663 /* AppDelegate.m in Sources */,
+				5A3DB62619925B38007F8B51 /* BookmarksListViewController.m in Sources */,
 				5A45B67419472E52003FA663 /* EpubRnD.xcdatamodeld in Sources */,
 				5A45B69A19473A2D003FA663 /* MyViewPager.m in Sources */,
 				5AE0984E1977FB3600B5A75D /* StickyNoteViewController.m in Sources */,
+				5A3DB62B19925B46007F8B51 /* NotesListViewController.m in Sources */,
 				5A3E309919488FC4001080F6 /* GlobalSettings.m in Sources */,
 				5AE098471977F72700B5A75D /* StickyNoteView.m in Sources */,
 				5A45B6A319473B8F003FA663 /* MyPageView.m in Sources */,
@@ -559,7 +616,10 @@
 				5A51EC021962C1630065A595 /* HighlightPopupViewController.m in Sources */,
 				5A45B66D19472E52003FA663 /* main.m in Sources */,
 				5A45B69619472FEC003FA663 /* MainViewController.m in Sources */,
+				5A3DB63019925B53007F8B51 /* HighlightsListViewController.m in Sources */,
+				5A3DB612199255C3007F8B51 /* ContentsTabBarController.m in Sources */,
 				5A7EF3DE196D6F7200C8AF45 /* HelperViewForPageCount.m in Sources */,
+				5A3DB60A19922C74007F8B51 /* Utils.m in Sources */,
 				5A45B6A019473AB0003FA663 /* MyWebView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
