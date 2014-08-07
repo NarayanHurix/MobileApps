@@ -75,8 +75,11 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
     [self addSubview:currenPageView];
     pendingPageAnimCompleted = YES;
     
-    [self checkAdjacentPagesLoaded];
-    [_delegate didPageChange: currenPageView];
+    if([view.myWebView.pageVO getIndexOfPage] != GET_PAGE_INDEX_USING_WORD_ID)
+    {
+        [self checkAdjacentPagesLoaded];
+        [_delegate didPageChange: currenPageView];
+    }
 }
 
 //- (void) onSwipeLeft:(UISwipeGestureRecognizer *)gesture

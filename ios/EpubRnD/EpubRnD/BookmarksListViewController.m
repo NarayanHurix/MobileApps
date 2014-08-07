@@ -13,7 +13,9 @@
 @end
 
 @implementation BookmarksListViewController
-
+{
+    NSMutableArray *bookmarksColl;
+}
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -26,7 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    bookmarksColl = [self getAllBookmarks];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -46,14 +48,14 @@
 {
 #warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 #warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return bookmarksColl.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -63,7 +65,9 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    
+    BookmarkVO *bVO = [bookmarksColl objectAtIndex:indexPath.row];
+    cell.textLabel.text = bVO.bookmarkText;
+    cell.textLabel.textColor = [UIColor whiteColor];
     // Configure the cell...
     
     return cell;
@@ -112,18 +116,66 @@
 #pragma mark - Table view delegate
 
 // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
+ */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here, for example:
     // Create the next view controller.
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-
-    // Pass the selected object to the new view controller.
+    BookmarkVO *bVO = [bookmarksColl objectAtIndex:indexPath.row];
     
-    // Push the view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
+    PageVO *pageVo = [Utils getPageVOUsing:bVO->indexOfChapter andWordID:bVO->bookmarkedWordID];
+    [self.delegateForPageNav navigateToPage:pageVo];
 }
  
- */
+ 
+- (NSMutableArray *) getAllBookmarks
+{
+    NSManagedObjectContext *context = [self managedObjectContext];
+    NSEntityDescription *entitiyDesc = [NSEntityDescription entityForName:@"Bookmarks" inManagedObjectContext:context];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entitiyDesc];
+    
+    NSError *err ;
+    NSArray *records = [context executeFetchRequest:request error:&err];
+    NSMutableArray *bookmarks = nil;
+    if(!err)
+    {
+        bookmarks = [[NSMutableArray alloc] init];
+        for (NSManagedObject *mObj in records)
+        {
+            BookmarkVO *bVO = [[BookmarkVO alloc] init];
+            bVO->indexOfChapter = [(NSString *)[mObj valueForKey:@"chapter_index"] integerValue];
+            bVO->bookmarkedWordID = [(NSString *)[mObj valueForKey:@"word_id"] integerValue];
+            [bVO setBookmarkID:[[[mObj objectID] URIRepresentation] absoluteString]];
+            [bVO setBookmarkText:[mObj valueForKey:@"text"]];
+            [bookmarks addObject:bVO];
+        }
+    }
+    return bookmarks;
+}
+
+- (NSManagedObjectContext *) managedObjectContext
+{
+    NSManagedObjectContext *context = Nil;
+    
+    id delegate = [[UIApplication sharedApplication] delegate];
+    if([delegate performSelector:@selector(managedObjectContext)])
+    {
+        context = [delegate managedObjectContext];
+    }
+    
+    return context;
+}
+
+- (void) refresh
+{
+    if(bookmarksColl)
+    {
+        [bookmarksColl removeAllObjects];
+        bookmarksColl = nil;
+    }
+    bookmarksColl = [self getAllBookmarks];
+    [self.tableView reloadData];
+}
 
 @end

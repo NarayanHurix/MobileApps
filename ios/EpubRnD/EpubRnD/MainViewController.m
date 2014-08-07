@@ -32,14 +32,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    currentPageVO = nil;
      _myViewPager.delegate = self;
     _myViewPager.mainController = self;
+    self.contentsView.mainViewController = self;
     self.contentsView.hidden = CONTENTS_VIEW_HIDDEN;
     self.helperForPageCount.frame = _myViewPager.frame;
     self.highlightBtn.hidden = YES;
     [self.pageNavSlider addTarget:self action:@selector(didSlidingFinish:) forControlEvents:UIControlEventTouchUpInside];
     [self.pageNavSlider addTarget:self action:@selector(didSlidingFinish:) forControlEvents:UIControlEventTouchCancel];
     [self.pageNavSlider addTarget:self action:@selector(didSlidingFinish:) forControlEvents:UIControlEventTouchUpOutside];
+    [self.contentsView prepareTabs];
 //    UIControlEventTouchUpInside *touchUpEvent = [UIControlEventTouchUpInside al];
 //    self.pageNavSlider
 }
@@ -244,7 +247,41 @@
 - (IBAction)toggleDataBankLayout:(id)sender
 {
     CONTENTS_VIEW_HIDDEN = !CONTENTS_VIEW_HIDDEN;
-    self.contentsView.hidden = CONTENTS_VIEW_HIDDEN;
+    
+    [self switchContentsLayout:CONTENTS_VIEW_HIDDEN];
+    
+}
+
+- (void) switchContentsLayout:(BOOL) hide
+{
+    CGRect basketTopFrame = self.contentsView.frame;
+    UIViewAnimationOptions option ;
+    if(hide)
+    {
+        basketTopFrame.origin.x = -self.contentsView.frame.size.width;
+        option = UIViewAnimationOptionCurveEaseOut;
+        self.contentsView.frame = CGRectMake(0, self.contentsView.frame.origin.y, self.contentsView.frame.size.width, self.contentsView.frame.size.height);
+    }
+    else
+    {
+        [self.contentsView refresh];
+        self.contentsView.hidden = hide;
+        basketTopFrame.origin.x = 0;
+        option = UIViewAnimationOptionCurveEaseIn;
+        self.contentsView.frame = CGRectMake(-self.contentsView.frame.size.width, self.contentsView.frame.origin.y, self.contentsView.frame.size.width, self.contentsView.frame.size.height);
+    }
+    
+    [UIView animateWithDuration:0.3
+                          delay:0.0
+                        options:option
+                     animations:^{
+                         self.contentsView.frame = basketTopFrame;
+                     }
+                     completion:^(BOOL finished)
+     {
+         self.contentsView.hidden = hide;
+         CONTENTS_VIEW_HIDDEN = hide;
+     }];
 }
 
 - (void) didOpenNoteEditor
@@ -442,6 +479,15 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     PageVO *decodedObject = [NSKeyedUnarchiver unarchiveObjectWithData:[userDefaults objectForKey:@"LastVisitedPageInfo"]];
     return decodedObject;
+}
+
+- (void) navigateToPage:(PageVO *) pageVO
+{
+    CGRect rect = CGRectMake(0, 0, _myViewPager.frame.size.width, _myViewPager.frame.size.height);
+    MyPageView *pageView = [[MyPageView alloc] initWithFrame:rect];
+    [pageView loadViewWithData:pageVO];
+    [_myViewPager initWithPageView:pageView];
+    [self switchContentsLayout:YES];
 }
 
 @end

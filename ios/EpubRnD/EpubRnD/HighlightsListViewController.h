@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface HighlightsListViewController : UITableViewController
-
+- (void) refresh;
 @end

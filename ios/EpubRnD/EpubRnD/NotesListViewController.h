@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface NotesListViewController : UITableViewController
-
+- (void) refresh;
 @end

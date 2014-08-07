@@ -191,7 +191,7 @@
             [self.pageVO setIndexOfPage:self.pageVO.chapterVO.pageCountInChapter-1];
         }
         
-        if([self.pageVO getIndexOfPage] !=PAGE_INDEX_GREATER_THAN_PAGE_COUNT)
+        if([self.pageVO getIndexOfPage] !=GET_PAGE_INDEX_USING_WORD_ID)
         {
             point = CGPointMake([self.pageVO getIndexOfPage]*webView.frame.size.width, 0);
             self.scrollView.contentOffset = point;
@@ -492,7 +492,7 @@
 
 - (void) didHighlightManagerJSadded
 {
-    if([self.pageVO getIndexOfPage] == PAGE_INDEX_GREATER_THAN_PAGE_COUNT)
+    if([self.pageVO getIndexOfPage] == GET_PAGE_INDEX_USING_WORD_ID)
     {
         NSString *callJsMethod = [NSString stringWithFormat:@"findIndexOfPageUsingWordId(%f,%d)",self.frame.size.width, [self.pageVO getWordIDToGetIndexOfPage]];
         [self stringByEvaluatingJavaScriptFromString:callJsMethod];
@@ -513,6 +513,8 @@
 - (void) didFindIndexOfPage :(NSInteger) indexOfPage
 {
     [self.pageVO setIndexOfPage:indexOfPage];
+    CGPoint point = CGPointMake([self.pageVO getIndexOfPage]*self.frame.size.width, 0);
+    self.scrollView.contentOffset = point;
     [self checkAdjacentPages];
     int indexOfNextPage = -1;
     if([self.pageVO getIndexOfPage]<self.pageVO.chapterVO.pageCountInChapter-1)
@@ -526,6 +528,7 @@
 - (void) checkAdjacentPages
 {
     MyViewPager *viewPager = (MyViewPager *)[[self superview] superview];
+    [viewPager.delegate didPageChange:(MyPageView *)[self superview]];
     [viewPager checkAdjacentPagesLoaded];
 }
 

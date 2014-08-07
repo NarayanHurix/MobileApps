@@ -7,6 +7,7 @@
 //
 
 #import "ContentsView.h"
+#import "MainViewController.h"
 
 @implementation ContentsView
 
@@ -35,7 +36,6 @@
     self.tabBarController = [[ContentsTabBarController alloc] init];
     self.tabBarController.view.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     [self addSubview:self.tabBarController.view];
-    [self prepareTabs];
 }
 
 /*
@@ -50,6 +50,7 @@
 - (void) prepareTabs
 {
     self.bookmarksListVC = [[BookmarksListViewController alloc] init];
+    self.bookmarksListVC.delegateForPageNav = self.mainViewController;
     self.bookmarksListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Bookmarks" image:[UIImage imageNamed:@"sticky_note.png"] tag:100];
     
     self.notesListVC = [[NotesListViewController alloc] init];
@@ -60,8 +61,24 @@
     
     self.tabBarController.viewControllers = @[self.bookmarksListVC,self.notesListVC,self.highlightsListVC];
     
+}
+
+- (void) refresh
+{
+    if(self.bookmarksListVC)
+    {
+        [self.bookmarksListVC refresh];
+    }
     
+    if(self.notesListVC)
+    {
+        [self.notesListVC refresh];
+    }
     
+    if(self.highlightsListVC)
+    {
+        [self.highlightsListVC refresh];
+    }
 }
 
 @end

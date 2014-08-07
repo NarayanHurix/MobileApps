@@ -16,4 +16,5 @@
 + (PageVO *) getPageVO:(int) pageNo;
 + (int) getPageNoFromPageVO:(PageVO *) vo;
 + (PageVO *) getPageVOUsing:(int) indexOfChapter andWordID:(int) wordID;
+
 @end

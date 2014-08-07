@@ -13,8 +13,10 @@
 #import "BookModelFactory.h"
 #import "Utils.h"
 #import "ContentsView.h"
+#import "PageNavigationDelegate.h"
 
-@interface MainViewController : UIViewController<MyViewPagerDelegate,ComputePageCountInBookDelgate>
+
+@interface MainViewController : UIViewController<MyViewPagerDelegate,ComputePageCountInBookDelgate,PageNavigationDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *pageNoLable;
 
 @property (weak, nonatomic) IBOutlet MyViewPager *myViewPager;

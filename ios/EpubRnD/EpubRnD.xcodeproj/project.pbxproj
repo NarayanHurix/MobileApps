@@ -116,6 +116,7 @@
 		5A3DB62D19925B53007F8B51 /* HighlightsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightsListViewController.h; sourceTree = "<group>"; };
 		5A3DB62E19925B53007F8B51 /* HighlightsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighlightsListViewController.m; sourceTree = "<group>"; };
 		5A3DB62F19925B53007F8B51 /* HighlightsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HighlightsListViewController.xib; sourceTree = "<group>"; };
+		5A3DB6331992695A007F8B51 /* PageNavigationDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageNavigationDelegate.h; sourceTree = "<group>"; };
 		5A3E309719488FC4001080F6 /* GlobalSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalSettings.h; sourceTree = "<group>"; };
 		5A3E309819488FC4001080F6 /* GlobalSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalSettings.m; sourceTree = "<group>"; };
 		5A45B65B19472E52003FA663 /* epub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = epub.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -239,6 +240,14 @@
 				5A3DB62F19925B53007F8B51 /* HighlightsListViewController.xib */,
 			);
 			name = ContentsHouse;
+			sourceTree = "<group>";
+		};
+		5A3DB63219926931007F8B51 /* Protocals */ = {
+			isa = PBXGroup;
+			children = (
+				5A3DB6331992695A007F8B51 /* PageNavigationDelegate.h */,
+			);
+			name = Protocals;
 			sourceTree = "<group>";
 		};
 		5A3E309619488FAC001080F6 /* GlobalSettings */ = {
@@ -392,6 +401,7 @@
 		5A45B6AD19473DC4003FA663 /* source */ = {
 			isa = PBXGroup;
 			children = (
+				5A3DB63219926931007F8B51 /* Protocals */,
 				5A7EF3DB196D6F3500C8AF45 /* HelperViews */,
 				5A51EBB619628F390065A595 /* QuickActionPopup */,
 				5A43E7B1195D8DBE00D41CB0 /* Utils */,

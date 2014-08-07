@@ -293,14 +293,15 @@ function highlightText(sWordID,eWordID)
     }
 }
 
+//unable to extract text with double quotes- need work around for this
 function getSelectedText(sWordID,eWordID)
 {
     var selectedText = '';
     for(var i=Number(sWordID);i<=Number(eWordID);i++)
     {
         var spanIdToHighlight = 'wordID-'+i;
-        NSLog('mad sheep 1 ');
-        NSLog($($('#'+spanIdToHighlight)).text());
+//        NSLog('mad sheep 1 ');
+//        NSLog($($('#'+spanIdToHighlight)).text());
         selectedText = selectedText+$($('#'+spanIdToHighlight)).text();
     }
     return selectedText;
@@ -508,7 +509,8 @@ function bookmarkThisPage()
 function findIndexOfPageUsingWordId(columnWidth , wordID)
 {
     var indexOfPage = -1;
-    var leftMargin = $('#'+wordID).position().left;
+    var spanID = 'wordID-'+wordID;
+    var leftMargin = $('#'+spanID).position().left;
     var res = Number(leftMargin)/Number(columnWidth);
     indexOfPage = Math.ceil(res)-1;
     

@@ -57,6 +57,7 @@
     [vo setChapterVO:tempCVO];
     [vo setIndexOfChapter:indexOfChapter];
     [vo setIndexOfPage:GET_PAGE_INDEX_USING_WORD_ID];
+    [vo setWordIDToGetIndexOfPage:wordID];
     return vo;
     
 }
