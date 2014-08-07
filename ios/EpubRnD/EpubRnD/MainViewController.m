@@ -458,7 +458,7 @@
         [userDefaults setValue:[NSNumber numberWithInteger:CURRENT_FONT_SIZE] forKey:@"FontSize"];
         
         [userDefaults synchronize];
-//        [userDefaults setObject:lastVisitedPage forKey:@"LastVisitedPageInfo"];
+
     }
 }
 
