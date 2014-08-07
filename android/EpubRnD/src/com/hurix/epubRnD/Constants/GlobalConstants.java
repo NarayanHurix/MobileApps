@@ -24,4 +24,8 @@ public class GlobalConstants
 	
 	public static int NOTE_ICON_WIDTH = 40; //assuming base dpi as 160
 	public static int NOTE_ICON_HEIGHT = 40; //assuming base dpi as 160
+	
+	public static int PAGE_INDEX_GREATER_THAN_PAGE_COUNT = -2;
+	public static int GET_PAGE_INDEX_USING_WORD_ID = -3;
+	
 }

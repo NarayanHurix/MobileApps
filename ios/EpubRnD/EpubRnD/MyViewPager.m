@@ -129,6 +129,7 @@ const int MIN_MOVE_TO_CHANGE_PAGE = 120;
             int pageY = touchLocation.y ;
             NSString *jsFunc = [NSString stringWithFormat:@"triggerHighlight(%d,%d)",pageX,pageY];
             [currenPageView.myWebView stringByEvaluatingJavaScriptFromString:jsFunc];
+            [self.mainController switchContentsLayout:YES];
         }
     }
 }

@@ -157,6 +157,7 @@
 - (void) changeBookMarkStatus:(BOOL) isBookmarked byUser:(BOOL) byUser
 {
     [self.bookmarkView changeBookMarkStatus:isBookmarked byUser:byUser];
+    
 }
 
 - (void) disableBookmark:(BOOL) disable
@@ -180,5 +181,11 @@
     }
 }
 
+- (void) switchContentsLayout:(BOOL) hide
+{
+    MyViewPager *viewPager = (MyViewPager *)[self superview];
+    MainViewController *controller = (MainViewController *)viewPager.mainController;
+    [controller switchContentsLayout:YES];
+}
 
 @end

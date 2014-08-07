@@ -1,5 +1,7 @@
 package com.hurix.epubRnD.VOs;
 
+import com.hurix.epubRnD.Constants.GlobalConstants;
+
 public class PageVO 
 {
 	private ChapterVO _chapterVO;
@@ -7,6 +9,7 @@ public class PageVO
 	private int indexOfChapter;
 	private int firstWordID;
 	private int lastWordID;
+	private int wordIDToGetIndexOfPage;
 	
 	public ChapterVO getChapterVO() {
 		return _chapterVO;
@@ -19,7 +22,11 @@ public class PageVO
 	public int getIndexOfPage() {
 		return indexOfPage;
 	}
-
+	/**
+	 * when we don't know the index of page then set it to GlobalConstants.GET_PAGE_INDEX_USING_WORD_ID
+	 * and set any wordID belong to respective page
+	 * @param indexOfPage
+	 */
 	public void setIndexOfPage(int indexOfPage) {
 		this.indexOfPage = indexOfPage;
 	}
@@ -46,6 +53,14 @@ public class PageVO
 
 	public void setLastWordID(int lastWordID) {
 		this.lastWordID = lastWordID;
+	}
+
+	public int getWordIDToGetIndexOfPage() {
+		return wordIDToGetIndexOfPage;
+	}
+
+	public void setWordIDToGetIndexOfPage(int wordIDToGetIndexOfPage) {
+		this.wordIDToGetIndexOfPage = wordIDToGetIndexOfPage;
 	}
 
 }

@@ -12,7 +12,7 @@
 #import "PageNavigationDelegate.h"
 #import "Utils.h"
 
-@interface BookmarksListViewController : UITableViewController<UITabBarControllerDelegate>
+@interface BookmarksListViewController : UITableViewController
 
 @property (nonatomic,weak) id<PageNavigationDelegate> delegateForPageNav;
 

@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HighlightVO.h"
+#import "Utils.h"
+#import "PageNavigationDelegate.h"
+
+@class PageVO;
 
 @interface HighlightsListViewController : UITableViewController
+
+@property (nonatomic,weak) id<PageNavigationDelegate> delegateForPageNav;
 - (void) refresh;
 @end

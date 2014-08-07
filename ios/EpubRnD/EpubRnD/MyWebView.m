@@ -913,6 +913,7 @@
 {
     if(byUser)
     {
+        [self.myDelegate switchContentsLayout:YES];
         //[self.pageVO setBookmarked:madeBookmark];
         if(madeBookmark)
         {

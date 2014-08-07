@@ -53,6 +53,18 @@
             android:textColor="#006699"
             android:textSize="18sp" />
 
+        
+        
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_toRightOf="@+id/button3"
+            android:onClick="contentsList"
+            android:text="Contents"
+            android:textColor="#006699"
+            android:textSize="18sp" />
+        
         <TextView
             android:id="@+id/pageNoTV"
             android:layout_width="100dp"
@@ -72,7 +84,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_toRightOf="@id/toggleButton1"
+            android:layout_toRightOf="@id/button4"
             android:layout_toLeftOf="@id/pageNoTV" />
         
     </RelativeLayout>

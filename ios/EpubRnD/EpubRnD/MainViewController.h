@@ -50,5 +50,5 @@
  * /p
  */
 - (void) openBook;
-
+- (void) switchContentsLayout:(BOOL) hide;
 @end

@@ -1,5 +1,8 @@
 package com.hurix.epubRnD.Views;
 
+import com.hurix.epubRnD.Constants.GlobalConstants;
+import com.hurix.epubRnD.Controllers.ViewPagerController;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
@@ -18,12 +21,14 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 //	private final GestureDetector gestureDetector;
 //	private static final int SWIPE_THRESHOLD = 100;
 //    private static final int SWIPE_VELOCITY_THRESHOLD = 100;
-    private OnPageChangeListener _listener;
+    
     private PageView _currentView,_adjacentNext,_adjacentPrev;
     private int MIN_MOVE_TO_CHANGE_PAGE = 60;
     private int PAGE_ADJAST_ANIM_DURATION= 500;
     private int NO_OF_PIXELS_TO_MOVE_FOR_ANIM ;
-    public interface OnPageChangeListener
+    private ViewPagerController _viewPagerController;
+    
+    public static abstract class BaseViewFlipperController
     {
     	public abstract PageView getPreviousView(PageView oldView);
     	public abstract PageView getNextView(PageView oldView);
@@ -53,7 +58,15 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 		//return gestureDetector.onTouchEvent(event);
 		return false;
 	}*/
-	
+	public void setController(ViewPagerController viewPagerController)
+	{
+		_viewPagerController = viewPagerController;
+		_viewPagerController.viewFlipperInitiated(this);
+	}
+	public ViewPagerController getController()
+	{
+		return _viewPagerController;
+	}
 	private void init(Context context)
 	{
 		NO_OF_PIXELS_TO_MOVE_FOR_ANIM = (int) (35 * context.getResources().getDisplayMetrics().density);
@@ -67,9 +80,9 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 	}*/
 	public void onSwipeLeft() 
 	{
-		if(_listener != null)
+		if(_viewPagerController != null)
 		{
-			PageView currentView =_listener.getNextView(_currentView);
+			PageView currentView =_viewPagerController.getNextView(_currentView);
 			removeAllViews();
 			addView(currentView,0);
 			_currentView = currentView;
@@ -77,9 +90,9 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 	}
 	public void onSwipeRight() 
 	{
-		if(_listener != null)
+		if(_viewPagerController != null)
 		{
-			PageView currentView =_listener.getPreviousView(_currentView);
+			PageView currentView =_viewPagerController.getPreviousView(_currentView);
 			removeAllViews();
 			addView(currentView,0);
 			_currentView = currentView;
@@ -188,7 +201,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 				{
 					//flip success
 	                //moving forward direction
-					if(_listener.getNextView(_currentView) != null)
+					if(_viewPagerController.getNextView(_currentView) != null)
 					{
 						//complete remaining page move animation
 						((Activity)getContext()).runOnUiThread(new Runnable() {
@@ -206,7 +219,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 				{
 					//flip success
 	                //moving backward direction
-					if(_listener.getPreviousView(_currentView) != null)
+					if(_viewPagerController.getPreviousView(_currentView) != null)
 					{
 						//complete remaining page move animation
 						((Activity)getContext()).runOnUiThread(new Runnable() {
@@ -281,14 +294,14 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 	        }
 	        _adjacentPrev =_currentView;
 	        _currentView = _adjacentNext;
-	        _adjacentNext = _listener.getNextView(_currentView);
+	        _adjacentNext = _viewPagerController.getNextView(_currentView);
 	        if(_adjacentNext != null)
 	        {
 	        	addView(_adjacentNext);
 	        }
 	        offsetX = offsetY = 0;
 	        positionPages(0, 0);
-	        _listener.onPageChanged(_currentView);
+	        _viewPagerController.onPageChanged(_currentView);
 	    }
 	    else
 	    {
@@ -316,14 +329,14 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 	        }
 	        _adjacentNext = _currentView;
 	        _currentView = _adjacentPrev;
-	        _adjacentPrev = _listener.getPreviousView(_currentView);
+	        _adjacentPrev = _viewPagerController.getPreviousView(_currentView);
 	        if(_adjacentPrev != null)
 	        {
 	        	addView(_adjacentPrev);
 	        }
 	        offsetX = offsetY = 0;
         	positionPages(0, 0);
-        	_listener.onPageChanged(_currentView);
+        	_viewPagerController.onPageChanged(_currentView);
 	    }
 	    else
 	    {
@@ -361,10 +374,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 			return false;
 		}
 	});
-	public void setOnPageChangeListener(OnPageChangeListener _listener) {
-		this._listener = _listener;
-	}
-
+	
 	public void initWithView(PageView view) 
 	{
 		removeAllViews();
@@ -375,10 +385,13 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 		 
 		addView(view,0);
 		_currentView = view;
-		_listener.onPageChanged(_currentView);
+		if(view.getWebView().getData().getIndexOfPage() != GlobalConstants.GET_PAGE_INDEX_USING_WORD_ID)
+		{
+			_viewPagerController.onPageChanged(_currentView);
+		}
 	}
 	
-	public ViewGroup getCurrentPageView()
+	public PageView getCurrentPageView()
 	{
 		return _currentView;
 	}
@@ -392,7 +405,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 	{
 		if(_adjacentNext == null)
 		{
-			_adjacentNext = _listener.getNextView(_currentView);
+			_adjacentNext = _viewPagerController.getNextView(_currentView);
 			if(_adjacentNext != null)
 			{
 				addView(_adjacentNext);
@@ -400,7 +413,7 @@ public class MyViewFlipper extends RelativeLayout {//implements GestureDetector.
 		}
 		if(_adjacentPrev == null)
 		{
-			_adjacentPrev = _listener.getPreviousView(_currentView);
+			_adjacentPrev = _viewPagerController.getPreviousView(_currentView);
 	        if(_adjacentPrev != null)
 	        {
 	        	addView(_adjacentPrev);

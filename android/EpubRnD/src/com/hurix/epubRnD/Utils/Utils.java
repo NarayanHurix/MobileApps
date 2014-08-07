@@ -2,6 +2,7 @@ package com.hurix.epubRnD.Utils;
 
 import java.util.ArrayList;
 
+import com.hurix.epubRnD.Constants.GlobalConstants;
 import com.hurix.epubRnD.VOs.ChapterVO;
 import com.hurix.epubRnD.VOs.PageVO;
 
@@ -41,5 +42,15 @@ public class Utils
 	        }
 	    }
 	    return -1;
+	}
+	
+	public static PageVO getPageVO(ArrayList<ChapterVO> chaptersColl,int indexOfChapter,int wordID)
+	{
+		PageVO dao = new PageVO();
+		dao.setChapterVO(chaptersColl.get(indexOfChapter));
+		dao.setIndexOfChapter(indexOfChapter);
+		dao.setIndexOfPage(GlobalConstants.GET_PAGE_INDEX_USING_WORD_ID);
+		dao.setWordIDToGetIndexOfPage(wordID);
+		return dao;
 	}
 }

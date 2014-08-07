@@ -502,3 +502,15 @@ function bookmarkThisPage()
     jsInterface.callNativeMethod('jstoobjc:'+callNatMethod);
 }
 
+function findIndexOfPageUsingWordId(columnWidth , wordID)
+{
+    var indexOfPage = -1;
+    var spanID = 'wordID-'+wordID;
+    var leftMargin = $('#'+spanID).position().left;
+    var res = Number(leftMargin)/Number(columnWidth);
+    indexOfPage = Math.ceil(res)-1;
+    
+    var callNatMethod = '{"MethodName":"didFindIndexOfPage","MethodArguments":{"arg1":"'+indexOfPage+'"}}';
+    jsInterface.callNativeMethod('jstoobjc:'+callNatMethod);
+}
+

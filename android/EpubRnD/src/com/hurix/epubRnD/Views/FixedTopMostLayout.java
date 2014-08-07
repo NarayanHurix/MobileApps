@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.widget.RelativeLayout;
 
 import com.hurix.epubRnD.Constants.GlobalConstants;
+import com.hurix.epubRnD.Controllers.ViewPagerController;
 import com.hurix.epubRnD.Settings.GlobalSettings;
 
 public class FixedTopMostLayout extends RelativeLayout implements OnGestureListener
@@ -40,7 +41,7 @@ public class FixedTopMostLayout extends RelativeLayout implements OnGestureListe
 	@Override
 	public boolean onTouchEvent(MotionEvent event) 
 	{
-		if(this._myViewFlipper != null && ((PageView)this._myViewFlipper.getCurrentPageView())!= null && ((PageView)this._myViewFlipper.getCurrentPageView()).getWebView() != null)
+		if(this._myViewFlipper != null && this._myViewFlipper.getCurrentPageView()!= null && this._myViewFlipper.getCurrentPageView().getWebView() != null)
 		{
 			((PageView)this._myViewFlipper.getCurrentPageView()).getWebView().onTouchEvent(event);
 		}
@@ -53,9 +54,9 @@ public class FixedTopMostLayout extends RelativeLayout implements OnGestureListe
 		return true;
 	}
 	
-	public void setMyViewFlipper(MyViewFlipper _myViewFlipper) 
+	public void setMyViewFlipper(MyViewFlipper myViewFlipper) 
 	{
-		this._myViewFlipper = _myViewFlipper;
+		_myViewFlipper = myViewFlipper;
 	}
 
 	@Override
@@ -76,8 +77,8 @@ public class FixedTopMostLayout extends RelativeLayout implements OnGestureListe
 	{
 		if(!GlobalSettings.HIGHLIGHT_SWITCH)
 		{
-			((PageView)this._myViewFlipper.getCurrentPageView()).onClickHighlightSwitch();
-			MyWebView webView = ((PageView)this._myViewFlipper.getCurrentPageView()).getWebView();
+			this._myViewFlipper.getCurrentPageView().onClickHighlightSwitch();
+			MyWebView webView = this._myViewFlipper.getCurrentPageView().getWebView();
 			int pageX = (int) (e.getX()/getContext().getResources().getDisplayMetrics().density);
 			pageX = pageX + (webView.getMeasuredWidth()*webView.getData().getIndexOfPage());
 			int pageY = (int) (e.getY()/getContext().getResources().getDisplayMetrics().density);
@@ -100,7 +101,10 @@ public class FixedTopMostLayout extends RelativeLayout implements OnGestureListe
 
 	@Override
 	public boolean onSingleTapUp(MotionEvent e) {
-		((PageView)this._myViewFlipper.getCurrentPageView()).validateSingleTap(e);
+		if(!((PageView)this._myViewFlipper.getCurrentPageView()).validateSingleTap(e))
+		{
+			_myViewFlipper.getController().toggleBookmarksListDlg();
+		}
 		return false;
 	}
 	

@@ -102,7 +102,7 @@ public class PageView extends RelativeLayout implements MyWebViewLoadListener
 		_mMyViewPager.checkPageBuffer();
 	}
 
-	public void validateSingleTap(MotionEvent e) 
+	public boolean validateSingleTap(MotionEvent e) 
 	{
 		for(int i=0;i<getChildCount();i++)
 		{
@@ -113,14 +113,18 @@ public class PageView extends RelativeLayout implements MyWebViewLoadListener
 				if(v.getClass() == StickyNoteIconView.class)
 				{
 					((StickyNoteIconView)v).onSingleTapConfirmed(e);
-					break;
+					
+					return true;
 				}
 				else if(v.getClass() == BookmarkView.class)
 				{
 					((BookmarkView)v).onSingleTapConfirmed(e);
+					_mMyViewPager.getController().showBookmarksList(false,true);
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 	
 	public BookmarkView getBookmarkView()

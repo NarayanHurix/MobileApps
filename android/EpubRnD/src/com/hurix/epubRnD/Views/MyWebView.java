@@ -315,7 +315,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 						else
 						{
 							calculateNoOfPages();
-							if(getData().getIndexOfPage()==-2)
+							if(getData().getIndexOfPage()==GlobalConstants.PAGE_INDEX_GREATER_THAN_PAGE_COUNT)
 							{
 								getData().setIndexOfPage(getData().getChapterVO().getPageCount()-1);
 							}
@@ -326,8 +326,11 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 							}
 							else
 							{
-								scrollTo(getMeasuredWidth()*getData().getIndexOfPage(), 0);
-								_mMyWebViewLoadListener.onLoadFinish();
+								if(getData().getIndexOfPage() != GlobalConstants.GET_PAGE_INDEX_USING_WORD_ID)
+								{
+									scrollTo(getMeasuredWidth()*getData().getIndexOfPage(), 0);
+									_mMyWebViewLoadListener.onLoadFinish();
+								}
 							}
 						}
 					}
@@ -373,23 +376,35 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 							}
 							else if(methodName.equals("onWordHighlightManagerJS"))
 							{
-								int indexOfPage = -1;
-								if(getData().getIndexOfPage() == -2)
+								if(getData().getIndexOfPage() == GlobalConstants.GET_PAGE_INDEX_USING_WORD_ID)
 								{
-									indexOfPage = _data.getChapterVO().getPageCount()-1;
+									loadUrl("javascript:findIndexOfPageUsingWordId("+getMeasuredWidth()+","+getData().getWordIDToGetIndexOfPage()+")");
 								}
 								else
 								{
-									indexOfPage = getData().getIndexOfPage();
+									int indexOfPage = -1;
+									if(getData().getIndexOfPage() == -2)
+									{
+										indexOfPage = _data.getChapterVO().getPageCount()-1;
+									}
+									else
+									{
+										indexOfPage = getData().getIndexOfPage();
+									}
+									
+									int indexOfNextPage = -1;
+									if(indexOfPage<_data.getChapterVO().getPageCount()-1)
+									{
+										indexOfNextPage = _data.getIndexOfPage()+1;
+									}
+	//							    Log.d("here","width is : "+getMeasuredWidth()+"  index : "+_data.getIndexOfPage() + "next index : "+indexOfNextPage);
+									loadUrl("javascript: findFirstAndLastWordsOfPage("+getMeasuredWidth()+","+indexOfPage+","+indexOfNextPage+")");
 								}
-								
-								int indexOfNextPage = -1;
-								if(indexOfPage<_data.getChapterVO().getPageCount()-1)
-								{
-									indexOfNextPage = _data.getIndexOfPage()+1;
-								}
-//							    Log.d("here","width is : "+getMeasuredWidth()+"  index : "+_data.getIndexOfPage() + "next index : "+indexOfNextPage);
-								loadUrl("javascript: findFirstAndLastWordsOfPage("+getMeasuredWidth()+","+indexOfPage+","+indexOfNextPage+")");
+							}
+							else if(methodName.equals("didFindIndexOfPage"))
+							{
+								int arg1 = Integer.parseInt(argsJsonObj.getString("arg1"));
+								didFindIndexOfPage(arg1);
 							}
 							else if(methodName.equals("didFindFirstAndLastWordsOfPage"))
 							{
@@ -476,7 +491,7 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 							e.printStackTrace();
 						}
 					}
-					
+
 				});
 			}
 			catch(JSONException e)
@@ -1093,6 +1108,21 @@ public class MyWebView extends WebView implements OnDismissListener,OnClickListe
 			default:
 				break;
 		}
+	}
+	
+	private void didFindIndexOfPage(int indexOfPage) 
+	{
+		getData().setIndexOfPage(indexOfPage);
+		scrollTo(getMeasuredWidth()*getData().getIndexOfPage(), 0);
+		_mMyWebViewLoadListener.onLoadFinish();
+	    _mMyWebViewLoadListener.checkPageBuffer();
+	    _viewpager.getController().onPageChanged(_viewpager.getCurrentPageView());
+	    int indexOfNextPage = -1;
+		if(indexOfPage<_data.getChapterVO().getPageCount()-1)
+		{
+			indexOfNextPage = _data.getIndexOfPage()+1;
+		}
+		loadUrl("javascript: findFirstAndLastWordsOfPage("+getMeasuredWidth()+","+indexOfPage+","+indexOfNextPage+")");
 	}
 	
 	private void didFindFirstAndLastWordsOfPage(int firstWordID,int lastWordID)

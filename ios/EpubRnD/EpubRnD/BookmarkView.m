@@ -44,7 +44,9 @@
 
 - (void) onSingleTap:(UIGestureRecognizer *) recognizer
 {
+    
     [self changeBookMarkStatus:!isBookmarked byUser:YES];
+    
 }
 
 - (void) changeBookMarkStatus:(BOOL) status byUser:(BOOL) byUser

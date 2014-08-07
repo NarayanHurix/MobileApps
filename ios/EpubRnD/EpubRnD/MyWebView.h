@@ -23,6 +23,7 @@
 - (void) myWebViewOnPageOutOfRange;
 - (void) toggleHighlightSwitch;
 - (void) changeBookMarkStatus:(BOOL) isBookmarked byUser:(BOOL) byUser;
+- (void) switchContentsLayout:(BOOL) hide;
 - (void) disableBookmark:(BOOL) disable;
 @end
 

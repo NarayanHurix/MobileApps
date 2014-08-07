@@ -53,13 +53,14 @@
     self.bookmarksListVC.delegateForPageNav = self.mainViewController;
     self.bookmarksListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Bookmarks" image:[UIImage imageNamed:@"sticky_note.png"] tag:100];
     
-    self.notesListVC = [[NotesListViewController alloc] init];
-    self.notesListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Notes" image:[UIImage imageNamed:@"sticky_note.png"] tag:200];
+//    self.notesListVC = [[NotesListViewController alloc] init];
+//    self.notesListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Notes" image:[UIImage imageNamed:@"sticky_note.png"] tag:200];
     
     self.highlightsListVC = [[HighlightsListViewController alloc] init];
+    self.highlightsListVC.delegateForPageNav = self.mainViewController;
     self.highlightsListVC.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Highlights" image:[UIImage imageNamed:@"sticky_note.png"] tag:300];
     
-    self.tabBarController.viewControllers = @[self.bookmarksListVC,self.notesListVC,self.highlightsListVC];
+    self.tabBarController.viewControllers = @[self.bookmarksListVC,self.highlightsListVC];
     
 }
 

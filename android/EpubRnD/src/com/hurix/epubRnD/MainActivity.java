@@ -11,9 +11,13 @@ import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.FeedbackManager;
 import net.hockeyapp.android.UpdateManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
@@ -22,6 +26,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -36,6 +43,7 @@ import com.hurix.epubRnD.Settings.GlobalSettings;
 import com.hurix.epubRnD.Utils.Constants;
 import com.hurix.epubRnD.Utils.Decompress;
 import com.hurix.epubRnD.Utils.Utils;
+import com.hurix.epubRnD.VOs.BookmarkVO;
 import com.hurix.epubRnD.VOs.ChapterVO;
 import com.hurix.epubRnD.VOs.ManifestVO;
 import com.hurix.epubRnD.VOs.PathVO;
@@ -132,12 +140,11 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,P
 
 		//	prepareData();
 		_mViewPager = (MyViewFlipper) findViewById(R.id.myViewPager);
-		_topMostLayout.setMyViewFlipper(_mViewPager);
-//		bookmark = (Button)findViewById(R.id.bookmark_btn);
-//		bookmark.setOnClickListener(this);
 		ViewPagerController controller = new ViewPagerController();
-		_mViewPager.setOnPageChangeListener(controller);
-		controller.setData(_chaptersColl,_mViewPager,this);
+		_mViewPager.setController(controller);
+		
+		_topMostLayout.setMyViewFlipper(_mViewPager);
+		controller.setData(_chaptersColl,this);
 		restorePlayerToLastSavedState();
 		_helperViewForPageCount.startPageCounting(this, _chaptersColl);
 	}
@@ -158,7 +165,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,P
 			else
 			{
 				//((PageView)_mViewPager.getCurrentPageView()).updateFontSize();
-				((PageView)_mViewPager.getCurrentPageView()).onLoadStart();
+				_mViewPager.getCurrentPageView().onLoadStart();
 				_helperViewForPageCount.startPageCounting(this, _chaptersColl);
 	
 			}
@@ -182,7 +189,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,P
 			else
 			{
 				//((PageView)_mViewPager.getCurrentPageView()).updateFontSize();
-				((PageView)_mViewPager.getCurrentPageView()).onLoadStart();
+				_mViewPager.getCurrentPageView().onLoadStart();
 				_helperViewForPageCount.startPageCounting(this, _chaptersColl);
 			}
 		}
@@ -198,7 +205,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,P
 //			break;
 		case R.id.toggleButton1:
 			
-			((PageView)_mViewPager.getCurrentPageView()).onClickHighlightSwitch();
+			_mViewPager.getCurrentPageView().onClickHighlightSwitch();
 			
 			break;
 		default:
@@ -521,4 +528,14 @@ public class MainActivity extends ActionBarActivity implements OnClickListener,P
 		GlobalSettings.FONT_SIZE = pref.getInt("FontSize", GlobalConstants.MIN_FONT_SIZE);
 	}
 	
+	/**
+	 * For successful navigation , PageVO must have index of chapter and index of page.
+	 * In case of unknown page index ,word id must be given and index of page should set to GlobalConstants.GET_PAGE_INDEX_USING_WORD_ID 
+	 * @param pageVO
+	 */
+	
+	public void contentsList(View button)
+	{
+		_mViewPager.getController().toggleBookmarksListDlg();
+	}
 }
